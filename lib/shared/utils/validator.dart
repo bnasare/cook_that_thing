@@ -49,6 +49,26 @@ class Validator {
     return null;
   }
 
+  static String? recipeIngredients(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter your recipe\'s ingredient';
+    }
+    if (!RegExp(r"^[a-zA-Z'\- ]+$").hasMatch(value)) {
+      return 'Please enter a valid recipe ingredient';
+    }
+    return null;
+  }
+
+  static String? recipeInstructions(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter steps to prepare your recipe';
+    }
+    if (!RegExp(r"^[a-zA-Z'\- ]+$").hasMatch(value)) {
+      return 'Please enter a valid recipe instruction';
+    }
+    return null;
+  }
+
   static String? recipeCategory(String? value) {
     if (value == null || value.isEmpty) {
       return 'Please select a meal type';
@@ -60,6 +80,18 @@ class Validator {
     if (value == null || value.isEmpty) {
       return 'Please select a diet type';
     }
+    return null;
+  }
+
+  static String? validateTime(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Duration cannot be empty';
+    }
+
+    if (value.trim() == '0min') {
+      return 'Duration cannot be 0 min';
+    }
+
     return null;
   }
 }

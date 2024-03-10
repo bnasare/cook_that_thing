@@ -9,6 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final TextInputAction textInputAction;
   final int? maxLines;
+  final bool? enabled;
   const CustomTextFormField({
     super.key,
     required this.controller,
@@ -17,6 +18,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.textInputAction = TextInputAction.next,
     this.maxLines = 1,
+    this.enabled,
   });
 
   @override
@@ -25,6 +27,7 @@ class CustomTextFormField extends StatelessWidget {
       controller: controller,
       validator: validator,
       textInputAction: textInputAction,
+      readOnly: enabled ?? false,
       style: const TextStyle(
           fontSize: 14, color: ExtraColors.grey, fontWeight: FontWeight.w500),
       maxLines: maxLines,

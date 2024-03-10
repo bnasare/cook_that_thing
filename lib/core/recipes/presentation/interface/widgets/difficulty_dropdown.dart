@@ -4,12 +4,12 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
-class CategoryDropdown extends StatelessWidget {
+class DiifficultyLevelDropDown extends StatelessWidget {
   final void Function(String?) onChanged;
 
-  final category = ValueNotifier<String?>(null);
+  final difficultyLevel = ValueNotifier<String?>(null);
 
-  CategoryDropdown({super.key, required this.onChanged});
+  DiifficultyLevelDropDown({super.key, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,10 @@ class CategoryDropdown extends StatelessWidget {
           icon: const Icon(IconlyBold.arrow_down_2, size: 18),
           isExpanded: true,
           isDense: true,
-          value: category.value?.isEmpty ?? true ? null : category.value,
-          validator: Validator.recipeCategory,
+          value: difficultyLevel.value?.isEmpty ?? true
+              ? null
+              : difficultyLevel.value,
+          validator: Validator.recipeDiet,
           decoration: InputDecoration(
             hintStyle: const TextStyle(
               fontSize: 14,
@@ -54,8 +56,8 @@ class CategoryDropdown extends StatelessWidget {
             ),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             filled: false,
-            labelText: 'Meal',
-            hintText: 'Type of meal',
+            labelText: 'Difficulty',
+            hintText: 'Difficulty of your recipe',
           ),
           menuMaxHeight: 100,
           items: [
@@ -63,36 +65,25 @@ class CategoryDropdown extends StatelessWidget {
                 value: null,
                 child: Transform.translate(
                     offset: const Offset(-15, 0),
-                    child: const Text('Type of meal'))),
+                    child: const Text('Difficulty'))),
             DropdownMenuItem<String?>(
-                value: 'Breakfast',
+                value: 'Beginner',
                 child: Transform.translate(
                     offset: const Offset(-15, 0),
-                    child: const Text('Breakfast'))),
+                    child: const Text('Beginner'))),
             DropdownMenuItem<String?>(
-                value: 'Lunch',
-                child: Transform.translate(
-                    offset: const Offset(-15, 0), child: const Text('Lunch'))),
-            DropdownMenuItem<String?>(
-                value: 'Dinner',
-                child: Transform.translate(
-                    offset: const Offset(-15, 0), child: const Text('Dinner'))),
-            DropdownMenuItem<String?>(
-                value: 'Dessert',
+                value: 'Intermediate',
                 child: Transform.translate(
                     offset: const Offset(-15, 0),
-                    child: const Text('Dessert'))),
+                    child: const Text('Intermediate'))),
             DropdownMenuItem<String?>(
-                value: 'Main',
+                value: 'Advanced',
                 child: Transform.translate(
-                    offset: const Offset(-15, 0), child: const Text('Main'))),
-            DropdownMenuItem<String?>(
-                value: 'Snacks',
-                child: Transform.translate(
-                    offset: const Offset(-15, 0), child: const Text('Snacks'))),
+                    offset: const Offset(-15, 0),
+                    child: const Text('Advanced'))),
           ],
           onChanged: (newValue) {
-            category.value = newValue;
+            difficultyLevel.value = newValue;
           },
         ),
       ),
