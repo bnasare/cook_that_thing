@@ -34,7 +34,7 @@ class CustomTextFormField extends StatelessWidget {
         labelStyle: const TextStyle(fontSize: 22, color: ExtraColors.black),
         alignLabelWithHint: true,
         contentPadding:
-            const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+            const EdgeInsets.only(left: 25, right: 25, top: 10, bottom: 10),
         hintText: hintText,
         hintStyle: const TextStyle(
             fontSize: 14,

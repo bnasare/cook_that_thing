@@ -4,12 +4,12 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
-class CategoryDropdown extends StatelessWidget {
+class DietDropdown extends StatelessWidget {
   final void Function(String?) onChanged;
 
-  final category = ValueNotifier<String?>(null);
+  final diet = ValueNotifier<String?>(null);
 
-  CategoryDropdown({super.key, required this.onChanged});
+  DietDropdown({super.key, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,8 @@ class CategoryDropdown extends StatelessWidget {
           icon: const Icon(IconlyBold.arrow_down_2, size: 18),
           isExpanded: true,
           isDense: true,
-          value: category.value?.isEmpty ?? true ? null : category.value,
-          validator: Validator.recipeCategory,
+          value: diet.value?.isEmpty ?? true ? null : diet.value,
+          validator: Validator.recipeDiet,
           decoration: InputDecoration(
             hintStyle: const TextStyle(
               fontSize: 14,
@@ -54,8 +54,8 @@ class CategoryDropdown extends StatelessWidget {
             ),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             filled: false,
-            labelText: 'Meal',
-            hintText: 'Type of meal',
+            labelText: 'Diet',
+            hintText: 'Type of diet',
           ),
           menuMaxHeight: 100,
           items: [
@@ -63,35 +63,35 @@ class CategoryDropdown extends StatelessWidget {
                 value: null,
                 child: Transform.translate(
                     offset: const Offset(-15, 0),
-                    child: const Text('Type of meal'))),
+                    child: const Text('Type of diet'))),
             DropdownMenuItem<String?>(
-                value: 'Breakfast',
+                value: 'Vegan',
+                child: Transform.translate(
+                    offset: const Offset(-15, 0), child: const Text('Vegan'))),
+            DropdownMenuItem<String?>(
+                value: 'Vegetarian',
                 child: Transform.translate(
                     offset: const Offset(-15, 0),
-                    child: const Text('Breakfast'))),
+                    child: const Text('Vegetarian'))),
             DropdownMenuItem<String?>(
-                value: 'Lunch',
-                child: Transform.translate(
-                    offset: const Offset(-15, 0), child: const Text('Lunch'))),
-            DropdownMenuItem<String?>(
-                value: 'Dinner',
-                child: Transform.translate(
-                    offset: const Offset(-15, 0), child: const Text('Dinner'))),
-            DropdownMenuItem<String?>(
-                value: 'Dessert',
+                value: 'Gluten-free',
                 child: Transform.translate(
                     offset: const Offset(-15, 0),
-                    child: const Text('Dessert'))),
+                    child: const Text('Gluten-free'))),
             DropdownMenuItem<String?>(
-                value: 'Main',
+                value: 'Low-Carb',
                 child: Transform.translate(
-                    offset: const Offset(-15, 0), child: const Text('Main'))),
+                    offset: const Offset(-15, 0),
+                    child: const Text('Low-Carb'))),
             DropdownMenuItem<String?>(
-                value: 'Snacks',
+                value: 'Protein',
                 child: Transform.translate(
-                    offset: const Offset(-15, 0), child: const Text('Snacks'))),
+                    offset: const Offset(-15, 0),
+                    child: const Text('Protein'))),
           ],
-          onChanged: onChanged,
+          onChanged: (newValue) {
+            diet.value = newValue;
+          },
         ),
       ),
     );

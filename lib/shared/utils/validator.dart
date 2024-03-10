@@ -55,4 +55,11 @@ class Validator {
     }
     return null;
   }
+
+  static String? recipeDiet(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please select a diet type';
+    }
+    return null;
+  }
 }
