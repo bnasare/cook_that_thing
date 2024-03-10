@@ -5,11 +5,14 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
 class DietDropdown extends StatelessWidget {
-  final void Function(String?) onChanged;
+  final ValueNotifier<String?> diet;
+  final Function(String?) onDietChanged;
 
-  final diet = ValueNotifier<String?>(null);
-
-  DietDropdown({super.key, required this.onChanged});
+  const DietDropdown({
+    super.key,
+    required this.diet,
+    required this.onDietChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +93,7 @@ class DietDropdown extends StatelessWidget {
                     child: const Text('Protein'))),
           ],
           onChanged: (newValue) {
-            diet.value = newValue;
+            onDietChanged(newValue);
           },
         ),
       ),

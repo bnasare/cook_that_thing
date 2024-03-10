@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:developer';
+
 import 'package:duration_picker/duration_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -11,6 +13,8 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/snackbar.dart';
 
 import '../widgets/custom_textfeld.dart';
+import '../widgets/list_ingredients.dart';
+import '../widgets/list_instructions.dart';
 
 class CreateRecipePage extends HookWidget {
   const CreateRecipePage({super.key});
@@ -19,13 +23,22 @@ class CreateRecipePage extends HookWidget {
     final category = useState<String?>(null);
     final diet = useState<String?>(null);
     final difficultyLevel = useState<String?>(null);
+    final submittedIngredients = useState<List<String>>([]);
+    final submittedInstructions = useState<List<String>>([]);
+    final duration = useState(const Duration(hours: 0, minutes: 0));
+    final isLoading = useState(false);
+
     final titleController = useTextEditingController();
     final ingredientsController = useTextEditingController();
     final instructionsController = useTextEditingController();
     final overviewController = useTextEditingController();
     final durationController = useTextEditingController(text: '30min');
+
     final formKey = GlobalKey<FormState>();
-    final duration = useState(const Duration(hours: 0, minutes: 0));
+
+    void submit() async {
+      log('object');
+    }
 
     return Scaffold(
       appBar: AppBar(title: const Text('New Recipe')),
@@ -46,7 +59,7 @@ class CreateRecipePage extends HookWidget {
                 labelText: 'Overview',
                 hintText: 'A brief description of your recipe',
                 validator: Validator.recipeOverview,
-                maxLines: null,
+                maxLines: 2,
               ),
               const SizedBox(height: 30),
               Row(
@@ -54,25 +67,26 @@ class CreateRecipePage extends HookWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CategoryDropdown(
-                    onChanged: (newValue) {
+                    category: category,
+                    onCategoryChanged: (newValue) {
                       category.value = newValue;
                     },
                   ),
                   const SizedBox(width: 20),
-                  DietDropdown(onChanged: (newValue) {
-                    diet.value = newValue;
-                  }),
+                  DietDropdown(
+                    diet: diet,
+                    onDietChanged: (newValue) {
+                      diet.value = newValue;
+                    },
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
-              CustomTextFormField(
-                controller: ingredientsController,
-                labelText: 'Ingredients',
-                hintText: 'Ingredients for your recipe',
-                validator: Validator.recipeIngredients,
-                maxLines: null,
+              ListIngredients(
+                ingredientsController: ingredientsController,
+                submittedIngredients: submittedIngredients,
               ),
-              const SizedBox(height: 30),
+              SizedBox(height: submittedIngredients.value.isNotEmpty ? 20 : 30),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -120,7 +134,7 @@ class CreateRecipePage extends HookWidget {
                         alignment: Alignment.centerLeft,
                         child: Row(
                           children: [
-                            const Icon(Icons.timer,
+                            const Icon(Icons.timer_outlined,
                                 color: ExtraColors.darkGrey, size: 20),
                             const SizedBox(width: 7),
                             Text(
@@ -137,24 +151,34 @@ class CreateRecipePage extends HookWidget {
                     ),
                   ),
                   const SizedBox(width: 20),
-                  DiifficultyLevelDropDown(onChanged: (newValue) {
-                    difficultyLevel.value = newValue;
-                  }),
+                  DifficultyLevelDropDown(
+                    difficultyLevel: difficultyLevel,
+                    onDifficultyLevelChanged: (newValue) {
+                      difficultyLevel.value = newValue;
+                    },
+                  ),
                 ],
               ),
               const SizedBox(height: 30),
-              CustomTextFormField(
-                controller: instructionsController,
-                labelText: 'Instructions',
-                hintText: 'Instructions for your recipe',
-                validator: Validator.recipeInstructions,
-                maxLines: 2,
-                textInputAction: TextInputAction.done,
+              ListInstructions(
+                instructionsController: instructionsController,
+                submittedInstructions: submittedInstructions,
               ),
             ],
           ),
         )
       ]),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ElevatedButton(
+          onPressed: () {
+            if (formKey.currentState!.validate()) {
+              submit();
+            }
+          },
+          child: const Text('Create new recipe'),
+        ),
+      ),
     );
   }
 }

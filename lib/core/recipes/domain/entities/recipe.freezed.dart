@@ -20,18 +20,19 @@ Recipe _$RecipeFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Recipe {
-  String get name => throw _privateConstructorUsedError;
-  String get ingredients => throw _privateConstructorUsedError;
-  String get instructions => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
-  String get time => throw _privateConstructorUsedError;
-  String get servings => throw _privateConstructorUsedError;
+  String get title => throw _privateConstructorUsedError;
+  String get overview => throw _privateConstructorUsedError;
+  String get duration =>
+      throw _privateConstructorUsedError; // Change the type to String
   String get category => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   String get chef => throw _privateConstructorUsedError;
   String get chefID => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
+  String get chefToken => throw _privateConstructorUsedError;
   List<String> get likes => throw _privateConstructorUsedError;
+  List<String> get ingredients => throw _privateConstructorUsedError;
+  List<String> get instructions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,18 +45,18 @@ abstract class $RecipeCopyWith<$Res> {
       _$RecipeCopyWithImpl<$Res, Recipe>;
   @useResult
   $Res call(
-      {String name,
-      String ingredients,
-      String instructions,
-      String description,
-      String time,
-      String servings,
+      {String title,
+      String overview,
+      String duration,
       String category,
       String image,
       String chef,
       String chefID,
       String id,
-      List<String> likes});
+      String chefToken,
+      List<String> likes,
+      List<String> ingredients,
+      List<String> instructions});
 }
 
 /// @nodoc
@@ -71,43 +72,31 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? ingredients = null,
-    Object? instructions = null,
-    Object? description = null,
-    Object? time = null,
-    Object? servings = null,
+    Object? title = null,
+    Object? overview = null,
+    Object? duration = null,
     Object? category = null,
     Object? image = null,
     Object? chef = null,
     Object? chefID = null,
     Object? id = null,
+    Object? chefToken = null,
     Object? likes = null,
+    Object? ingredients = null,
+    Object? instructions = null,
   }) {
     return _then(_value.copyWith(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
-      ingredients: null == ingredients
-          ? _value.ingredients
-          : ingredients // ignore: cast_nullable_to_non_nullable
+      overview: null == overview
+          ? _value.overview
+          : overview // ignore: cast_nullable_to_non_nullable
               as String,
-      instructions: null == instructions
-          ? _value.instructions
-          : instructions // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      time: null == time
-          ? _value.time
-          : time // ignore: cast_nullable_to_non_nullable
-              as String,
-      servings: null == servings
-          ? _value.servings
-          : servings // ignore: cast_nullable_to_non_nullable
+      duration: null == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
               as String,
       category: null == category
           ? _value.category
@@ -129,9 +118,21 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      chefToken: null == chefToken
+          ? _value.chefToken
+          : chefToken // ignore: cast_nullable_to_non_nullable
+              as String,
       likes: null == likes
           ? _value.likes
           : likes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      ingredients: null == ingredients
+          ? _value.ingredients
+          : ingredients // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      instructions: null == instructions
+          ? _value.instructions
+          : instructions // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
   }
@@ -145,18 +146,18 @@ abstract class _$$RecipeImplCopyWith<$Res> implements $RecipeCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String name,
-      String ingredients,
-      String instructions,
-      String description,
-      String time,
-      String servings,
+      {String title,
+      String overview,
+      String duration,
       String category,
       String image,
       String chef,
       String chefID,
       String id,
-      List<String> likes});
+      String chefToken,
+      List<String> likes,
+      List<String> ingredients,
+      List<String> instructions});
 }
 
 /// @nodoc
@@ -170,43 +171,31 @@ class __$$RecipeImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? name = null,
-    Object? ingredients = null,
-    Object? instructions = null,
-    Object? description = null,
-    Object? time = null,
-    Object? servings = null,
+    Object? title = null,
+    Object? overview = null,
+    Object? duration = null,
     Object? category = null,
     Object? image = null,
     Object? chef = null,
     Object? chefID = null,
     Object? id = null,
+    Object? chefToken = null,
     Object? likes = null,
+    Object? ingredients = null,
+    Object? instructions = null,
   }) {
     return _then(_$RecipeImpl(
-      name: null == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      title: null == title
+          ? _value.title
+          : title // ignore: cast_nullable_to_non_nullable
               as String,
-      ingredients: null == ingredients
-          ? _value.ingredients
-          : ingredients // ignore: cast_nullable_to_non_nullable
+      overview: null == overview
+          ? _value.overview
+          : overview // ignore: cast_nullable_to_non_nullable
               as String,
-      instructions: null == instructions
-          ? _value.instructions
-          : instructions // ignore: cast_nullable_to_non_nullable
-              as String,
-      description: null == description
-          ? _value.description
-          : description // ignore: cast_nullable_to_non_nullable
-              as String,
-      time: null == time
-          ? _value.time
-          : time // ignore: cast_nullable_to_non_nullable
-              as String,
-      servings: null == servings
-          ? _value.servings
-          : servings // ignore: cast_nullable_to_non_nullable
+      duration: null == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
               as String,
       category: null == category
           ? _value.category
@@ -228,9 +217,21 @@ class __$$RecipeImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as String,
+      chefToken: null == chefToken
+          ? _value.chefToken
+          : chefToken // ignore: cast_nullable_to_non_nullable
+              as String,
       likes: null == likes
           ? _value._likes
           : likes // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      ingredients: null == ingredients
+          ? _value._ingredients
+          : ingredients // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      instructions: null == instructions
+          ? _value._instructions
+          : instructions // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -240,35 +241,32 @@ class __$$RecipeImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RecipeImpl implements _Recipe {
   const _$RecipeImpl(
-      {required this.name,
-      required this.ingredients,
-      required this.instructions,
-      required this.description,
-      required this.time,
-      required this.servings,
+      {required this.title,
+      required this.overview,
+      required this.duration,
       required this.category,
       required this.image,
       required this.chef,
       required this.chefID,
       required this.id,
-      required final List<String> likes})
-      : _likes = likes;
+      required this.chefToken,
+      required final List<String> likes,
+      required final List<String> ingredients,
+      required final List<String> instructions})
+      : _likes = likes,
+        _ingredients = ingredients,
+        _instructions = instructions;
 
   factory _$RecipeImpl.fromJson(Map<String, dynamic> json) =>
       _$$RecipeImplFromJson(json);
 
   @override
-  final String name;
+  final String title;
   @override
-  final String ingredients;
+  final String overview;
   @override
-  final String instructions;
-  @override
-  final String description;
-  @override
-  final String time;
-  @override
-  final String servings;
+  final String duration;
+// Change the type to String
   @override
   final String category;
   @override
@@ -279,6 +277,8 @@ class _$RecipeImpl implements _Recipe {
   final String chefID;
   @override
   final String id;
+  @override
+  final String chefToken;
   final List<String> _likes;
   @override
   List<String> get likes {
@@ -287,9 +287,25 @@ class _$RecipeImpl implements _Recipe {
     return EqualUnmodifiableListView(_likes);
   }
 
+  final List<String> _ingredients;
+  @override
+  List<String> get ingredients {
+    if (_ingredients is EqualUnmodifiableListView) return _ingredients;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_ingredients);
+  }
+
+  final List<String> _instructions;
+  @override
+  List<String> get instructions {
+    if (_instructions is EqualUnmodifiableListView) return _instructions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_instructions);
+  }
+
   @override
   String toString() {
-    return 'Recipe(name: $name, ingredients: $ingredients, instructions: $instructions, description: $description, time: $time, servings: $servings, category: $category, image: $image, chef: $chef, chefID: $chefID, id: $id, likes: $likes)';
+    return 'Recipe(title: $title, overview: $overview, duration: $duration, category: $category, image: $image, chef: $chef, chefID: $chefID, id: $id, chefToken: $chefToken, likes: $likes, ingredients: $ingredients, instructions: $instructions)';
   }
 
   @override
@@ -297,41 +313,42 @@ class _$RecipeImpl implements _Recipe {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RecipeImpl &&
-            (identical(other.name, name) || other.name == name) &&
-            (identical(other.ingredients, ingredients) ||
-                other.ingredients == ingredients) &&
-            (identical(other.instructions, instructions) ||
-                other.instructions == instructions) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.time, time) || other.time == time) &&
-            (identical(other.servings, servings) ||
-                other.servings == servings) &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.overview, overview) ||
+                other.overview == overview) &&
+            (identical(other.duration, duration) ||
+                other.duration == duration) &&
             (identical(other.category, category) ||
                 other.category == category) &&
             (identical(other.image, image) || other.image == image) &&
             (identical(other.chef, chef) || other.chef == chef) &&
             (identical(other.chefID, chefID) || other.chefID == chefID) &&
             (identical(other.id, id) || other.id == id) &&
-            const DeepCollectionEquality().equals(other._likes, _likes));
+            (identical(other.chefToken, chefToken) ||
+                other.chefToken == chefToken) &&
+            const DeepCollectionEquality().equals(other._likes, _likes) &&
+            const DeepCollectionEquality()
+                .equals(other._ingredients, _ingredients) &&
+            const DeepCollectionEquality()
+                .equals(other._instructions, _instructions));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      name,
-      ingredients,
-      instructions,
-      description,
-      time,
-      servings,
+      title,
+      overview,
+      duration,
       category,
       image,
       chef,
       chefID,
       id,
-      const DeepCollectionEquality().hash(_likes));
+      chefToken,
+      const DeepCollectionEquality().hash(_likes),
+      const DeepCollectionEquality().hash(_ingredients),
+      const DeepCollectionEquality().hash(_instructions));
 
   @JsonKey(ignore: true)
   @override
@@ -349,34 +366,28 @@ class _$RecipeImpl implements _Recipe {
 
 abstract class _Recipe implements Recipe {
   const factory _Recipe(
-      {required final String name,
-      required final String ingredients,
-      required final String instructions,
-      required final String description,
-      required final String time,
-      required final String servings,
+      {required final String title,
+      required final String overview,
+      required final String duration,
       required final String category,
       required final String image,
       required final String chef,
       required final String chefID,
       required final String id,
-      required final List<String> likes}) = _$RecipeImpl;
+      required final String chefToken,
+      required final List<String> likes,
+      required final List<String> ingredients,
+      required final List<String> instructions}) = _$RecipeImpl;
 
   factory _Recipe.fromJson(Map<String, dynamic> json) = _$RecipeImpl.fromJson;
 
   @override
-  String get name;
+  String get title;
   @override
-  String get ingredients;
+  String get overview;
   @override
-  String get instructions;
-  @override
-  String get description;
-  @override
-  String get time;
-  @override
-  String get servings;
-  @override
+  String get duration;
+  @override // Change the type to String
   String get category;
   @override
   String get image;
@@ -387,7 +398,13 @@ abstract class _Recipe implements Recipe {
   @override
   String get id;
   @override
+  String get chefToken;
+  @override
   List<String> get likes;
+  @override
+  List<String> get ingredients;
+  @override
+  List<String> get instructions;
   @override
   @JsonKey(ignore: true)
   _$$RecipeImplCopyWith<_$RecipeImpl> get copyWith =>

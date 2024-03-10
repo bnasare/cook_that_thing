@@ -6,34 +6,34 @@ part 'recipe.g.dart';
 @freezed
 class Recipe with _$Recipe {
   const factory Recipe({
-    required String name,
-    required String ingredients,
-    required String instructions,
-    required String description,
-    required String time,
-    required String servings,
+    required String title,
+    required String overview,
+    required String duration,
     required String category,
     required String image,
     required String chef,
     required String chefID,
     required String id,
+    required String chefToken,
     required List<String> likes,
+    required List<String> ingredients,
+    required List<String> instructions,
   }) = _Recipe;
 
   factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
 
   factory Recipe.initial() => const Recipe(
-        name: '',
-        ingredients: '',
-        instructions: '',
-        description: '',
-        time: '',
-        servings: '',
+        title: '',
+        overview: '',
+        duration: '',
         category: '',
         image: '',
         chef: '',
         chefID: '',
         id: '',
+        chefToken: '',
+        ingredients: [],
+        instructions: [],
         likes: [],
       );
 }

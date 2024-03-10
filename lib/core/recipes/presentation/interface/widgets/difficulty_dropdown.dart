@@ -4,12 +4,15 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
-class DiifficultyLevelDropDown extends StatelessWidget {
-  final void Function(String?) onChanged;
+class DifficultyLevelDropDown extends StatelessWidget {
+  final ValueNotifier<String?> difficultyLevel;
+  final Function(String?) onDifficultyLevelChanged;
 
-  final difficultyLevel = ValueNotifier<String?>(null);
-
-  DiifficultyLevelDropDown({super.key, required this.onChanged});
+  const DifficultyLevelDropDown({
+    super.key,
+    required this.difficultyLevel,
+    required this.onDifficultyLevelChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +30,7 @@ class DiifficultyLevelDropDown extends StatelessWidget {
           value: difficultyLevel.value?.isEmpty ?? true
               ? null
               : difficultyLevel.value,
-          validator: Validator.recipeDiet,
+          validator: Validator.recipeDifficulty,
           decoration: InputDecoration(
             hintStyle: const TextStyle(
               fontSize: 14,
@@ -83,7 +86,7 @@ class DiifficultyLevelDropDown extends StatelessWidget {
                     child: const Text('Advanced'))),
           ],
           onChanged: (newValue) {
-            difficultyLevel.value = newValue;
+            onDifficultyLevelChanged(newValue);
           },
         ),
       ),

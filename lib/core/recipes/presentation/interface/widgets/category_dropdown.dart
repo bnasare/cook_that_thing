@@ -5,11 +5,14 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
 class CategoryDropdown extends StatelessWidget {
-  final void Function(String?) onChanged;
+  final ValueNotifier<String?> category;
+  final Function(String?) onCategoryChanged;
 
-  final category = ValueNotifier<String?>(null);
-
-  CategoryDropdown({super.key, required this.onChanged});
+  const CategoryDropdown({
+    super.key,
+    required this.category,
+    required this.onCategoryChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +95,7 @@ class CategoryDropdown extends StatelessWidget {
                     offset: const Offset(-15, 0), child: const Text('Snacks'))),
           ],
           onChanged: (newValue) {
-            category.value = newValue;
+            onCategoryChanged(newValue);
           },
         ),
       ),
