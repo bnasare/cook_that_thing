@@ -111,8 +111,7 @@ class _OnboardingState extends State<Onboarding> {
             child: ElevatedButton(
               onPressed: () async {
                 widget.completeOnboardingChecks();
-                NavigationHelper.navigateToReplacement(
-                    context, const LoginPage());
+                NavigationHelper.navigateToReplacement(context, LoginPage());
               },
               child: const Text('Log In',
                   style: TextStyle(fontWeight: FontWeight.w600)),
@@ -131,8 +130,7 @@ class _OnboardingState extends State<Onboarding> {
               ),
               onPressed: () {
                 widget.completeOnboardingChecks();
-                NavigationHelper.navigateToReplacement(
-                    context, const SignUpPage());
+                NavigationHelper.navigateToReplacement(context, SignUpPage());
               },
               child: const Text('Register',
                   style: TextStyle(fontWeight: FontWeight.w600)),

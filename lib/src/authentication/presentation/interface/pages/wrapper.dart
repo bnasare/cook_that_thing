@@ -21,10 +21,17 @@ class AuthWrapper extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const NavBar();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const NavBar()),
+              (Route<dynamic> route) => false,
+            );
+          });
+          return const SizedBox.shrink();
         }
 
-        return const LoginPage();
+        return LoginPage();
       },
     );
   }

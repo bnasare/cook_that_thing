@@ -9,10 +9,11 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/src/authentication/presentation/interface/pages/login.dart';
 
 import '../../../../../shared/widgets/loading_manager.dart';
+import '../bloc/auth_mixin.dart';
 
-class SignUpPage extends StatefulWidget {
+class SignUpPage extends StatefulWidget with AuthMixin {
   static const routeName = '/SignUpPage';
-  const SignUpPage({super.key});
+  SignUpPage({super.key});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -36,7 +37,7 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   bool isLoading = false;
-  void _submitFormOnLogin() async {
+  void _submitFormOnSignUp() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     setState(() {
@@ -48,9 +49,17 @@ class _SignUpPageState extends State<SignUpPage> {
         isLoading = true;
       });
     }
-    setState(() {
-      isLoading = false;
-    });
+    await widget.signUpUser(
+      context: context,
+      email: emailTextController.text,
+      password: passwordTextController.text,
+      name: fullNameTextController.text,
+    );
+    if (mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   List svgs = [
@@ -121,21 +130,25 @@ class _SignUpPageState extends State<SignUpPage> {
                           keyboardType: TextInputType.name,
                           validator: Validator.name,
                           style: const TextStyle(color: ExtraColors.white),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                               hintText: 'Full name',
-                              hintStyle: TextStyle(color: ExtraColors.white),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
+                              hintStyle:
+                                  const TextStyle(color: ExtraColors.white),
+                              enabledBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
+                              errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error)),
                               focusedErrorBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              )),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .error))),
                         ),
                         const SizedBox(
                           height: 12,
@@ -148,21 +161,23 @@ class _SignUpPageState extends State<SignUpPage> {
                           keyboardType: TextInputType.emailAddress,
                           validator: Validator.email,
                           style: const TextStyle(color: ExtraColors.white),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                               hintText: 'Email',
-                              hintStyle: TextStyle(color: ExtraColors.white),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
-                              focusedErrorBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              )),
+                              hintStyle:
+                                  const TextStyle(color: ExtraColors.white),
+                              enabledBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
+                              errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error)),
+                              focusedErrorBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white))),
                         ),
                         const SizedBox(
                           height: 12,
@@ -171,7 +186,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         TextFormField(
                           textInputAction: TextInputAction.done,
                           onEditingComplete: () {
-                            _submitFormOnLogin();
+                            _submitFormOnSignUp();
                           },
                           controller: passwordTextController,
                           focusNode: _passFocusNode,
@@ -199,17 +214,20 @@ class _SignUpPageState extends State<SignUpPage> {
                               contentPadding:
                                   const EdgeInsets.only(top: 10, left: 10),
                               enabledBorder: const UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
                               focusedBorder: const UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
-                              focusedErrorBorder: const UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              )),
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
+                              errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error)),
+                              focusedErrorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .error))),
                         ),
                       ],
                     )),
@@ -218,7 +236,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    _submitFormOnLogin();
+                    _submitFormOnSignUp();
                   },
                   child: const Text('Sign Up',
                       style: TextStyle(fontWeight: FontWeight.w600)),
@@ -239,8 +257,7 @@ class _SignUpPageState extends State<SignUpPage> {
                             fontWeight: FontWeight.w500),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            NavigationHelper.navigateTo(
-                                context, const LoginPage());
+                            NavigationHelper.navigateTo(context, LoginPage());
                           },
                       ),
                     ],

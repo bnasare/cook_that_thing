@@ -9,10 +9,11 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/src/authentication/presentation/interface/pages/sign_up.dart';
 
 import '../../../../../shared/widgets/loading_manager.dart';
+import '../bloc/auth_mixin.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatefulWidget with AuthMixin {
   static const routeName = '/LoginPage';
-  const LoginPage({super.key});
+  LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -43,6 +44,11 @@ class _LoginPageState extends State<LoginPage> {
     if (isValid) {
       _formKey.currentState!.save();
     }
+    await widget.loginUser(
+      context: context,
+      email: emailTextController.text,
+      password: passwordTextController.text,
+    );
     setState(() {
       isLoading = false;
     });
@@ -118,21 +124,25 @@ class _LoginPageState extends State<LoginPage> {
                           keyboardType: TextInputType.emailAddress,
                           validator: Validator.email,
                           style: const TextStyle(color: ExtraColors.white),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                               hintText: 'Email',
-                              hintStyle: TextStyle(color: ExtraColors.white),
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
-                              focusedBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
+                              hintStyle:
+                                  const TextStyle(color: ExtraColors.white),
+                              enabledBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
+                              focusedBorder: const UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
+                              errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error)),
                               focusedErrorBorder: UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              )),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .error))),
                         ),
                         const SizedBox(
                           height: 12,
@@ -168,17 +178,20 @@ class _LoginPageState extends State<LoginPage> {
                               contentPadding:
                                   const EdgeInsets.only(top: 10, left: 10),
                               enabledBorder: const UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
                               focusedBorder: const UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              ),
-                              focusedErrorBorder: const UnderlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: ExtraColors.white),
-                              )),
+                                  borderSide:
+                                      BorderSide(color: ExtraColors.white)),
+                              errorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color:
+                                          Theme.of(context).colorScheme.error)),
+                              focusedErrorBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .error))),
                         ),
                       ],
                     )),
@@ -227,9 +240,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    _submitFormOnLogin();
+                    widget.googleSignIn(context: context);
                   },
-                  child: const Text('Log In With Google',
+                  child: const Text('Google Sign In',
                       style: TextStyle(fontWeight: FontWeight.w600)),
                 ),
                 const SizedBox(
@@ -248,8 +261,7 @@ class _LoginPageState extends State<LoginPage> {
                             fontWeight: FontWeight.w500),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            NavigationHelper.navigateTo(
-                                context, const SignUpPage());
+                            NavigationHelper.navigateTo(context, SignUpPage());
                           },
                       ),
                     ],
