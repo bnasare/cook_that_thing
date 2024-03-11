@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/pages/recipe_details.dart';
+import 'package:recipe_hub/shared/utils/navigation.dart';
+import 'package:recipe_hub/shared/widgets/clickable.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../widgets/recipe_grid_widget.dart';
@@ -41,7 +44,14 @@ class AllRecipesPage extends HookWidget {
             child: ListView(
               padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
               shrinkWrap: true,
-              children: const [RecipeGridWidget()],
+              children: [
+                Clickable(
+                    onClick: () {
+                      NavigationHelper.navigateTo(
+                          context, const RecipeDetailsPage(recipeID: ''));
+                    },
+                    child: const RecipeGridWidget())
+              ],
             ),
           ),
         ],

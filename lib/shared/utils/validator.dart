@@ -96,4 +96,18 @@ class Validator {
 
     return null;
   }
+
+  static String? validateImageUrl(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Image URL cannot be empty';
+    }
+    return null;
+  }
+
+  static String? validateReview(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Review cannot be empty';
+    }
+    return null;
+  }
 }

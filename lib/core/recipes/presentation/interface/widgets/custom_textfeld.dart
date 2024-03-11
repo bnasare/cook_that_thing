@@ -32,7 +32,6 @@ class CustomTextFormField extends StatelessWidget {
           controller: controller,
           validator: validator,
           textInputAction: textInputAction,
-          readOnly: enabled ?? false,
           style: const TextStyle(
               fontSize: 14,
               color: ExtraColors.grey,

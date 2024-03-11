@@ -5,31 +5,53 @@ class ReviewTextField extends StatelessWidget {
   const ReviewTextField({
     super.key,
     required this.controller,
-    required this.hintText,
-    required this.contentPadding,
-    required this.maxLines,
+    required this.validator,
   });
 
   final TextEditingController controller;
-  final String hintText;
-  final EdgeInsetsGeometry contentPadding;
-  final int maxLines;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
+      validator: validator,
       controller: controller,
+      textInputAction: TextInputAction.done,
+      style: const TextStyle(
+          fontSize: 14, color: ExtraColors.grey, fontWeight: FontWeight.w500),
       textAlignVertical: TextAlignVertical.top,
-      maxLines: maxLines,
+      maxLines: 12,
       decoration: InputDecoration(
-        contentPadding: contentPadding,
-        filled: true,
-        fillColor: ExtraColors.lightGrey,
-        hintText: hintText,
-        hintStyle: const TextStyle(color: ExtraColors.grey, fontSize: 15),
-        border: OutlineInputBorder(
-            borderSide: BorderSide.none,
-            borderRadius: BorderRadius.circular(10)),
+        labelText: 'Review',
+        labelStyle: const TextStyle(fontSize: 22, color: ExtraColors.black),
+        alignLabelWithHint: true,
+        contentPadding:
+            const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 10),
+        hintText: 'Describe your experience',
+        hintStyle: const TextStyle(
+            fontSize: 14,
+            color: ExtraColors.darkGrey,
+            fontWeight: FontWeight.w500),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: ExtraColors.darkGrey.withOpacity(0.5),
+          ),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(
+            color: ExtraColors.darkGrey,
+          ),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(
+            color: Theme.of(context).colorScheme.error,
+          ),
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        filled: false,
       ),
     );
   }

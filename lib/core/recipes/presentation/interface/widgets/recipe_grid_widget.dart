@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/review_button.dart';
+import 'package:recipe_hub/shared/widgets/clickable.dart';
 
+import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../pages/recipe_details.dart';
 import 'recipe_info_item.dart';
 
 class RecipeGridWidget extends StatelessWidget {
@@ -13,20 +16,28 @@ class RecipeGridWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: GridView.builder(
-        physics: const NeverScrollableScrollPhysics(),
-        padding: const EdgeInsets.only(top: 20, bottom: 20),
-        shrinkWrap: true,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          childAspectRatio: 0.9,
-          mainAxisSpacing: 20,
-          crossAxisSpacing: 20,
-          crossAxisCount: 2,
-        ),
-        itemBuilder: (context, index) {
-          // Recipe recipe = recipes[index];
-          return Container(
+    return GridView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.only(top: 20, bottom: 20),
+      shrinkWrap: true,
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: 0.9,
+        mainAxisSpacing: 20,
+        crossAxisSpacing: 20,
+        crossAxisCount: 2,
+      ),
+      itemBuilder: (context, index) {
+        // Recipe recipe = recipes[index];
+        return Clickable(
+          onClick: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RecipeDetailsPage(recipeID: ''),
+              ),
+            );
+          },
+          child: Container(
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.0),
@@ -86,28 +97,36 @@ class RecipeGridWidget extends StatelessWidget {
                       style: TextStyle(height: 0, fontSize: 15)),
                 ),
                 const SizedBox(height: 5),
-                const Row(
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RecipeInfoItem(
-                      icon: IconlyLight.time_circle,
-                      text: '2 hrs',
+                    Material(
+                      borderRadius: BorderRadius.circular(5),
+                      color: ExtraColors.grey,
+                      child: const RecipeInfoItem(
+                        icon: Icons.av_timer_outlined,
+                        text: '2 hrs',
+                      ),
                     ),
-                    SizedBox(width: 5),
-                    RecipeInfoItem(
-                      icon: IconlyLight.heart,
-                      text: '3',
+                    const SizedBox(width: 5),
+                    Material(
+                      borderRadius: BorderRadius.circular(5),
+                      color: ExtraColors.grey,
+                      child: const RecipeInfoItem(
+                        icon: IconlyLight.heart,
+                        text: '3',
+                      ),
                     ),
-                    SizedBox(width: 5),
-                    ReviewButton()
+                    const SizedBox(width: 5),
+                    const ReviewButton()
                   ],
                 )
               ],
             ),
-          );
-        },
-        itemCount: 6,
-      ),
+          ),
+        );
+      },
+      itemCount: 6,
     );
   }
 }
