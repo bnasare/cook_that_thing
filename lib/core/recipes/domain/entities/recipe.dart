@@ -32,8 +32,8 @@ class Recipe with _$Recipe {
         chefID: '',
         id: '',
         chefToken: '',
+        likes: [],
         ingredients: [],
         instructions: [],
-        likes: [],
       );
 }

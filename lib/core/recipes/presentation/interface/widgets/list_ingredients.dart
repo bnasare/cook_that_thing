@@ -54,13 +54,16 @@ class ListIngredients extends HookWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '$ingredientNumber. $ingredient',
-                    style: const TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: ExtraColors.grey,
+                  Flexible(
+                    child: Text(
+                      '$ingredientNumber. $ingredient',
+                      style: const TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: ExtraColors.grey,
+                      ),
                     ),
                   ),
+                  const SizedBox(width: 10),
                   Clickable(
                     onClick: () {
                       final newIngredients =

@@ -8,6 +8,7 @@ import 'package:recipe_hub/src/home/presentation/interface/pages/home.dart';
 import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
 
 import '../../../../../core/recipes/presentation/interface/pages/all_recipes.dart';
+import '../../../../../shared/data/firebase_constants.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({
@@ -23,9 +24,9 @@ class _NavBarState extends State<NavBar> {
     return [
       const HomePage(),
       const AllRecipesPage(),
-      const CreateRecipePage(),
-      const ProfilePage(
-        chefID: '',
+      CreateRecipePage(),
+      ProfilePage(
+        chefID: FirebaseConsts.currentUser!.uid,
       ),
     ];
   }

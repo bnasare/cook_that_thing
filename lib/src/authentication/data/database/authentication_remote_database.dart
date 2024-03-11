@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:recipe_hub/shared/data/collection_ids.dart';
 
 import '../../../../core/chef/domain/entities/chef.dart';
 
@@ -32,7 +33,10 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
     );
 
     final data = chef.toJson();
-    await _firestore.collection('chefs').doc(chef.id).set(data);
+    await _firestore
+        .collection(DatabaseCollections.chefs)
+        .doc(chef.id)
+        .set(data);
 
     User? user = userCredential.user;
     if (user != null) {
@@ -89,7 +93,10 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
       );
 
       final data = chef.toJson();
-      await _firestore.collection('chefs').doc(chef.id).set(data);
+      await _firestore
+          .collection(DatabaseCollections.chefs)
+          .doc(chef.id)
+          .set(data);
 
       return chef;
     } else {

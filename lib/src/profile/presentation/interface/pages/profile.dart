@@ -2,11 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:iconly/iconly.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_grid_widget.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_info_item.dart';
+import 'package:recipe_hub/shared/data/firebase_constants.dart';
 import 'package:recipe_hub/shared/data/svg_assets.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
@@ -17,6 +16,9 @@ class ProfilePage extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUserID = FirebaseConsts.currentUser!.uid;
+    final isCurrentUser = chefID == currentUserID;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -26,54 +28,15 @@ class ProfilePage extends HookWidget {
                 Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    const SizedBox(
+                    Container(
                       height: 300,
                       width: double.infinity,
+                      color: ExtraColors.lightGrey,
                     ),
-                    Positioned(child: SvgPicture.asset(SvgAssets.logo)),
                     Positioned(
-                      top: 30,
-                      left: 0,
-                      right: 0,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 20),
-                            child: IconButton.filledTonal(
-                              icon: const Icon(CupertinoIcons.backward),
-                              onPressed: () =>
-                                  NavigationHelper.navigateBack(context),
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    ExtraColors.white),
-                                minimumSize: MaterialStateProperty.all(
-                                    const Size(20, 20)),
-                                iconSize: MaterialStateProperty.all(20),
-                                foregroundColor: MaterialStateProperty.all(
-                                    ExtraColors.black),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 20),
-                            child: IconButton.filledTonal(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    ExtraColors.white),
-                                minimumSize: MaterialStateProperty.all(
-                                    const Size(20, 20)),
-                                iconSize: MaterialStateProperty.all(20),
-                                foregroundColor: MaterialStateProperty.all(
-                                    ExtraColors.black),
-                              ),
-                              icon: const Icon(IconlyLight.logout),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+                        child: Center(
+                            child:
+                                SvgPicture.asset(SvgAssets.book, height: 300))),
                   ],
                 ),
                 const SizedBox(height: 85),
@@ -90,7 +53,7 @@ class ProfilePage extends HookWidget {
               ],
             ),
             Positioned(
-              top: MediaQuery.of(context).size.height * 0.323,
+              top: MediaQuery.of(context).size.height * 0.26,
               right: 0,
               left: 0,
               height: 130,
@@ -110,9 +73,11 @@ class ProfilePage extends HookWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const Text(
-                      'King Cecil',
-                      style: TextStyle(
+                    Text(
+                      isCurrentUser
+                          ? FirebaseConsts.currentUser!.displayName!
+                          : 'King Cecil',
+                      style: const TextStyle(
                           fontSize: 23, fontWeight: FontWeight.w600, height: 0),
                     ),
                     Divider(color: ExtraColors.darkGrey.withOpacity(0.3)),

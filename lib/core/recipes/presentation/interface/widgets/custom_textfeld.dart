@@ -72,15 +72,6 @@ class CustomTextFormField extends StatelessWidget {
             filled: false,
           ),
         ),
-        if (onFieldSubmitted != null && controller.text.isNotEmpty)
-          Text(
-            controller.text,
-            style: const TextStyle(
-              color: ExtraColors.grey,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
       ],
     );
   }

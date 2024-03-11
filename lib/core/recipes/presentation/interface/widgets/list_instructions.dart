@@ -31,7 +31,7 @@ class ListInstructions extends HookWidget {
                 submittedInstructions.value);
           },
           textInputAction: TextInputAction.done,
-          maxLines: null,
+          maxLines: 2,
           onFieldSubmitted: (String value) {
             final newInstructions =
                 List<String>.from(submittedInstructions.value)..add(value);
@@ -56,13 +56,16 @@ class ListInstructions extends HookWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    '$ingredientNumber. $ingredient',
-                    style: const TextStyle(
-                      fontStyle: FontStyle.italic,
-                      color: ExtraColors.grey,
+                  Flexible(
+                    child: Text(
+                      '$ingredientNumber. $ingredient',
+                      style: const TextStyle(
+                        fontStyle: FontStyle.italic,
+                        color: ExtraColors.grey,
+                      ),
                     ),
                   ),
+                  const SizedBox(width: 10),
                   Clickable(
                     onClick: () {
                       final newInstructions =
