@@ -2,7 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/src/home/presentation/interface/pages/home.dart';
+import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
 
 import 'login.dart';
 
@@ -21,7 +21,7 @@ class AuthWrapper extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          return const HomePage();
+          return const NavBar();
         }
 
         return const LoginPage();
