@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+import 'dart:developer';
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -10,10 +10,12 @@ import 'package:recipe_hub/shared/presentation/theme/theme.dart';
 import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
 
 import 'injection_container.dart' as di;
+import 'injection_container.dart';
+import 'shared/platform/push_notification.dart';
 
 Future<void> backgroundMessage(RemoteMessage message) async {
   if (message.notification != null) {
-    debugPrint('Message handled in the background!');
+    log('Message handled in the background!');
   }
 }
 
@@ -22,6 +24,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   /// Initialize Splash Screen
+  ///
+  /// e1tInqbVQiCYJp-z5CRMd9:APA91bFCBHSCuZiIsu1kClEa0P4UPiJW5P6GFgF0rF6TUT5zXe6aC53zzQXexeQSzG-vo39NpPONrS7o22lVO1HboE_75Y4fLynZoxJUeWhfUWOwOtUUR9t8jA3sBTcnvdd0zHCt4k9m
 
   /// Initialize Firebase
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -30,19 +34,17 @@ void main() async {
   await di.init();
 
   // Initialize Push Notification
-  // await sl<PushNotification>().initializeNotification();
+  await sl<PushNotification>().initializeNotification();
 //
   // Register background handler
-  // FirebaseMessaging.onBackgroundMessage(backgroundMessage);
+  FirebaseMessaging.onBackgroundMessage(backgroundMessage);
+
 //
   // Get any messages which caused the application to open from terminated state
-  // final remoteMessage = FirebaseMessaging.instance.getInitialMessage();
+  final remoteMessage = FirebaseMessaging.instance.getInitialMessage();
 //
   // Get any messages which caused the application to open from background state
-  // FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
-
-  /// Record any errors that occur in the app
-  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
 
   runApp(
     const ProviderScope(

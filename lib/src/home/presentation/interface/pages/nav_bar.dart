@@ -24,7 +24,7 @@ class _NavBarState extends State<NavBar> {
       const HomePage(),
       const AllRecipesPage(),
       const CreateRecipePage(),
-      const ChefProfilePage(
+      const ProfilePage(
         chefID: '',
       ),
     ];
