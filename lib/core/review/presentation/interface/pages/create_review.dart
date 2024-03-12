@@ -6,11 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe_hub/core/review/presentation/bloc/review_mixin.dart';
 import 'package:recipe_hub/core/review/presentation/interface/widgets/review_textfield.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
+import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/loading_manager.dart';
 
 import '../../../../../shared/data/firebase_constants.dart';
-import 'view_reviews.dart';
 
 class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -40,11 +40,7 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
         await Future.delayed(const Duration(seconds: 2));
         isLoading.value = false;
         describeExperienceController.clear();
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ViewReviewsPage(recipeID: recipeID)),
-        );
+        NavigationHelper.navigateBack(context);
       }
     }
 

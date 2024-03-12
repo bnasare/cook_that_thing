@@ -15,9 +15,11 @@ import 'package:recipe_hub/core/recipes/presentation/interface/widgets/category_
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/diet_dropdown.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/difficulty_dropdown.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
+import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/loading_manager.dart';
 import 'package:recipe_hub/shared/widgets/snackbar.dart';
+import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../shared/widgets/clickable.dart';
@@ -107,6 +109,7 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
           instructions: submittedInstructions.value,
         );
         isLoading.value = false;
+        NavigationHelper.navigateTo(context, const NavBar());
         titleController.clear();
         overviewController.clear();
         ingredientsController.clear();

@@ -9,7 +9,7 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/src/authentication/presentation/interface/pages/login.dart';
 
 import '../../../../../shared/widgets/loading_manager.dart';
-import '../bloc/auth_mixin.dart';
+import '../../bloc/auth_mixin.dart';
 
 class SignUpPage extends StatefulWidget with AuthMixin {
   static const routeName = '/SignUpPage';

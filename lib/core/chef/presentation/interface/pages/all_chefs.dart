@@ -2,47 +2,41 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:recipe_hub/core/chef/domain/entities/chef.dart';
+import 'package:recipe_hub/core/chef/presentation/interface/widgets/chef_widget.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/src/home/presentation/interface/widgets/recipe_search_box.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/error_view.dart';
-import '../../../domain/entities/recipe.dart';
-import '../widgets/recipe_grid_widget.dart';
 
-class AllRecipesPage extends HookWidget with RecipeMixin {
-  AllRecipesPage({super.key});
+class AllChefsPage extends HookWidget with RecipeMixin {
+  AllChefsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
-    final totalRecipes = useState<int?>(null);
+    final totalChefs = useState<int?>(null);
     final searchController = useTextEditingController();
-    final searchResults = useState<List<Recipe>?>(null);
+    final searchResults = useState<List<Chef>?>(null);
 
     void handleSearch(String query) async {
       if (query.isEmpty) {
         searchResults.value = null;
       } else {
-        List<Recipe> allRecipes = await fetchAllRecipes(context).first;
-        List<Recipe> filteredRecipes = allRecipes
-            .where((recipe) =>
-                recipe.title.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.category.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.diet.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.difficultyLevel
-                    .toLowerCase()
-                    .contains(query.toLowerCase()) ||
-                recipe.chef.toLowerCase().contains(query.toLowerCase()))
+        List<Chef> allChefs = await listChefStream().first;
+        List<Chef> filteredChefs = allChefs
+            .where(
+                (chef) => chef.name.toLowerCase().contains(query.toLowerCase()))
             .toList();
-        searchResults.value = filteredRecipes;
+        searchResults.value = filteredChefs;
       }
     }
 
     Future<void> fetchTotalRecipes() async {
       try {
-        final List<Recipe> allRecipes = await fetchAllRecipes(context).first;
-        totalRecipes.value = allRecipes.length;
+        final List<Chef> allChefs = await listChefStream().first;
+        totalChefs.value = allChefs.length;
       } catch (error) {
         debugPrint(error.toString());
       }
@@ -55,15 +49,15 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: Text(localizations.allRecipes)),
+      appBar: AppBar(title: const Text('All Chefs')),
       body: Column(
         children: [
           ListTile(
             contentPadding: const EdgeInsets.only(left: 20),
             title: Text(
               searchController.text.isNotEmpty
-                  ? '${searchResults.value?.length ?? 0} ${searchResults.value != null && searchResults.value!.length == 1 ? localizations.recipeFoundSingular : localizations.recipeFoundPlural}'
-                  : '${totalRecipes.value != null ? '${totalRecipes.value}' : '0'} ${totalRecipes.value == 1 ? localizations.recipeInTotalSingular : localizations.recipeInTotalPlural} ',
+                  ? '${searchResults.value?.length ?? 0} ${searchResults.value != null && searchResults.value!.length == 1 ? 'chef found' : 'chefs found'}'
+                  : '${totalChefs.value != null ? '${totalChefs.value}' : '0'} ${totalChefs.value == 1 ? 'chef in total' : 'chefs in total'} ',
               style: const TextStyle(
                 fontWeight: FontWeight.w600,
                 color: ExtraColors.grey,
@@ -71,7 +65,7 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
               ),
             ),
             subtitle: const Text(
-              'Enjoy your favorite recipes',
+              'Enjoy your favorite chefs',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
@@ -88,9 +82,8 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
                 CustomSearchBox(
                   handleSearch: handleSearch,
                   controller: searchController,
+                  hintText: 'Search for a chef',
                   label: 'Search',
-                  hintText:
-                      'Search recipes by title, category, difficulty or chef',
                 ),
                 searchResults.value != null && searchController.text.isNotEmpty
                     ? searchResults.value!.isEmpty
@@ -98,10 +91,10 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
                             padding: EdgeInsets.only(top: 50),
                             child: ErrorViewWidget(),
                           )
-                        : RecipeGridWidget(recipes: searchResults.value!)
+                        : ChefWidget(chefs: searchResults.value!)
                     : searchController.text.isEmpty
                         ? StreamBuilder(
-                            stream: fetchAllRecipes(context),
+                            stream: listChefStream(),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 return const ErrorViewWidget();
@@ -120,8 +113,7 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
                                   snapshot.data!.isEmpty) {
                                 return const ErrorViewWidget();
                               } else if (snapshot.hasData) {
-                                return RecipeGridWidget(
-                                    recipes: snapshot.data!);
+                                return ChefWidget(chefs: snapshot.data!);
                               } else {
                                 return const ErrorViewWidget();
                               }

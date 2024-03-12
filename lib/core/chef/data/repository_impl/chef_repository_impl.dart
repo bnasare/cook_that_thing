@@ -52,4 +52,23 @@ class ChefRepositoryImpl implements ChefRepository {
       return const Left(Failure('Something went wrong... Please try again'));
     }
   }
+
+  @override
+  Future<Either<Failure, List<Chef>>> list() async {
+    try {
+      await networkInfo.hasInternet();
+      final result = await remoteDatabase.list();
+      return Right(result);
+    } on FirebaseAuthException catch (error) {
+      return Left(Failure(
+          error.message ?? 'Unexpected error occurred... Please try again'));
+    } on DeviceException catch (error) {
+      return Left(Failure(error.message));
+    } on FirebaseException catch (error) {
+      return Left(Failure(
+          error.message ?? 'Unexpected error occurred... Please try again'));
+    } catch (error) {
+      return const Left(Failure('Something went wrong... Please try again'));
+    }
+  }
 }

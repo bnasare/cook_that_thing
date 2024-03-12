@@ -65,17 +65,21 @@ mixin ReviewMixin {
       BuildContext context, String recipeID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.reviews;
-    QuerySnapshot querySnapshot = await firestore
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .where('recipeID', isEqualTo: recipeID)
         .orderBy('time', descending: true)
-        .get();
-    List<Review> allReviews = [];
-    for (DocumentSnapshot snapshot in querySnapshot.docs) {
-      List<Review> reviews =
-          await getReviews(context: context, documentID: snapshot.id);
-      allReviews.addAll(reviews);
+        .snapshots();
+
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List<Review> allReviews = [];
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        List<Review> reviews =
+            await getReviews(context: context, documentID: snapshot.id);
+        allReviews.addAll(reviews);
+      }
+      yield allReviews;
     }
-    yield allReviews;
   }
 }

@@ -26,7 +26,7 @@ class ReviewCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Card(
-        color: ExtraColors.white,
+        color: Theme.of(context).colorScheme.primaryContainer,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

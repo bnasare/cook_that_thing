@@ -9,6 +9,7 @@ abstract class ChefRemoteDatabase {
   Future<Chef> retrieve(String chefId);
   Future<Chef> follow(
       String chefId, List<String> followers, List<String> token);
+  Future<List<Chef>> list();
 }
 
 class ChefRemoteDatabaseImpl implements ChefRemoteDatabase {
@@ -72,5 +73,11 @@ class ChefRemoteDatabaseImpl implements ChefRemoteDatabase {
     await chefDocRef.update(updates);
 
     return retrieve(chefId);
+  }
+
+  @override
+  Future<List<Chef>> list() {
+    return _firestore.collection(DatabaseCollections.chefs).get().then(
+        (value) => value.docs.map((doc) => Chef.fromJson(doc.data())).toList());
   }
 }

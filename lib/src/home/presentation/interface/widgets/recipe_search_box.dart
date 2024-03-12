@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:iconly/iconly.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
-class RecipeSearchBox extends HookWidget {
+class CustomSearchBox extends HookWidget {
   final void Function(String query) handleSearch;
   final TextEditingController controller;
-  final bool readOnly;
-  const RecipeSearchBox(
-      {super.key,
-      required this.handleSearch,
-      required this.controller,
-      required this.readOnly});
+  final String label;
+  final String hintText;
+  const CustomSearchBox({
+    super.key,
+    required this.handleSearch,
+    required this.controller,
+    required this.label,
+    required this.hintText,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,26 +24,49 @@ class RecipeSearchBox extends HookWidget {
           child: TextField(
             maxLines: 1,
             onChanged: handleSearch,
-            readOnly: readOnly,
             controller: controller,
             keyboardType: TextInputType.text,
+            textInputAction: TextInputAction.search,
             decoration: InputDecoration(
-              filled: true,
-              fillColor: ExtraColors.lightGrey,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide.none,
-              ),
-              prefixIcon: const Icon(
-                IconlyLight.search,
-                color: ExtraColors.darkGrey,
-                size: 18,
-              ),
-              hintText: 'Search',
+              // suffixIcon: Clickable(
+              // onClick: () => controller.clear(),
+              // child: Icon(
+              // IconlyLight.close_square,
+              // color: Theme.of(context).colorScheme.primary,
+              // size: 18,
+              // ),
+              // ),
+              labelText: label,
+              labelStyle:
+                  const TextStyle(fontSize: 22, color: ExtraColors.black),
+              alignLabelWithHint: true,
+              contentPadding: const EdgeInsets.only(
+                  left: 25, right: 25, top: 25, bottom: 10),
+              hintText: hintText,
               hintStyle: const TextStyle(
-                color: ExtraColors.darkGrey,
-                fontWeight: FontWeight.w400,
+                  fontSize: 14,
+                  color: ExtraColors.darkGrey,
+                  fontWeight: FontWeight.w500),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: ExtraColors.darkGrey.withOpacity(0.5),
+                ),
               ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: const BorderSide(
+                  color: ExtraColors.darkGrey,
+                ),
+              ),
+              errorBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide(
+                  color: Theme.of(context).colorScheme.error,
+                ),
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              filled: false,
             ),
           ),
         ),

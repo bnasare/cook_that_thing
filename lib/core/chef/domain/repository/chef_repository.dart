@@ -10,4 +10,5 @@ abstract class ChefRepository {
     List<String> followers,
     List<String> token,
   );
+  Future<Either<Failure, List<Chef>>> list();
 }

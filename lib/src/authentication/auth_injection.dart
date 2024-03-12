@@ -7,7 +7,7 @@ import 'package:recipe_hub/src/authentication/domain/usecase/sign_up.dart';
 
 import 'data/repository_impl/authentication_repository_impl.dart';
 import 'domain/usecase/login.dart';
-import 'presentation/interface/bloc/auth_bloc.dart';
+import 'presentation/bloc/auth_bloc.dart';
 
 void initAuth() {
   final sl = GetIt.instance;

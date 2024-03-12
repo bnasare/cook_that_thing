@@ -8,7 +8,7 @@ import 'package:recipe_hub/src/authentication/presentation/interface/pages/wrapp
 
 import '../../../../injection_container.dart';
 import '../../../../shared/utils/navigation.dart';
-import '../../../../src/authentication/presentation/interface/bloc/auth_bloc.dart';
+import '../../../../src/authentication/presentation/bloc/auth_bloc.dart';
 import '../../../recipes/domain/entities/recipe.dart';
 import '../../../recipes/presentation/bloc/recipe_bloc.dart';
 import 'chef_bloc.dart';
@@ -79,22 +79,22 @@ mixin ChefMixin {
       BuildContext context, String chefID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.recipes;
-    QuerySnapshot querySnapshot = await firestore
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .where('chefID', isEqualTo: chefID)
-        .get();
+        .snapshots();
 
-    List<Recipe> allRecipes = [];
-
-    for (DocumentSnapshot snapshot in querySnapshot.docs) {
-      // Instead of yielding a stream, add each recipe to the allRecipes list.
-      String documentId = snapshot.id;
-      List<Recipe> recipesForDocumentId =
-          await getRecipes(context: context, documentID: documentId).first;
-      allRecipes.addAll(recipesForDocumentId);
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List<Recipe> allRecipes = [];
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        List<Recipe> recipesForDocumentId =
+            await getRecipes(context: context, documentID: documentId).first;
+        allRecipes.addAll(recipesForDocumentId);
+      }
+      yield allRecipes;
     }
-
-    yield allRecipes;
   }
 
   Stream<int> retrieveRecipeLength(

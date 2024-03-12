@@ -8,13 +8,14 @@ import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/pages/all_recipes.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_grid_widget.dart';
 import 'package:recipe_hub/shared/data/svg_assets.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/src/category/presentation/interface/widgets/category_tab.dart';
 import 'package:recipe_hub/src/home/presentation/interface/widgets/header.dart';
 
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
+import '../../../../category/presentation/interface/pages/list_category.dart';
+import '../widgets/recipe_banner.dart';
 
 class HomePage extends HookWidget with RecipeMixin {
   HomePage({super.key});
@@ -44,48 +45,18 @@ class HomePage extends HookWidget with RecipeMixin {
             shrinkWrap: true,
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                decoration: BoxDecoration(
-                  color: ExtraColors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  boxShadow: [
-                    BoxShadow(
-                      color: ExtraColors.darkGrey.withOpacity(0.4),
-                      spreadRadius: 2,
-                      blurRadius: 5,
-                      offset: const Offset(3, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 25.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(localizations.discoverMore,
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 20)),
-                            const SizedBox(height: 10),
-                            Text(localizations.discoverSubtitle)
-                          ],
-                        ),
-                      ),
-                    ),
-                    SvgPicture.asset(SvgAssets.book, width: 130)
-                  ],
-                ),
+              RecipeBanner(
+                title: localizations.discoverMore,
+                subtitle: localizations.discoverSubtitle,
+                svgAsset: SvgAssets.book,
               ),
               Header(
                 leading: localizations.category,
+                trailing: localizations.seeMore,
+                onClick: () {
+                  NavigationHelper.navigateTo(
+                      context, const CategoryListPage());
+                },
               ),
               const CategoryTab(),
               Header(

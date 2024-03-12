@@ -3,7 +3,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:iconly/iconly.dart';
 import 'package:recipe_hub/core/review/presentation/interface/pages/create_review.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/widgets/empty_state_view.dart';
 
 import '../../../../../shared/data/image_assets.dart';
@@ -63,9 +62,22 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                   title: 'No Reviews',
                   buttonText: 'Write a Review',
                   onPressed: () {
-                    NavigationHelper.navigateToReplacement(
-                        context, CreateReviewPage(recipeID: recipeID));
-                  })
+                    Navigator.of(context, rootNavigator: true).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) {
+                          // ignore: deprecated_member_use
+                          return WillPopScope(
+                            onWillPop: () async {
+                              Navigator.pop(context);
+                              return true;
+                            },
+                            child: CreateReviewPage(recipeID: recipeID),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                )
               : Padding(
                   padding:
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
@@ -109,8 +121,21 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                                           horizontal: 10, vertical: 5)),
                             ),
                             onPressed: () {
-                              NavigationHelper.navigateToReplacement(context,
-                                  CreateReviewPage(recipeID: recipeID));
+                              Navigator.of(context, rootNavigator: true).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) {
+                                    // ignore: deprecated_member_use
+                                    return WillPopScope(
+                                      onWillPop: () async {
+                                        Navigator.pop(context);
+                                        return true;
+                                      },
+                                      child:
+                                          CreateReviewPage(recipeID: recipeID),
+                                    );
+                                  },
+                                ),
+                              );
                             },
                             icon: const Icon(IconlyLight.edit, size: 15),
                             label: const Text('Add Review',

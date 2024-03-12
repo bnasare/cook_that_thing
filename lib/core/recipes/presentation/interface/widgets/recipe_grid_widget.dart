@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/review_button.dart';
+import 'package:recipe_hub/shared/data/collection_ids.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/widgets/clickable.dart';
 import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
@@ -111,14 +113,25 @@ class RecipeGridWidget extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(width: 5),
-                    Material(
-                      borderRadius: BorderRadius.circular(5),
-                      color: ExtraColors.grey,
-                      child: RecipeInfoItem(
-                        icon: IconlyLight.heart,
-                        text: recipe.likes.length.toString(),
-                      ),
-                    ),
+                    StreamBuilder<DocumentSnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection(DatabaseCollections.recipes)
+                            .doc(recipe.id)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          DocumentSnapshot? recipeDoc = snapshot.data;
+                          List<dynamic> likes = recipeDoc?['likes'] ?? [];
+                          return Material(
+                            borderRadius: BorderRadius.circular(5),
+                            color: ExtraColors.grey,
+                            child: RecipeInfoItem(
+                              icon: IconlyLight.heart,
+                              text: likes.isNotEmpty
+                                  ? likes.length.toString()
+                                  : '0',
+                            ),
+                          );
+                        }),
                     const SizedBox(width: 5),
                     ReviewButton(recipe.id),
                   ],

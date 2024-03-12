@@ -1,5 +1,7 @@
-import 'dart:developer';
+// ignore_for_file: use_build_context_synchronously
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -13,7 +15,6 @@ import 'package:recipe_hub/shared/data/svg_assets.dart';
 import 'package:recipe_hub/src/authentication/presentation/interface/pages/login.dart';
 
 import '../../../../../core/recipes/domain/entities/recipe.dart';
-import '../../../../../core/recipes/presentation/interface/widgets/follow_button.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
@@ -27,33 +28,6 @@ class ProfilePage extends HookWidget with ChefMixin {
   Widget build(BuildContext context) {
     final currentUserID = FirebaseConsts.currentUser!.uid;
     final isCurrentUser = chefID == currentUserID;
-    final followersCount = useState<int>(0);
-    final recipeCount = useState<int>(0);
-
-    useEffect(() {
-      final stream = retrieveFollowersCount(
-          context: context, chefId: isCurrentUser ? currentUserID : chefID);
-      final subscription = stream.listen((count) {
-        followersCount.value = count;
-      });
-      return subscription.cancel;
-    }, [chefID, isCurrentUser]);
-
-    Future<void> fetchRecipeLength() async {
-      try {
-        final Stream<int> countStream = retrieveRecipeLength(
-            context, isCurrentUser ? currentUserID : chefID);
-
-        recipeCount.value = await countStream.first;
-      } catch (error) {
-        log('Error fetching recipe count: $error');
-      }
-    }
-
-    useEffect(() {
-      fetchRecipeLength();
-      return null;
-    }, [chefID, isCurrentUser]);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -190,10 +164,76 @@ class ProfilePage extends HookWidget with ChefMixin {
                                       icon: const Icon(IconlyLight.logout,
                                           size: 18),
                                       label: const Text('Logout'))
-                                  : Builder(builder: (context) {
-                                      return FollowButton(null, null, 15,
-                                          chefID: chefID);
-                                    }),
+                                  : StreamBuilder<DocumentSnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('chefs')
+                                          .doc(chefID)
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                                ConnectionState.active &&
+                                            snapshot.hasData) {
+                                          DocumentSnapshot chefDoc =
+                                              snapshot.data!;
+                                          List<dynamic> followers =
+                                              chefDoc['followers'] ?? [];
+                                          bool isCurrentlyFollowing =
+                                              followers.contains(FirebaseConsts
+                                                  .currentUser!.uid);
+                                          return InkWell(
+                                            onTap: () async {
+                                              if (isCurrentlyFollowing) {
+                                                await follow(
+                                                    context: context,
+                                                    chefId: chefID,
+                                                    followers: [],
+                                                    token: []);
+                                              } else {
+                                                String? token =
+                                                    await FirebaseMessaging
+                                                        .instance
+                                                        .getToken();
+                                                await follow(
+                                                    context: context,
+                                                    chefId: chefID,
+                                                    followers: [
+                                                      FirebaseConsts
+                                                          .currentUser!.uid
+                                                    ],
+                                                    token: [
+                                                      token ?? ''
+                                                    ]);
+                                              }
+                                            },
+                                            child: Container(
+                                              height: 35,
+                                              width: 75,
+                                              decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary,
+                                                  border: Border.all(
+                                                      color:
+                                                          ExtraColors.darkGrey),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8)),
+                                              child: Center(
+                                                child: Text(
+                                                  isCurrentlyFollowing
+                                                      ? 'Unfollow'
+                                                      : 'Follow',
+                                                  style: const TextStyle(
+                                                      fontSize: 15,
+                                                      color: ExtraColors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        } else {
+                                          return const SizedBox.shrink();
+                                        }
+                                      },
+                                    )
                             ],
                           );
                         }),
@@ -203,12 +243,20 @@ class ProfilePage extends HookWidget with ChefMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          RecipeInfoItem(
-                            icon: CupertinoIcons.person_2_alt,
-                            text: followersCount.value.toString(),
-                            iconColor: ExtraColors.grey,
-                            textColor: ExtraColors.black,
-                          ),
+                          StreamBuilder(
+                              stream: retrieveFollowersCount(
+                                  context: context,
+                                  chefId:
+                                      isCurrentUser ? currentUserID : chefID),
+                              builder: (context, snapshot) {
+                                final followersCount = snapshot.data ?? 0;
+                                return RecipeInfoItem(
+                                  icon: CupertinoIcons.person_2_alt,
+                                  text: '$followersCount',
+                                  iconColor: ExtraColors.grey,
+                                  textColor: ExtraColors.black,
+                                );
+                              }),
                           StreamBuilder<int>(
                             stream: retrieveRecipeLength(context,
                                 isCurrentUser ? currentUserID : chefID),

@@ -2,11 +2,11 @@ import 'package:dartz/dartz.dart';
 import 'package:recipe_hub/shared/error/failure.dart';
 import 'package:recipe_hub/src/authentication/domain/usecase/google_sign_in.dart';
 
-import '../../../../../core/chef/domain/entities/chef.dart';
-import '../../../../../shared/usecase/usecase.dart';
-import '../../../domain/usecase/login.dart';
-import '../../../domain/usecase/logout.dart';
-import '../../../domain/usecase/sign_up.dart';
+import '../../../../core/chef/domain/entities/chef.dart';
+import '../../../../shared/usecase/usecase.dart';
+import '../../domain/usecase/login.dart';
+import '../../domain/usecase/logout.dart';
+import '../../domain/usecase/sign_up.dart';
 
 class AuthBloc {
   final SignUp signUp;

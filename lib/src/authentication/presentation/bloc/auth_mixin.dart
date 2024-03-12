@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
 
-import '../../../../../injection_container.dart';
-import '../../../../../shared/utils/navigation.dart';
-import '../../../../../shared/widgets/snackbar.dart';
-import '../pages/login.dart';
+import '../../../../injection_container.dart';
+import '../../../../shared/utils/navigation.dart';
+import '../../../../shared/widgets/snackbar.dart';
+import '../interface/pages/login.dart';
 import 'auth_bloc.dart';
 
 mixin AuthMixin {
