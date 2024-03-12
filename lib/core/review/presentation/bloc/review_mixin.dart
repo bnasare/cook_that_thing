@@ -7,6 +7,7 @@ import 'package:recipe_hub/core/review/domain/entities/review.dart';
 import 'package:recipe_hub/shared/data/collection_ids.dart';
 
 import '../../../../injection_container.dart';
+import '../../../../shared/data/firebase_constants.dart';
 import '../../../../shared/platform/push_notification.dart';
 import 'review_bloc.dart';
 
@@ -39,7 +40,7 @@ mixin ReviewMixin {
 
           await pushNotification.sendPushNotifs(
             title: 'New Review!',
-            body: 'Your recipe received a new review on the Recipe Hub.',
+            body: '${FirebaseConsts.currentUser!.displayName} left a review!',
             token: chefToken,
           );
         }

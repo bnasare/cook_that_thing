@@ -63,7 +63,8 @@ mixin RecipeMixin {
               for (var singleToken in token) {
                 await pushNotification.sendPushNotifs(
                   title: 'New Recipe Created',
-                  body: 'A new recipe has been added to the Recipe Hub.',
+                  body:
+                      '${FirebaseConsts.currentUser!.displayName} created a new recipe!',
                   token: singleToken,
                 );
               }
@@ -97,23 +98,24 @@ mixin RecipeMixin {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.recipes;
 
-    QuerySnapshot querySnapshot = await firestore
+    Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .orderBy(FieldPath.documentId, descending: true)
-        .get();
+        .snapshots();
 
-    List<Recipe> allRecipes = [];
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List<Recipe> allRecipes = [];
 
-    for (DocumentSnapshot snapshot in querySnapshot.docs) {
-      String documentId = snapshot.id;
-
-      await for (List<Recipe> recipes
-          in getRecipes(context: context, documentID: documentId)) {
-        allRecipes.addAll(recipes);
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        await for (List<Recipe> recipes
+            in getRecipes(context: context, documentID: documentId)) {
+          allRecipes.addAll(recipes);
+        }
       }
-    }
 
-    yield allRecipes;
+      yield allRecipes;
+    }
   }
 
   Stream<List<Recipe>> fetchAllRecipesByCategory(

@@ -190,8 +190,10 @@ class ProfilePage extends HookWidget with ChefMixin {
                                       icon: const Icon(IconlyLight.logout,
                                           size: 18),
                                       label: const Text('Logout'))
-                                  : FollowButton(null, null, 15,
-                                      chefID: chefID),
+                                  : Builder(builder: (context) {
+                                      return FollowButton(null, null, 15,
+                                          chefID: chefID);
+                                    }),
                             ],
                           );
                         }),

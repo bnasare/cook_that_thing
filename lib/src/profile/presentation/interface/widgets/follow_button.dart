@@ -79,7 +79,8 @@ class FollowButton extends HookWidget with RecipeMixin {
           PushNotificationImpl(FlutterLocalNotificationsPlugin());
       await pushNotification.sendPushNotifs(
         title: 'New Follower!',
-        body: 'You have a new follower on Recipe Hub.',
+        body:
+            '${FirebaseConsts.currentUser!.displayName} is now following you!',
         token: chefToken,
       );
     }

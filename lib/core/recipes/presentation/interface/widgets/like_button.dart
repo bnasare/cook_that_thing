@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iconly/iconly.dart';
 import 'package:recipe_hub/shared/data/collection_ids.dart';
+import 'package:recipe_hub/shared/data/firebase_constants.dart';
 
 import '../../../../../shared/platform/push_notification.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
@@ -34,32 +35,33 @@ class LikeButton extends HookWidget with RecipeMixin {
                 // Toggle the like status
                 List<String> newLikers = List<String>.from(likes);
                 bool isLikedBeforeClick = isLiked;
-                if (isLikedBeforeClick) {
-                  // Remove the user's ID from the list of likers
-                  newLikers.remove(FirebaseAuth.instance.currentUser!.uid);
-                } else {
+
+                if (!isLikedBeforeClick) {
                   // Add the user's ID to the list of likers
-                  newLikers.add(FirebaseAuth.instance.currentUser!.uid);
-                }
+                  newLikers.add(FirebaseConsts.currentUser!.uid);
 
-                // Update the likes in the database
-                await like(
-                    recipeId: recipeID, likers: newLikers, context: context);
+                  // Update the likes in the database
+                  await like(
+                      recipeId: recipeID, likers: newLikers, context: context);
 
-                // Always retrieve the chefToken from the recipe document
-                String chefToken = recipeDoc['chefToken'] ?? '';
-                if (chefToken.isNotEmpty) {
-                  // Initialize the push notification
-                  final PushNotification pushNotification =
-                      PushNotificationImpl(FlutterLocalNotificationsPlugin());
+                  // Always retrieve the chefToken from the recipe document
+                  String chefToken = recipeDoc['chefToken'] ?? '';
+                  if (chefToken.isNotEmpty) {
+                    // Initialize the push notification
+                    final PushNotification pushNotification =
+                        PushNotificationImpl(FlutterLocalNotificationsPlugin());
 
-                  // Send the notification
-                  await pushNotification.sendPushNotifs(
-                    title:
-                        'Hey there, ${FirebaseAuth.instance.currentUser!.displayName} liked your recipe!',
-                    body: '',
-                    token: chefToken,
-                  );
+                    // Send the notification
+                    await pushNotification.sendPushNotifs(
+                      title:
+                          'Hey there, ${FirebaseConsts.currentUser!.displayName} liked your recipe!',
+                      body: '',
+                      token: chefToken,
+                    );
+                  }
+                } else {
+                  // Remove the user's ID from the list of likers
+                  newLikers.remove(FirebaseConsts.currentUser!.uid);
                 }
               },
               child: Material(
