@@ -23,6 +23,7 @@ class FollowChefParams extends ObjectParams<Chef> {
           name: value,
           email: value,
           id: value,
+          chefToken: value,
           followers: params,
           token: params2,
         ));

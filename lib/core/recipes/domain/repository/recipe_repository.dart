@@ -5,6 +5,8 @@ import '../entities/recipe.dart';
 
 abstract class RecipeRepository {
   Future<Either<Failure, Recipe>> createRecipe(
+    String diet,
+    String difficultyLevel,
     String title,
     String overview,
     String duration,

@@ -15,6 +15,8 @@ class CreateRecipe implements UseCase<Recipe, RecipeParams> {
   @override
   Future<Either<Failure, Recipe>> call(RecipeParams params) async {
     return await repository.createRecipe(
+      params.diet,
+      params.difficultyLevel,
       params.title,
       params.overview,
       params.duration,
@@ -33,6 +35,8 @@ class CreateRecipe implements UseCase<Recipe, RecipeParams> {
 
 class RecipeParams extends ObjectParams<Recipe> {
   RecipeParams({
+    required String diet,
+    required String difficultyLevel,
     required String title,
     required String overview,
     required String duration,
@@ -47,6 +51,8 @@ class RecipeParams extends ObjectParams<Recipe> {
     required List<String> instructions,
   }) : super(
           Recipe(
+            diet: diet,
+            difficultyLevel: difficultyLevel,
             title: title,
             overview: overview,
             duration: duration,
@@ -62,6 +68,8 @@ class RecipeParams extends ObjectParams<Recipe> {
           ),
         );
 
+  String get diet => value.diet;
+  String get difficultyLevel => value.difficultyLevel;
   String get title => value.title;
   String get overview => value.overview;
   String get duration => value.duration;

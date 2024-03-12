@@ -22,6 +22,8 @@ class LikeRecipeParams extends ObjectParams<Recipe> {
     required List<String> params,
   }) : super(
           Recipe(
+            diet: value,
+            difficultyLevel: value,
             title: value,
             overview: value,
             duration: value,

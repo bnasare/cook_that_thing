@@ -5,8 +5,8 @@ import 'package:recipe_hub/core/recipes/domain/usecase/like.dart';
 import 'package:recipe_hub/core/recipes/domain/usecase/list.dart';
 import 'package:recipe_hub/shared/data/firebase_constants.dart';
 
-import '../../../../../shared/error/failure.dart';
-import '../../../../../shared/usecase/usecase.dart';
+import '../../../../shared/error/failure.dart';
+import '../../../../shared/usecase/usecase.dart';
 
 class RecipeBloc {
   CreateRecipe createRecipe;
@@ -18,6 +18,8 @@ class RecipeBloc {
       required this.likeRecipe});
 
   Future<Either<Failure, Recipe>> createARecipe(
+    String diet,
+    String difficultyLevel,
     String title,
     String overview,
     String duration,
@@ -27,6 +29,8 @@ class RecipeBloc {
     List<String> instructions,
   ) async {
     return await createRecipe(RecipeParams(
+        diet: diet,
+        difficultyLevel: difficultyLevel,
         title: title,
         overview: overview,
         duration: duration,

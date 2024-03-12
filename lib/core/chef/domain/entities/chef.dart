@@ -10,6 +10,7 @@ class Chef with _$Chef {
     required String name,
     required String email,
     required String id,
+    required String chefToken,
     required List<String> followers,
     required List<String> token,
   }) = _Chef;
@@ -20,6 +21,7 @@ class Chef with _$Chef {
         name: '',
         email: '',
         id: '',
+        chefToken: '',
         followers: [],
         token: [],
       );

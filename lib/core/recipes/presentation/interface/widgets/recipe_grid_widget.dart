@@ -1,18 +1,22 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/review_button.dart';
+import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/widgets/clickable.dart';
+import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../domain/entities/recipe.dart';
 import '../pages/recipe_details.dart';
+import 'like_button.dart';
 import 'recipe_info_item.dart';
 
 class RecipeGridWidget extends StatelessWidget {
-  // final List<Recipe> recipes;
+  final List<Recipe> recipes;
+  final int? itemCount;
 
-  const RecipeGridWidget({super.key});
+  const RecipeGridWidget({super.key, required this.recipes, this.itemCount});
 
   @override
   Widget build(BuildContext context) {
@@ -27,13 +31,13 @@ class RecipeGridWidget extends StatelessWidget {
         crossAxisCount: 2,
       ),
       itemBuilder: (context, index) {
-        // Recipe recipe = recipes[index];
+        Recipe recipe = recipes[index];
         return Clickable(
           onClick: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const RecipeDetailsPage(recipeID: ''),
+                builder: (context) => RecipeDetailsPage(recipeID: recipe.id),
               ),
             );
           },
@@ -58,67 +62,65 @@ class RecipeGridWidget extends StatelessWidget {
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10),
                       child: FancyShimmerImage(
-                        imageUrl:
-                            'https://t4.ftcdn.net/jpg/02/84/46/89/360_F_284468940_1bg6BwgOfjCnE3W0wkMVMVqddJgtMynE.jpg',
+                        imageUrl: recipe.image,
                         width: double.infinity,
                         height: 110,
                       ),
                     ),
-                    const Positioned(
-                        top: 0,
-                        right: 0,
-                        // child: LikeButton(recipe.id),
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: CircleAvatar(
-                            radius: 15,
-                            backgroundColor: Colors.white,
-                            child: Icon(
-                              CupertinoIcons.heart,
-                              color: Colors.black,
-                            ),
-                          ),
-                        )),
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: LikeButton(recipe.id),
+                      ),
+                    )
                   ],
                 ),
                 const SizedBox(height: 3),
-                const FittedBox(
+                FittedBox(
                   child: Text(
-                    'Fufu',
-                    style: TextStyle(
+                    recipe.title,
+                    style: const TextStyle(
                       fontSize: 18,
                       overflow: TextOverflow.ellipsis,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),
-                const FittedBox(
-                  child: Text('By Benedict',
-                      style: TextStyle(height: 0, fontSize: 15)),
+                FittedBox(
+                  child: Clickable(
+                    onClick: () => NavigationHelper.navigateTo(
+                        context, ProfilePage(chefID: recipe.chefID)),
+                    child: Text('By ${recipe.chef}',
+                        style: const TextStyle(height: 0, fontSize: 15)),
+                  ),
                 ),
                 const SizedBox(height: 5),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Material(
-                      borderRadius: BorderRadius.circular(5),
-                      color: ExtraColors.grey,
-                      child: const RecipeInfoItem(
-                        icon: Icons.av_timer_outlined,
-                        text: '2 hrs',
+                    Expanded(
+                      child: Material(
+                        borderRadius: BorderRadius.circular(5),
+                        color: ExtraColors.grey,
+                        child: RecipeInfoItem(
+                          icon: Icons.av_timer_outlined,
+                          text: recipe.duration,
+                        ),
                       ),
                     ),
                     const SizedBox(width: 5),
                     Material(
                       borderRadius: BorderRadius.circular(5),
                       color: ExtraColors.grey,
-                      child: const RecipeInfoItem(
+                      child: RecipeInfoItem(
                         icon: IconlyLight.heart,
-                        text: '3',
+                        text: recipe.likes.length.toString(),
                       ),
                     ),
                     const SizedBox(width: 5),
-                    const ReviewButton()
+                    ReviewButton(recipe.id),
                   ],
                 )
               ],
@@ -126,7 +128,7 @@ class RecipeGridWidget extends StatelessWidget {
           ),
         );
       },
-      itemCount: 6,
+      itemCount: itemCount ?? recipes.length,
     );
   }
 }

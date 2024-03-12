@@ -9,6 +9,7 @@ abstract class ReviewRepository {
     DateTime time,
     String recipeID,
     double rating,
+    String chefToken,
   );
   Future<Either<Failure, List<Review>>> list(List<String> documentID);
 }

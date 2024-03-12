@@ -4,13 +4,9 @@ import '../../../../../shared/widgets/clickable.dart';
 
 class Header extends StatelessWidget {
   final String leading;
-  final String trailing;
-  final VoidCallback onClick;
-  const Header(
-      {super.key,
-      required this.leading,
-      required this.trailing,
-      required this.onClick});
+  final String? trailing;
+  final VoidCallback? onClick;
+  const Header({super.key, required this.leading, this.trailing, this.onClick});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +23,9 @@ class Header extends StatelessWidget {
             ),
           ),
           Clickable(
-            onClick: onClick,
+            onClick: onClick ?? () {},
             child: Text(
-              trailing,
+              trailing?.trim() ?? '',
               style: TextStyle(
                 fontWeight: FontWeight.w400,
                 fontSize: 15,

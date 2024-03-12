@@ -9,12 +9,11 @@ class EmptyStateView extends StatelessWidget {
   const EmptyStateView({
     super.key,
     required this.title,
-    required this.subtitle,
     required this.buttonText,
     this.onPressed,
   });
 
-  final String title, subtitle, buttonText;
+  final String title, buttonText;
   final Function()? onPressed;
 
   @override
@@ -42,16 +41,10 @@ class EmptyStateView extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                       color: Theme.of(context).colorScheme.error,
-                      fontSize: 20,
+                      fontSize: 24,
                       fontWeight: FontWeight.w600),
                 ),
               ),
-              Text(
-                subtitle,
-                textAlign: TextAlign.center,
-                style: const TextStyle(color: ExtraColors.link, fontSize: 18),
-              ),
-              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
             ],
           ),
         ),

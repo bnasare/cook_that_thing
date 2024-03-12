@@ -5,7 +5,6 @@ class ImageAssets {
   static const String dinner = 'assets/static/dinner.jpg';
   static const String dessert = 'assets/static/dessert.jpeg';
   static const String snacks = 'assets/static/snacks.jpg';
-  static const String vegan = 'assets/static/vegan.jpg';
   static const String viewed = 'assets/static/viewed.png';
   static const String warning = 'assets/static/warning.png';
   static const String error = 'assets/static/error.png';

@@ -6,7 +6,7 @@ import 'domain/repository/recipe_repository.dart';
 import 'domain/usecase/create.dart';
 import 'domain/usecase/like.dart';
 import 'domain/usecase/list.dart';
-import 'presentation/interface/bloc/recipe_bloc.dart';
+import 'presentation/bloc/recipe_bloc.dart';
 
 void initRecipe() {
   final sl = GetIt.instance;

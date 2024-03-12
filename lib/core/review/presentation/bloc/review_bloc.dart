@@ -5,7 +5,7 @@ import 'package:recipe_hub/core/review/domain/usecases/list.dart';
 import 'package:recipe_hub/shared/data/firebase_constants.dart';
 import 'package:recipe_hub/shared/error/failure.dart';
 
-import '../../../../../shared/usecase/usecase.dart';
+import '../../../../shared/usecase/usecase.dart';
 
 class ReviewBloc {
   CreateReview createReview;
@@ -21,11 +21,13 @@ class ReviewBloc {
     double rating,
   ) async {
     return await createReview(ReviewParams(
-        name: FirebaseConsts.currentUser!.displayName ?? name,
-        review: review,
-        time: time,
-        recipeID: recipeID,
-        rating: rating));
+      name: name,
+      review: review,
+      time: time,
+      recipeID: recipeID,
+      rating: rating,
+      chefToken: await FirebaseConsts.messaging.getToken() ?? '',
+    ));
   }
 
   Future<Either<Failure, List<Review>>> getReviews(String documentID) async {

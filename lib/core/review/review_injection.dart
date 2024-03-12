@@ -5,7 +5,7 @@ import 'package:recipe_hub/core/review/domain/usecases/create.dart';
 
 import 'domain/repositories/review_repository.dart';
 import 'domain/usecases/list.dart';
-import 'presentation/interface/bloc/review_bloc.dart';
+import 'presentation/bloc/review_bloc.dart';
 
 void initReview() {
   final sl = GetIt.instance;

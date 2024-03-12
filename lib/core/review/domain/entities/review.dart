@@ -11,6 +11,7 @@ class Review with _$Review {
     required DateTime time,
     required String recipeID,
     required double rating,
+    required String chefToken,
   }) = _Review;
 
   factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
@@ -21,5 +22,6 @@ class Review with _$Review {
         time: DateTime.now(),
         recipeID: '',
         rating: 0.0,
+        chefToken: '',
       );
 }

@@ -12,6 +12,7 @@ _$ReviewImpl _$$ReviewImplFromJson(Map<String, dynamic> json) => _$ReviewImpl(
       time: DateTime.parse(json['time'] as String),
       recipeID: json['recipeID'] as String,
       rating: (json['rating'] as num).toDouble(),
+      chefToken: json['chefToken'] as String,
     );
 
 Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
@@ -21,4 +22,5 @@ Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
       'time': instance.time.toIso8601String(),
       'recipeID': instance.recipeID,
       'rating': instance.rating,
+      'chefToken': instance.chefToken,
     };

@@ -45,7 +45,7 @@ mixin AuthMixin {
     final result = await bloc.logoutUser();
     return result.fold(
       (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
-      (r) => NavigationHelper.navigateToReplacement(context, LoginPage()),
+      (r) => r,
     );
   }
 

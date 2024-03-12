@@ -17,7 +17,6 @@ class CategoryListPage extends StatelessWidget {
       ImageAssets.dinner,
       ImageAssets.dessert,
       ImageAssets.snacks,
-      ImageAssets.vegan
     ];
 
     final List<String> categories = [
@@ -26,15 +25,10 @@ class CategoryListPage extends StatelessWidget {
       localizations.dinner,
       localizations.dessert,
       localizations.snacks,
-      localizations.vegan
     ];
 
     return Scaffold(
       appBar: AppBar(
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 13.0),
-          child: BackButton(),
-        ),
         title: const Text('Categories'),
         centerTitle: true,
       ),

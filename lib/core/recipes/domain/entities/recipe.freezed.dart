@@ -20,10 +20,11 @@ Recipe _$RecipeFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Recipe {
+  String get diet => throw _privateConstructorUsedError;
+  String get difficultyLevel => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get overview => throw _privateConstructorUsedError;
-  String get duration =>
-      throw _privateConstructorUsedError; // Change the type to String
+  String get duration => throw _privateConstructorUsedError;
   String get category => throw _privateConstructorUsedError;
   String get image => throw _privateConstructorUsedError;
   String get chef => throw _privateConstructorUsedError;
@@ -45,7 +46,9 @@ abstract class $RecipeCopyWith<$Res> {
       _$RecipeCopyWithImpl<$Res, Recipe>;
   @useResult
   $Res call(
-      {String title,
+      {String diet,
+      String difficultyLevel,
+      String title,
       String overview,
       String duration,
       String category,
@@ -72,6 +75,8 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? diet = null,
+    Object? difficultyLevel = null,
     Object? title = null,
     Object? overview = null,
     Object? duration = null,
@@ -86,6 +91,14 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
     Object? instructions = null,
   }) {
     return _then(_value.copyWith(
+      diet: null == diet
+          ? _value.diet
+          : diet // ignore: cast_nullable_to_non_nullable
+              as String,
+      difficultyLevel: null == difficultyLevel
+          ? _value.difficultyLevel
+          : difficultyLevel // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -146,7 +159,9 @@ abstract class _$$RecipeImplCopyWith<$Res> implements $RecipeCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String title,
+      {String diet,
+      String difficultyLevel,
+      String title,
       String overview,
       String duration,
       String category,
@@ -171,6 +186,8 @@ class __$$RecipeImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? diet = null,
+    Object? difficultyLevel = null,
     Object? title = null,
     Object? overview = null,
     Object? duration = null,
@@ -185,6 +202,14 @@ class __$$RecipeImplCopyWithImpl<$Res>
     Object? instructions = null,
   }) {
     return _then(_$RecipeImpl(
+      diet: null == diet
+          ? _value.diet
+          : diet // ignore: cast_nullable_to_non_nullable
+              as String,
+      difficultyLevel: null == difficultyLevel
+          ? _value.difficultyLevel
+          : difficultyLevel // ignore: cast_nullable_to_non_nullable
+              as String,
       title: null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -241,7 +266,9 @@ class __$$RecipeImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$RecipeImpl implements _Recipe {
   const _$RecipeImpl(
-      {required this.title,
+      {required this.diet,
+      required this.difficultyLevel,
+      required this.title,
       required this.overview,
       required this.duration,
       required this.category,
@@ -261,12 +288,15 @@ class _$RecipeImpl implements _Recipe {
       _$$RecipeImplFromJson(json);
 
   @override
+  final String diet;
+  @override
+  final String difficultyLevel;
+  @override
   final String title;
   @override
   final String overview;
   @override
   final String duration;
-// Change the type to String
   @override
   final String category;
   @override
@@ -305,7 +335,7 @@ class _$RecipeImpl implements _Recipe {
 
   @override
   String toString() {
-    return 'Recipe(title: $title, overview: $overview, duration: $duration, category: $category, image: $image, chef: $chef, chefID: $chefID, id: $id, chefToken: $chefToken, likes: $likes, ingredients: $ingredients, instructions: $instructions)';
+    return 'Recipe(diet: $diet, difficultyLevel: $difficultyLevel, title: $title, overview: $overview, duration: $duration, category: $category, image: $image, chef: $chef, chefID: $chefID, id: $id, chefToken: $chefToken, likes: $likes, ingredients: $ingredients, instructions: $instructions)';
   }
 
   @override
@@ -313,6 +343,9 @@ class _$RecipeImpl implements _Recipe {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$RecipeImpl &&
+            (identical(other.diet, diet) || other.diet == diet) &&
+            (identical(other.difficultyLevel, difficultyLevel) ||
+                other.difficultyLevel == difficultyLevel) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.overview, overview) ||
                 other.overview == overview) &&
@@ -337,6 +370,8 @@ class _$RecipeImpl implements _Recipe {
   @override
   int get hashCode => Object.hash(
       runtimeType,
+      diet,
+      difficultyLevel,
       title,
       overview,
       duration,
@@ -366,7 +401,9 @@ class _$RecipeImpl implements _Recipe {
 
 abstract class _Recipe implements Recipe {
   const factory _Recipe(
-      {required final String title,
+      {required final String diet,
+      required final String difficultyLevel,
+      required final String title,
       required final String overview,
       required final String duration,
       required final String category,
@@ -382,12 +419,16 @@ abstract class _Recipe implements Recipe {
   factory _Recipe.fromJson(Map<String, dynamic> json) = _$RecipeImpl.fromJson;
 
   @override
+  String get diet;
+  @override
+  String get difficultyLevel;
+  @override
   String get title;
   @override
   String get overview;
   @override
   String get duration;
-  @override // Change the type to String
+  @override
   String get category;
   @override
   String get image;

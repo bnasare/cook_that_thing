@@ -18,6 +18,7 @@ class CreateReview implements UseCase<Review, ReviewParams> {
       params.time,
       params.recipeID,
       params.rating,
+      params.chefToken,
     );
   }
 }
@@ -29,6 +30,7 @@ class ReviewParams extends ObjectParams<Review> {
     required DateTime time,
     required String recipeID,
     required double rating,
+    required String chefToken,
   }) : super(
           Review(
             name: name,
@@ -36,6 +38,7 @@ class ReviewParams extends ObjectParams<Review> {
             time: time,
             recipeID: recipeID,
             rating: rating,
+            chefToken: chefToken,
           ),
         );
 
@@ -44,4 +47,5 @@ class ReviewParams extends ObjectParams<Review> {
   DateTime get time => value.time;
   String get recipeID => value.recipeID;
   double get rating => value.rating;
+  String get chefToken => value.chefToken;
 }

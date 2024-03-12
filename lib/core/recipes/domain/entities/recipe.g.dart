@@ -7,6 +7,8 @@ part of 'recipe.dart';
 // **************************************************************************
 
 _$RecipeImpl _$$RecipeImplFromJson(Map<String, dynamic> json) => _$RecipeImpl(
+      diet: json['diet'] as String,
+      difficultyLevel: json['difficultyLevel'] as String,
       title: json['title'] as String,
       overview: json['overview'] as String,
       duration: json['duration'] as String,
@@ -27,6 +29,8 @@ _$RecipeImpl _$$RecipeImplFromJson(Map<String, dynamic> json) => _$RecipeImpl(
 
 Map<String, dynamic> _$$RecipeImplToJson(_$RecipeImpl instance) =>
     <String, dynamic>{
+      'diet': instance.diet,
+      'difficultyLevel': instance.difficultyLevel,
       'title': instance.title,
       'overview': instance.overview,
       'duration': instance.duration,

@@ -6,6 +6,8 @@ import '../../domain/entities/recipe.dart';
 
 abstract class RecipeRemoteDatabase {
   Future<Recipe> createRecipe(
+    String diet,
+    String difficultyLevel,
     String title,
     String overview,
     String duration,
@@ -30,6 +32,8 @@ class RecipeRemoteDatabaseImpl implements RecipeRemoteDatabase {
 
   @override
   Future<Recipe> createRecipe(
+    String diet,
+    String difficultyLevel,
     String title,
     String overview,
     String duration,
@@ -44,6 +48,8 @@ class RecipeRemoteDatabaseImpl implements RecipeRemoteDatabase {
     List<String> instructions,
   ) async {
     final Recipe recipe = Recipe(
+      diet: diet,
+      difficultyLevel: difficultyLevel,
       title: title,
       overview: overview,
       duration: duration,

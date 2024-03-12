@@ -32,8 +32,9 @@ class LoadingListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return Flexible(
       child: ListView.separated(
+        padding: const EdgeInsets.all(20),
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,

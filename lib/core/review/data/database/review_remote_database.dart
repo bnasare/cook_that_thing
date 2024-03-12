@@ -10,6 +10,7 @@ abstract class ReviewRemoteDatabase {
     DateTime time,
     String recipeID,
     double rating,
+    String chefToken,
   );
 
   Future<List<Review>> list(List<String> documentIDs);
@@ -25,21 +26,18 @@ class ReviewRemoteDatabaseImpl implements ReviewRemoteDatabase {
     DateTime time,
     String recipeID,
     double rating,
+    String chefToken,
   ) async {
     final Review revieww = Review(
-        name: name,
-        review: review,
-        time: time,
-        recipeID: recipeID,
-        rating: rating);
-
+      name: name,
+      review: review,
+      time: time,
+      recipeID: recipeID,
+      rating: rating,
+      chefToken: chefToken,
+    );
     final data = revieww.toJson();
-
-    await _firestore
-        .collection(DatabaseCollections.reviews)
-        .doc(recipeID)
-        .set(data);
-
+    await _firestore.collection(DatabaseCollections.reviews).add(data);
     return revieww;
   }
 

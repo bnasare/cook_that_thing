@@ -4,12 +4,13 @@ import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:duration_picker/duration_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/bloc/recipe_mixin.dart';
+import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/category_dropdown.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/diet_dropdown.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/difficulty_dropdown.dart';
@@ -17,6 +18,7 @@ import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/loading_manager.dart';
 import 'package:recipe_hub/shared/widgets/snackbar.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../../shared/widgets/clickable.dart';
 import '../widgets/custom_textfeld.dart';
@@ -80,13 +82,27 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
       if (formKey.currentState!.validate()) {
         isLoading.value = true;
         formKey.currentState!.save();
+        final uuid = const Uuid().v4();
+        final ref = FirebaseStorage.instance
+            .ref()
+            .child('recipeImages')
+            .child('$uuid.jpg');
+        String imageUrl;
+        if (kIsWeb) {
+          await ref.putData(webImage.value);
+        } else {
+          await ref.putFile(selectedImage.value!);
+        }
+        imageUrl = await ref.getDownloadURL();
         await createARecipe(
           context: context,
+          diet: diet.value!,
+          difficultyLevel: difficultyLevel.value!,
           title: titleController.text,
           overview: overviewController.text,
           duration: durationController.text,
           category: category.value!,
-          image: selectedImage.value!.path,
+          image: imageUrl,
           ingredients: submittedIngredients.value,
           instructions: submittedInstructions.value,
         );

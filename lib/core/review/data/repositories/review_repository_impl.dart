@@ -24,6 +24,7 @@ class ReviewRepositoryImplementation implements ReviewRepository {
     DateTime time,
     String recipeID,
     double rating,
+    String chefToken,
   ) async {
     try {
       await networkInfo.hasInternet();
@@ -33,6 +34,7 @@ class ReviewRepositoryImplementation implements ReviewRepository {
         time,
         recipeID,
         rating,
+        chefToken,
       );
       return Right(results);
     } on FirebaseAuthException catch (error) {

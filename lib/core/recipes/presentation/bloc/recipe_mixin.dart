@@ -10,12 +10,12 @@ import 'package:recipe_hub/shared/data/collection_ids.dart';
 import 'package:recipe_hub/shared/data/firebase_constants.dart';
 import 'package:recipe_hub/shared/widgets/snackbar.dart';
 
-import '../../../../../injection_container.dart';
-import '../../../../../shared/platform/push_notification.dart';
-import '../../../../chef/domain/entities/chef.dart';
-import '../../../../chef/presentation/bloc/chef_bloc.dart';
-import '../../../../review/domain/entities/review.dart';
-import '../../../../review/presentation/interface/bloc/review_bloc.dart';
+import '../../../../injection_container.dart';
+import '../../../../shared/platform/push_notification.dart';
+import '../../../chef/domain/entities/chef.dart';
+import '../../../chef/presentation/bloc/chef_bloc.dart';
+import '../../../review/domain/entities/review.dart';
+import '../../../review/presentation/bloc/review_bloc.dart';
 import 'recipe_bloc.dart';
 
 mixin RecipeMixin {
@@ -25,6 +25,8 @@ mixin RecipeMixin {
 
   Future<void> createARecipe({
     required BuildContext context,
+    required String diet,
+    required String difficultyLevel,
     required String title,
     required String overview,
     required String duration,
@@ -34,6 +36,8 @@ mixin RecipeMixin {
     required List<String> instructions,
   }) async {
     final result = await bloc.createARecipe(
+      diet,
+      difficultyLevel,
       title,
       overview,
       duration,

@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
@@ -22,9 +24,10 @@ class RecipeInfoItem extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 3),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Flexible(
-            flex: 1,
             child: Icon(
               icon,
               color: iconColor ?? ExtraColors.white,
@@ -32,15 +35,14 @@ class RecipeInfoItem extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 1),
-          Flexible(
-            flex: 1,
+          Center(
             child: Text(
               text,
-              overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 color: textColor ?? ExtraColors.white,
+                wordSpacing: -2.2,
+                letterSpacing: 0,
                 fontSize: 16,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),

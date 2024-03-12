@@ -2,10 +2,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:recipe_hub/core/review/domain/entities/review.dart';
 import 'package:recipe_hub/shared/data/collection_ids.dart';
 
-import '../../../../../injection_container.dart';
+import '../../../../injection_container.dart';
+import '../../../../shared/platform/push_notification.dart';
 import 'review_bloc.dart';
 
 mixin ReviewMixin {
@@ -23,7 +25,25 @@ mixin ReviewMixin {
         await bloc.createAReview(name, review, time, recipeID, rating);
     return result.fold(
       (l) => l,
-      (r) => r,
+      (r) async {
+        DocumentSnapshot recipeDoc = await FirebaseFirestore.instance
+            .collection(DatabaseCollections.recipes)
+            .doc(recipeID)
+            .get();
+
+        String chefToken = recipeDoc['chefToken'] ?? '';
+
+        if (chefToken.isNotEmpty) {
+          final PushNotification pushNotification =
+              PushNotificationImpl(FlutterLocalNotificationsPlugin());
+
+          await pushNotification.sendPushNotifs(
+            title: 'New Review!',
+            body: 'Your recipe received a new review on the Recipe Hub.',
+            token: chefToken,
+          );
+        }
+      },
     );
   }
 
@@ -47,17 +67,14 @@ mixin ReviewMixin {
     QuerySnapshot querySnapshot = await firestore
         .collection(collectionPath)
         .where('recipeID', isEqualTo: recipeID)
+        .orderBy('time', descending: true)
         .get();
-
     List<Review> allReviews = [];
-
     for (DocumentSnapshot snapshot in querySnapshot.docs) {
-      String documentId = snapshot.id;
       List<Review> reviews =
-          await getReviews(context: context, documentID: documentId);
+          await getReviews(context: context, documentID: snapshot.id);
       allReviews.addAll(reviews);
     }
-
     yield allReviews;
   }
 }

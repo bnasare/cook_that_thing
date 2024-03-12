@@ -6,16 +6,19 @@ class ReviewTextField extends StatelessWidget {
     super.key,
     required this.controller,
     required this.validator,
+    required this.onEditingComplete,
   });
 
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final Function()? onEditingComplete;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       validator: validator,
       controller: controller,
+      onEditingComplete: onEditingComplete,
       textInputAction: TextInputAction.done,
       style: const TextStyle(
           fontSize: 14, color: ExtraColors.grey, fontWeight: FontWeight.w500),

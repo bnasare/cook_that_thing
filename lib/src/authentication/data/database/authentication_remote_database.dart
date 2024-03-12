@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:recipe_hub/shared/data/collection_ids.dart';
+import 'package:recipe_hub/shared/data/firebase_constants.dart';
 
 import '../../../../core/chef/domain/entities/chef.dart';
 
@@ -28,6 +29,7 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
       name: name,
       email: userCredential.user!.email!,
       id: userCredential.user!.uid,
+      chefToken: await FirebaseConsts.messaging.getToken() ?? '',
       followers: [],
       token: [],
     );
@@ -58,6 +60,7 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
       name: userCredential.user!.displayName!,
       email: userCredential.user!.email!,
       id: userCredential.user!.uid,
+      chefToken: await FirebaseConsts.messaging.getToken() ?? '',
       followers: [],
       token: [],
     );
@@ -88,6 +91,7 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
         name: user!.displayName!,
         email: user.email!,
         id: user.uid,
+        chefToken: await FirebaseConsts.messaging.getToken() ?? '',
         followers: [],
         token: [],
       );
@@ -104,6 +108,7 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
         name: user!.displayName!,
         email: user.email!,
         id: user.uid,
+        chefToken: await FirebaseConsts.messaging.getToken() ?? '',
         followers: [],
         token: [],
       );

@@ -23,6 +23,7 @@ mixin _$Chef {
   String get name => throw _privateConstructorUsedError;
   String get email => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
+  String get chefToken => throw _privateConstructorUsedError;
   List<String> get followers => throw _privateConstructorUsedError;
   List<String> get token => throw _privateConstructorUsedError;
 
@@ -40,6 +41,7 @@ abstract class $ChefCopyWith<$Res> {
       {String name,
       String email,
       String id,
+      String chefToken,
       List<String> followers,
       List<String> token});
 }
@@ -60,6 +62,7 @@ class _$ChefCopyWithImpl<$Res, $Val extends Chef>
     Object? name = null,
     Object? email = null,
     Object? id = null,
+    Object? chefToken = null,
     Object? followers = null,
     Object? token = null,
   }) {
@@ -75,6 +78,10 @@ class _$ChefCopyWithImpl<$Res, $Val extends Chef>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      chefToken: null == chefToken
+          ? _value.chefToken
+          : chefToken // ignore: cast_nullable_to_non_nullable
               as String,
       followers: null == followers
           ? _value.followers
@@ -99,6 +106,7 @@ abstract class _$$ChefImplCopyWith<$Res> implements $ChefCopyWith<$Res> {
       {String name,
       String email,
       String id,
+      String chefToken,
       List<String> followers,
       List<String> token});
 }
@@ -116,6 +124,7 @@ class __$$ChefImplCopyWithImpl<$Res>
     Object? name = null,
     Object? email = null,
     Object? id = null,
+    Object? chefToken = null,
     Object? followers = null,
     Object? token = null,
   }) {
@@ -131,6 +140,10 @@ class __$$ChefImplCopyWithImpl<$Res>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      chefToken: null == chefToken
+          ? _value.chefToken
+          : chefToken // ignore: cast_nullable_to_non_nullable
               as String,
       followers: null == followers
           ? _value._followers
@@ -151,6 +164,7 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
       {required this.name,
       required this.email,
       required this.id,
+      required this.chefToken,
       required final List<String> followers,
       required final List<String> token})
       : _followers = followers,
@@ -165,6 +179,8 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
   final String email;
   @override
   final String id;
+  @override
+  final String chefToken;
   final List<String> _followers;
   @override
   List<String> get followers {
@@ -183,7 +199,7 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Chef(name: $name, email: $email, id: $id, followers: $followers, token: $token)';
+    return 'Chef(name: $name, email: $email, id: $id, chefToken: $chefToken, followers: $followers, token: $token)';
   }
 
   @override
@@ -194,6 +210,7 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('email', email))
       ..add(DiagnosticsProperty('id', id))
+      ..add(DiagnosticsProperty('chefToken', chefToken))
       ..add(DiagnosticsProperty('followers', followers))
       ..add(DiagnosticsProperty('token', token));
   }
@@ -206,6 +223,8 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
             (identical(other.name, name) || other.name == name) &&
             (identical(other.email, email) || other.email == email) &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.chefToken, chefToken) ||
+                other.chefToken == chefToken) &&
             const DeepCollectionEquality()
                 .equals(other._followers, _followers) &&
             const DeepCollectionEquality().equals(other._token, _token));
@@ -218,6 +237,7 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
       name,
       email,
       id,
+      chefToken,
       const DeepCollectionEquality().hash(_followers),
       const DeepCollectionEquality().hash(_token));
 
@@ -240,6 +260,7 @@ abstract class _Chef implements Chef {
       {required final String name,
       required final String email,
       required final String id,
+      required final String chefToken,
       required final List<String> followers,
       required final List<String> token}) = _$ChefImpl;
 
@@ -251,6 +272,8 @@ abstract class _Chef implements Chef {
   String get email;
   @override
   String get id;
+  @override
+  String get chefToken;
   @override
   List<String> get followers;
   @override

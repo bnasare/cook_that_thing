@@ -18,6 +18,8 @@ class RecipeRepositoryImplementation implements RecipeRepository {
   });
   @override
   Future<Either<Failure, Recipe>> createRecipe(
+    String diet,
+    String difficultyLevel,
     String title,
     String overview,
     String duration,
@@ -34,6 +36,8 @@ class RecipeRepositoryImplementation implements RecipeRepository {
     try {
       await networkInfo.hasInternet();
       final results = await remoteDatabase.createRecipe(
+        diet,
+        difficultyLevel,
         title,
         overview,
         duration,
