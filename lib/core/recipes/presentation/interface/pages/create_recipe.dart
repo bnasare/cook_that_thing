@@ -109,7 +109,7 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
           instructions: submittedInstructions.value,
         );
         isLoading.value = false;
-        NavigationHelper.navigateTo(context, const NavBar());
+        NavigationHelper.navigateToAndRemoveUntil(context, const NavBar());
         titleController.clear();
         overviewController.clear();
         ingredientsController.clear();
