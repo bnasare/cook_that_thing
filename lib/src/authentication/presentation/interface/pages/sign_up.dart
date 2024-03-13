@@ -1,8 +1,5 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:recipe_hub/shared/data/svg_assets.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/utils/validator.dart';
@@ -40,9 +37,6 @@ class _SignUpPageState extends State<SignUpPage> {
   void _submitFormOnSignUp() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-    setState(() {
-      isLoading = true;
-    });
     if (isValid) {
       _formKey.currentState!.save();
       setState(() {
@@ -62,31 +56,32 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  List svgs = [
-    SvgAssets.male,
-    SvgAssets.female,
-    SvgAssets.book,
-  ];
+  // List svgs = [
+  // SvgAssets.male,
+  // SvgAssets.female,
+  // SvgAssets.book,
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ExtraColors.white.withOpacity(0.7),
       resizeToAvoidBottomInset: false,
       body: LoadingManager(
         isLoading: isLoading,
         child: Stack(children: [
-          Swiper(
-            duration: 800,
-            autoplayDelay: 8000,
-            itemBuilder: (BuildContext context, int index) {
-              return SvgPicture.asset(
-                svgs[index],
-                fit: BoxFit.fill,
-              );
-            },
-            autoplay: true,
-            itemCount: svgs.length,
-          ),
+          // Swiper(
+          // duration: 800,
+          // autoplayDelay: 8000,
+          // itemBuilder: (BuildContext context, int index) {
+          // return SvgPicture.asset(
+          // svgs[index],
+          // fit: BoxFit.fill,
+          // );
+          // },
+          // autoplay: true,
+          // itemCount: svgs.length,
+          // ),
           Container(
             color: Colors.black.withOpacity(0.7),
           ),

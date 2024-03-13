@@ -74,9 +74,7 @@ class ChefsAndRecipes extends HookWidget with RecipeMixin {
                       itemBuilder: (context, index) {
                         String chefName = snapshot.data![index].name;
                         return SizedBox(
-                          width: MediaQuery.of(context).size.width *
-                              snapshot.data!.length /
-                              10,
+                          width: MediaQuery.of(context).size.width * 0.23,
                           child: Clickable(
                             onClick: () => NavigationHelper.navigateTo(
                               context,
@@ -95,6 +93,7 @@ class ChefsAndRecipes extends HookWidget with RecipeMixin {
                                 ),
                                 Text(
                                   chefName,
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w500,

@@ -1,8 +1,5 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:recipe_hub/shared/data/svg_assets.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/utils/validator.dart';
@@ -38,12 +35,12 @@ class _LoginPageState extends State<LoginPage> {
   void _submitFormOnLogin() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-    setState(() {
-      isLoading = true;
-    });
     if (isValid) {
       _formKey.currentState!.save();
     }
+    setState(() {
+      isLoading = true;
+    });
     await widget.loginUser(
       context: context,
       email: emailTextController.text,
@@ -54,31 +51,20 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  List svgs = [
-    SvgAssets.female,
-    SvgAssets.book,
-    SvgAssets.male,
-  ];
+  // List svgs = [
+  // SvgAssets.female,
+  // SvgAssets.book,
+  // SvgAssets.male,
+  // ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: ExtraColors.white.withOpacity(0.7),
       resizeToAvoidBottomInset: false,
       body: LoadingManager(
         isLoading: isLoading,
         child: Stack(children: [
-          Swiper(
-            duration: 800,
-            autoplayDelay: 8000,
-            itemBuilder: (BuildContext context, int index) {
-              return SvgPicture.asset(
-                svgs[index],
-                fit: BoxFit.fill,
-              );
-            },
-            autoplay: true,
-            itemCount: svgs.length,
-          ),
           Container(
             color: Colors.black.withOpacity(0.7),
           ),
@@ -239,11 +225,24 @@ class _LoginPageState extends State<LoginPage> {
                   height: 10,
                 ),
                 ElevatedButton(
-                  onPressed: () {
-                    widget.googleSignIn(context: context);
+                  onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+
+                    // Perform Google SignIn
+                    await widget.googleSignIn(context: context);
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    // No need to set isLoading back to false here
+                    // It will be handled inside the googleSignIn method
                   },
-                  child: const Text('Google Sign In',
-                      style: TextStyle(fontWeight: FontWeight.w600)),
+                  child: const Text(
+                    'Google Sign In',
+                    style: TextStyle(fontWeight: FontWeight.w600),
+                  ),
                 ),
                 const SizedBox(
                   height: 10,

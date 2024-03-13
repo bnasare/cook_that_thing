@@ -11,9 +11,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/category_dropdown.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/diet_dropdown.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/difficulty_dropdown.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/widgets/build_dialog_item.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/utils/validator.dart';
@@ -33,9 +31,6 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
   CreateRecipePage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final category = useState<String?>(null);
-    final diet = useState<String?>(null);
-    final difficultyLevel = useState<String?>(null);
     final submittedIngredients = useState<List<String>>([]);
     final submittedInstructions = useState<List<String>>([]);
     final duration = useState(const Duration(hours: 0, minutes: 0));
@@ -47,6 +42,9 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
     final titleController = useTextEditingController();
     final ingredientsController = useTextEditingController();
     final instructionsController = useTextEditingController();
+    final difficultyLevelController = useTextEditingController();
+    final categoryController = useTextEditingController();
+    final dietController = useTextEditingController();
     final overviewController = useTextEditingController();
     final durationController = useTextEditingController(text: '30min');
 
@@ -98,12 +96,12 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
         imageUrl = await ref.getDownloadURL();
         await createARecipe(
           context: context,
-          diet: diet.value!,
-          difficultyLevel: difficultyLevel.value!,
+          diet: dietController.text,
+          difficultyLevel: difficultyLevelController.text,
           title: titleController.text,
           overview: overviewController.text,
           duration: durationController.text,
-          category: category.value!,
+          category: categoryController.text,
           image: imageUrl,
           createdAt: DateTime.now(),
           ingredients: submittedIngredients.value,
@@ -248,6 +246,7 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                   controller: overviewController,
                   labelText: 'Overview',
                   hintText: 'A brief description of your recipe',
+                  textInputAction: TextInputAction.done,
                   validator: Validator.recipeOverview,
                   maxLines: 2,
                 ),
@@ -256,18 +255,96 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CategoryDropdown(
-                      category: category,
-                      onCategoryChanged: (newValue) {
-                        category.value = newValue;
-                      },
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: categoryController,
+                        readOnly: true,
+                        labelText: 'Category',
+                        hintText: 'Category',
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: ExtraColors.white,
+                                title: const Text('Select a Category'),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      BuildItem(
+                                          label: 'Breakfast',
+                                          controller: categoryController),
+                                      BuildItem(
+                                          label: 'Lunch',
+                                          controller: categoryController),
+                                      BuildItem(
+                                          label: 'Dinner',
+                                          controller: categoryController),
+                                      BuildItem(
+                                          label: 'Dessert',
+                                          controller: categoryController),
+                                      BuildItem(
+                                          label: 'Main',
+                                          controller: categoryController),
+                                      BuildItem(
+                                          label: 'Snacks',
+                                          controller: categoryController),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        validator: Validator.recipeCategory,
+                      ),
                     ),
                     const SizedBox(width: 20),
-                    DietDropdown(
-                      diet: diet,
-                      onDietChanged: (newValue) {
-                        diet.value = newValue;
-                      },
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: dietController,
+                        readOnly: true,
+                        labelText: 'Diet',
+                        hintText: 'Diet type',
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: ExtraColors.white,
+                                title: const Text('Select diet type'),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      BuildItem(
+                                          label: 'Vegan',
+                                          controller: dietController),
+                                      BuildItem(
+                                          label: 'Vegetarian',
+                                          controller: dietController),
+                                      BuildItem(
+                                          label: 'Gluten-free',
+                                          controller: dietController),
+                                      BuildItem(
+                                          label: 'Pescatarian',
+                                          controller: dietController),
+                                      BuildItem(
+                                          label: 'Main',
+                                          controller: dietController),
+                                      BuildItem(
+                                          label: 'Low-carb',
+                                          controller: dietController),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        validator: Validator.recipeDiet,
+                      ),
                     ),
                   ],
                 ),
@@ -342,11 +419,49 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                       ),
                     ),
                     const SizedBox(width: 20),
-                    DifficultyLevelDropDown(
-                      difficultyLevel: difficultyLevel,
-                      onDifficultyLevelChanged: (newValue) {
-                        difficultyLevel.value = newValue;
-                      },
+                    Expanded(
+                      child: CustomTextFormField(
+                        controller: difficultyLevelController,
+                        readOnly: true,
+                        labelText: 'Difficulty',
+                        hintText: 'Difficulty level',
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                backgroundColor: ExtraColors.white,
+                                shadowColor: ExtraColors.white,
+                                title: const Text('Select difficulty level'),
+                                content: SingleChildScrollView(
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      BuildItem(
+                                          label: 'Easy',
+                                          controller:
+                                              difficultyLevelController),
+                                      BuildItem(
+                                          label: 'Intermediate',
+                                          controller:
+                                              difficultyLevelController),
+                                      BuildItem(
+                                          label: 'Hard',
+                                          controller:
+                                              difficultyLevelController),
+                                      BuildItem(
+                                          label: 'Advanced',
+                                          controller:
+                                              difficultyLevelController),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        validator: Validator.recipeCategory,
+                      ),
                     ),
                   ],
                 ),

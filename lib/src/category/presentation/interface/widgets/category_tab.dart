@@ -35,7 +35,6 @@ class CategoryTab extends StatelessWidget {
             CategoryWidget(
               category: localizations.snacks,
             ),
-            const SizedBox(width: 10),
           ],
         ),
       ),

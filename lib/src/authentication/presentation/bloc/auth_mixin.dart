@@ -21,7 +21,7 @@ mixin AuthMixin {
       name,
     );
     return result.fold(
-      (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
+      (l) => l,
       (r) {
         NavigationHelper.navigateTo(context, LoginPage());
       },
@@ -36,15 +36,14 @@ mixin AuthMixin {
       email,
       password,
     );
-    return result.fold(
-        (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
+    return result.fold((l) => l,
         (r) => NavigationHelper.navigateToReplacement(context, const NavBar()));
   }
 
   Future<void> logoutUser({required BuildContext context}) async {
     final result = await bloc.logoutUser();
     return result.fold(
-      (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
+      (l) => l,
       (r) => r,
     );
   }

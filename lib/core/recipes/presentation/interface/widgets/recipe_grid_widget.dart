@@ -79,25 +79,24 @@ class RecipeGridWidget extends StatelessWidget {
                     )
                   ],
                 ),
-                const SizedBox(height: 3),
-                FittedBox(
-                  child: Text(
-                    recipe.title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      overflow: TextOverflow.ellipsis,
-                      fontWeight: FontWeight.w600,
-                    ),
+                const SizedBox(height: 7),
+                Text(
+                  recipe.title,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    overflow: TextOverflow.ellipsis,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+                const SizedBox(height: 2),
                 Clickable(
                   onClick: () => NavigationHelper.navigateTo(
                       context, ProfilePage(chefID: recipe.chefID)),
                   child: Text('By ${recipe.chef}',
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(height: 0, fontSize: 15)),
+                      style: const TextStyle(height: 0, fontSize: 18)),
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 8),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

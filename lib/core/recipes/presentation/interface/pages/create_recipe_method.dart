@@ -29,7 +29,7 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
       return;
     } else if (_selectedOption == AddRecipeOption.manualEntry) {
       Navigator.of(context, rootNavigator: true)
-          .pushReplacement(MaterialPageRoute(builder: (BuildContext context) {
+          .push(MaterialPageRoute(builder: (BuildContext context) {
         // ignore: deprecated_member_use
         return WillPopScope(
           onWillPop: () async {

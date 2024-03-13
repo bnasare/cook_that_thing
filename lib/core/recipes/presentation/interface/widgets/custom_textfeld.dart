@@ -5,11 +5,13 @@ import '../../../../../shared/presentation/theme/extra_colors.dart';
 class CustomTextFormField extends StatelessWidget {
   final TextEditingController controller;
   final String labelText;
+  final VoidCallback? onTap;
   final String hintText;
   final FormFieldValidator<String>? validator;
   final TextInputAction textInputAction;
   final int? maxLines;
   final bool? enabled;
+  final bool? readOnly;
   final ValueChanged<String>? onFieldSubmitted;
   const CustomTextFormField({
     super.key,
@@ -17,6 +19,8 @@ class CustomTextFormField extends StatelessWidget {
     required this.labelText,
     required this.hintText,
     this.validator,
+    this.onTap,
+    this.readOnly,
     this.textInputAction = TextInputAction.next,
     this.maxLines = 1,
     this.enabled,
@@ -29,7 +33,9 @@ class CustomTextFormField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         TextFormField(
+          onTap: onTap,
           controller: controller,
+          readOnly: readOnly ?? false,
           validator: validator,
           textInputAction: textInputAction,
           style: const TextStyle(

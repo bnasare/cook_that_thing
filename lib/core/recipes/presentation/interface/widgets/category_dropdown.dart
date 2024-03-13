@@ -20,6 +20,7 @@ class CategoryDropdown extends StatelessWidget {
       child: ButtonTheme(
         alignedDropdown: true,
         child: DropdownButtonFormField<String?>(
+          onTap: () {},
           style: TextStyle(
               fontSize: 14,
               color: ExtraColors.grey.withOpacity(0.7),

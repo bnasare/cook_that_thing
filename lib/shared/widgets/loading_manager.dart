@@ -16,7 +16,7 @@ class LoadingManager extends StatelessWidget {
         child,
         isLoading
             ? Container(
-                color: ExtraColors.black.withOpacity(0.5),
+                color: ExtraColors.black.withOpacity(0.9),
               )
             : Container(),
         isLoading

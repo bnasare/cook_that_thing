@@ -65,22 +65,31 @@ class Validator {
   }
 
   static String? recipeCategory(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please select a meal type';
+    if (value!.isEmpty) {
+      return 'Please select a recipe category';
+    }
+    if (!RegExp(r"^[a-zA-Z'\- ]+$").hasMatch(value)) {
+      return 'Please select a recipe category';
     }
     return null;
   }
 
   static String? recipeDiet(String? value) {
-    if (value == null || value.isEmpty) {
+    if (value!.isEmpty) {
+      return 'Please select a diet type';
+    }
+    if (!RegExp(r"^[a-zA-Z'\- ]+$").hasMatch(value)) {
       return 'Please select a diet type';
     }
     return null;
   }
 
   static String? recipeDifficulty(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'Please select a difficulty level';
+    if (value!.isEmpty) {
+      return 'Please select difficulty level';
+    }
+    if (!RegExp(r"^[a-zA-Z'\- ]+$").hasMatch(value)) {
+      return 'Please select difficulty level';
     }
     return null;
   }

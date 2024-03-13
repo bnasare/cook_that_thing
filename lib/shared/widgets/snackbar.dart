@@ -4,7 +4,6 @@ import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 
 import '../presentation/theme/extra_colors.dart';
-import '../presentation/theme/theme.dart';
 
 class SnackBarHelper {
   static void showSuccessSnackBar(BuildContext context, String message) {
@@ -54,14 +53,6 @@ class SnackBarHelper {
         Overlay.of(context),
         CustomSnackBar.success(
           message: message,
-          boxShadow: [
-            BoxShadow(
-              color: lightColorScheme.surface,
-              offset: const Offset(0, 12),
-              spreadRadius: 5,
-              blurRadius: 20,
-            ),
-          ],
           messagePadding: const EdgeInsets.symmetric(horizontal: 10),
           borderRadius: BorderRadius.zero,
           backgroundColor: backgroundColor,
