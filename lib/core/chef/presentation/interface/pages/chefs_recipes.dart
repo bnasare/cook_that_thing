@@ -114,7 +114,7 @@ class ChefsAndRecipes extends HookWidget with RecipeMixin {
               leading: 'Popular Recipes',
             ),
             StreamBuilder(
-                stream: fetchAllRecipesByPopular(context),
+                stream: fetchAllRecipesSortedByAverageRatingStream(context),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return const ErrorViewWidget();

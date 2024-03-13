@@ -167,6 +167,60 @@ mixin RecipeMixin {
     }
   }
 
+  Stream<List<Recipe>> fetchAllRecipesSortedByAverageRatingStream(
+      BuildContext context) async* {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String recipesCollectionPath = DatabaseCollections.recipes;
+
+    QuerySnapshot recipeSnapshot =
+        await firestore.collection(recipesCollectionPath).get();
+    List<Recipe> recipes = recipeSnapshot.docs.map((doc) {
+      return Recipe.fromJson(doc.data() as Map<String, dynamic>);
+    }).toList();
+
+    Map<String, double> averageRatings = {};
+
+    List<Future<void>> ratingFutures = [];
+
+    for (Recipe recipe in recipes) {
+      ratingFutures.add(
+        getAverageReviewsRating(recipe.id, context).then((rating) {
+          averageRatings[recipe.id] = rating;
+        }),
+      );
+    }
+
+    await Future.wait(ratingFutures);
+
+    recipes
+        .sort((a, b) => averageRatings[b.id]!.compareTo(averageRatings[a.id]!));
+
+    yield recipes;
+  }
+
+  Future<List<Recipe>> fetchAllRecipesSortedByAverageRating(
+      BuildContext context) async {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String recipesCollectionPath = DatabaseCollections.recipes;
+
+    QuerySnapshot recipeSnapshot =
+        await firestore.collection(recipesCollectionPath).get();
+    List<Recipe> recipes = recipeSnapshot.docs.map((doc) {
+      return Recipe.fromJson(doc.data() as Map<String, dynamic>);
+    }).toList();
+
+    Map<String, double> averageRatings = {};
+    for (Recipe recipe in recipes) {
+      double averageRating = await getAverageReviewsRating(recipe.id, context);
+      averageRatings[recipe.id] = averageRating;
+    }
+
+    recipes
+        .sort((a, b) => averageRatings[b.id]!.compareTo(averageRatings[a.id]!));
+
+    return recipes;
+  }
+
   Stream<List<Review>> getReviews({
     required BuildContext context,
     required String documentID,
