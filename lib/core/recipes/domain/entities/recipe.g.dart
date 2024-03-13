@@ -18,6 +18,7 @@ _$RecipeImpl _$$RecipeImplFromJson(Map<String, dynamic> json) => _$RecipeImpl(
       chefID: json['chefID'] as String,
       id: json['id'] as String,
       chefToken: json['chefToken'] as String,
+      createdAt: DateTime.parse(json['createdAt'] as String),
       likes: (json['likes'] as List<dynamic>).map((e) => e as String).toList(),
       ingredients: (json['ingredients'] as List<dynamic>)
           .map((e) => e as String)
@@ -40,6 +41,7 @@ Map<String, dynamic> _$$RecipeImplToJson(_$RecipeImpl instance) =>
       'chefID': instance.chefID,
       'id': instance.id,
       'chefToken': instance.chefToken,
+      'createdAt': instance.createdAt.toIso8601String(),
       'likes': instance.likes,
       'ingredients': instance.ingredients,
       'instructions': instance.instructions,

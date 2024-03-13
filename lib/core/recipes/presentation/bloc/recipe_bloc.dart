@@ -25,6 +25,7 @@ class RecipeBloc {
     String duration,
     String category,
     String image,
+    DateTime createdAt,
     List<String> ingredients,
     List<String> instructions,
   ) async {
@@ -36,6 +37,7 @@ class RecipeBloc {
         duration: duration,
         category: category,
         image: image,
+        createdAt: createdAt,
         ingredients: ingredients,
         instructions: instructions,
         chefTokenFuture: await FirebaseConsts.messaging.getToken() ?? ''));

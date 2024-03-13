@@ -16,6 +16,7 @@ abstract class RecipeRepository {
     String chefID,
     String id,
     String chefToken,
+    DateTime createdAt,
     List<String> likes,
     List<String> ingredients,
     List<String> instructions,

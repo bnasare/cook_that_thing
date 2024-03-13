@@ -32,6 +32,7 @@ mixin RecipeMixin {
     required String duration,
     required String category,
     required String image,
+    required DateTime createdAt,
     required List<String> ingredients,
     required List<String> instructions,
   }) async {
@@ -43,6 +44,7 @@ mixin RecipeMixin {
       duration,
       category,
       image,
+      createdAt,
       ingredients,
       instructions,
     );
@@ -98,21 +100,18 @@ mixin RecipeMixin {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.recipes;
 
-    Stream<QuerySnapshot> querySnapshotStream = firestore
+    QuerySnapshot querySnapshot = await firestore
         .collection(collectionPath)
-        .orderBy(FieldPath.documentId, descending: true)
-        .snapshots();
+        .orderBy("createdAt", descending: true)
+        .get();
 
-    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
-      List<Recipe> allRecipes = [];
+    List<Recipe> allRecipes = [];
 
-      for (DocumentSnapshot snapshot in querySnapshot.docs) {
-        String documentId = snapshot.id;
-        await for (List<Recipe> recipes
-            in getRecipes(context: context, documentID: documentId)) {
-          allRecipes.addAll(recipes);
-        }
-      }
+    for (DocumentSnapshot snapshot in querySnapshot.docs) {
+      String documentId = snapshot.id;
+      List<Recipe> recipes =
+          await getRecipes(context: context, documentID: documentId).first;
+      allRecipes.addAll(recipes);
 
       yield allRecipes;
     }
@@ -148,16 +147,22 @@ mixin RecipeMixin {
         .collection(collectionPath)
         .orderBy(FieldPath.documentId, descending: true)
         .snapshots();
+
     await for (QuerySnapshot querySnapshot in querySnapshotStream) {
       List<Recipe> allRecipes = [];
-      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+
+      List<Future<List<Recipe>>> recipeFutures =
+          querySnapshot.docs.map((snapshot) {
         String documentId = snapshot.id;
-        await for (List<Recipe> recipes
-            in getRecipes(context: context, documentID: documentId)) {
-          allRecipes.addAll(recipes);
-        }
-      }
+        return getRecipes(context: context, documentID: documentId).first;
+      }).toList();
+
+      List<List<Recipe>> recipesLists = await Future.wait(recipeFutures);
+
+      allRecipes = recipesLists.expand((recipes) => recipes).toList();
+
       allRecipes.sort((a, b) => b.likes.length.compareTo(a.likes.length));
+
       yield allRecipes;
     }
   }

@@ -31,6 +31,7 @@ mixin _$Recipe {
   String get chefID => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get chefToken => throw _privateConstructorUsedError;
+  DateTime get createdAt => throw _privateConstructorUsedError;
   List<String> get likes => throw _privateConstructorUsedError;
   List<String> get ingredients => throw _privateConstructorUsedError;
   List<String> get instructions => throw _privateConstructorUsedError;
@@ -57,6 +58,7 @@ abstract class $RecipeCopyWith<$Res> {
       String chefID,
       String id,
       String chefToken,
+      DateTime createdAt,
       List<String> likes,
       List<String> ingredients,
       List<String> instructions});
@@ -86,6 +88,7 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
     Object? chefID = null,
     Object? id = null,
     Object? chefToken = null,
+    Object? createdAt = null,
     Object? likes = null,
     Object? ingredients = null,
     Object? instructions = null,
@@ -135,6 +138,10 @@ class _$RecipeCopyWithImpl<$Res, $Val extends Recipe>
           ? _value.chefToken
           : chefToken // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       likes: null == likes
           ? _value.likes
           : likes // ignore: cast_nullable_to_non_nullable
@@ -170,6 +177,7 @@ abstract class _$$RecipeImplCopyWith<$Res> implements $RecipeCopyWith<$Res> {
       String chefID,
       String id,
       String chefToken,
+      DateTime createdAt,
       List<String> likes,
       List<String> ingredients,
       List<String> instructions});
@@ -197,6 +205,7 @@ class __$$RecipeImplCopyWithImpl<$Res>
     Object? chefID = null,
     Object? id = null,
     Object? chefToken = null,
+    Object? createdAt = null,
     Object? likes = null,
     Object? ingredients = null,
     Object? instructions = null,
@@ -246,6 +255,10 @@ class __$$RecipeImplCopyWithImpl<$Res>
           ? _value.chefToken
           : chefToken // ignore: cast_nullable_to_non_nullable
               as String,
+      createdAt: null == createdAt
+          ? _value.createdAt
+          : createdAt // ignore: cast_nullable_to_non_nullable
+              as DateTime,
       likes: null == likes
           ? _value._likes
           : likes // ignore: cast_nullable_to_non_nullable
@@ -277,6 +290,7 @@ class _$RecipeImpl implements _Recipe {
       required this.chefID,
       required this.id,
       required this.chefToken,
+      required this.createdAt,
       required final List<String> likes,
       required final List<String> ingredients,
       required final List<String> instructions})
@@ -309,6 +323,8 @@ class _$RecipeImpl implements _Recipe {
   final String id;
   @override
   final String chefToken;
+  @override
+  final DateTime createdAt;
   final List<String> _likes;
   @override
   List<String> get likes {
@@ -335,7 +351,7 @@ class _$RecipeImpl implements _Recipe {
 
   @override
   String toString() {
-    return 'Recipe(diet: $diet, difficultyLevel: $difficultyLevel, title: $title, overview: $overview, duration: $duration, category: $category, image: $image, chef: $chef, chefID: $chefID, id: $id, chefToken: $chefToken, likes: $likes, ingredients: $ingredients, instructions: $instructions)';
+    return 'Recipe(diet: $diet, difficultyLevel: $difficultyLevel, title: $title, overview: $overview, duration: $duration, category: $category, image: $image, chef: $chef, chefID: $chefID, id: $id, chefToken: $chefToken, createdAt: $createdAt, likes: $likes, ingredients: $ingredients, instructions: $instructions)';
   }
 
   @override
@@ -359,6 +375,8 @@ class _$RecipeImpl implements _Recipe {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.chefToken, chefToken) ||
                 other.chefToken == chefToken) &&
+            (identical(other.createdAt, createdAt) ||
+                other.createdAt == createdAt) &&
             const DeepCollectionEquality().equals(other._likes, _likes) &&
             const DeepCollectionEquality()
                 .equals(other._ingredients, _ingredients) &&
@@ -381,6 +399,7 @@ class _$RecipeImpl implements _Recipe {
       chefID,
       id,
       chefToken,
+      createdAt,
       const DeepCollectionEquality().hash(_likes),
       const DeepCollectionEquality().hash(_ingredients),
       const DeepCollectionEquality().hash(_instructions));
@@ -412,6 +431,7 @@ abstract class _Recipe implements Recipe {
       required final String chefID,
       required final String id,
       required final String chefToken,
+      required final DateTime createdAt,
       required final List<String> likes,
       required final List<String> ingredients,
       required final List<String> instructions}) = _$RecipeImpl;
@@ -440,6 +460,8 @@ abstract class _Recipe implements Recipe {
   String get id;
   @override
   String get chefToken;
+  @override
+  DateTime get createdAt;
   @override
   List<String> get likes;
   @override

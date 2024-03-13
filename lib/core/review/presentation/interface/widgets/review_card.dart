@@ -26,7 +26,7 @@ class ReviewCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Card(
-        color: Theme.of(context).colorScheme.primaryContainer,
+        color: Theme.of(context).colorScheme.surface,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -49,11 +49,11 @@ class ReviewCard extends StatelessWidget {
                       FittedBox(
                         child: Text(
                           name,
-                          style: TextStyle(
+                          style: const TextStyle(
                             letterSpacing: -0.5,
-                            fontSize: 15,
+                            fontSize: 16,
                             fontWeight: FontWeight.w500,
-                            color: color.secondary,
+                            color: ExtraColors.black,
                           ),
                         ),
                       ),
@@ -62,15 +62,15 @@ class ReviewCard extends StatelessWidget {
                           const Icon(
                             CupertinoIcons.calendar_today,
                             size: 13,
-                            color: ExtraColors.darkGrey,
+                            color: ExtraColors.grey,
                           ),
                           Text(
                             ' $formattedDate',
                             style: const TextStyle(
                               letterSpacing: -0.5,
-                              color: ExtraColors.darkGrey,
+                              color: ExtraColors.grey,
                               fontWeight: FontWeight.w500,
-                              fontSize: 11,
+                              fontSize: 12,
                             ),
                           ),
                         ],
@@ -89,8 +89,8 @@ class ReviewCard extends StatelessWidget {
                           text: TextSpan(children: [
                             TextSpan(
                               text: '$rating',
-                              style: TextStyle(
-                                color: color.secondary,
+                              style: const TextStyle(
+                                color: ExtraColors.grey,
                                 fontSize: 15,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -121,13 +121,13 @@ class ReviewCard extends StatelessWidget {
               child: FittedBox(
                 child: Text(
                   review,
-                  style: TextStyle(
+                  style: const TextStyle(
                     height: 1.4,
-                    fontSize: 15,
+                    fontSize: 16,
                     fontWeight: FontWeight.w400,
-                    color: color.secondary,
+                    color: ExtraColors.black,
                   ),
-                  maxLines: 3,
+                  maxLines: null,
                   softWrap: true,
                   overflow: TextOverflow.ellipsis,
                 ),

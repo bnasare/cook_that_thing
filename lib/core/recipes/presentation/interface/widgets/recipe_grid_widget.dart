@@ -90,13 +90,12 @@ class RecipeGridWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                FittedBox(
-                  child: Clickable(
-                    onClick: () => NavigationHelper.navigateTo(
-                        context, ProfilePage(chefID: recipe.chefID)),
-                    child: Text('By ${recipe.chef}',
-                        style: const TextStyle(height: 0, fontSize: 15)),
-                  ),
+                Clickable(
+                  onClick: () => NavigationHelper.navigateTo(
+                      context, ProfilePage(chefID: recipe.chefID)),
+                  child: Text('By ${recipe.chef}',
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(height: 0, fontSize: 15)),
                 ),
                 const SizedBox(height: 5),
                 Row(

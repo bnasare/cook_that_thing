@@ -20,6 +20,7 @@ class LikeRecipeParams extends ObjectParams<Recipe> {
   LikeRecipeParams({
     required String value,
     required List<String> params,
+    DateTime? value2,
   }) : super(
           Recipe(
             diet: value,
@@ -34,6 +35,7 @@ class LikeRecipeParams extends ObjectParams<Recipe> {
             id: value,
             chefToken: value,
             likes: params,
+            createdAt: value2 ?? DateTime.now(),
             ingredients: [],
             instructions: [],
           ),

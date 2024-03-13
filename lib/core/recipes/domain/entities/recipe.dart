@@ -17,6 +17,7 @@ class Recipe with _$Recipe {
     required String chefID,
     required String id,
     required String chefToken,
+    required DateTime createdAt,
     required List<String> likes,
     required List<String> ingredients,
     required List<String> instructions,
@@ -24,7 +25,7 @@ class Recipe with _$Recipe {
 
   factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
 
-  factory Recipe.initial() => const Recipe(
+  factory Recipe.initial() => Recipe(
         diet: '',
         difficultyLevel: '',
         title: '',
@@ -36,6 +37,7 @@ class Recipe with _$Recipe {
         chefID: '',
         id: '',
         chefToken: '',
+        createdAt: DateTime.now(),
         likes: [],
         ingredients: [],
         instructions: [],

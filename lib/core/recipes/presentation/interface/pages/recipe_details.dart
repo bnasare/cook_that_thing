@@ -136,8 +136,8 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                 unselectedLabelColor: ExtraColors.grey,
                                 tabs: const [
                                   Tab(text: 'Overview'),
-                                  Tab(text: 'Ingredient(s)'),
-                                  Tab(text: 'Direction(s)'),
+                                  Tab(text: 'Ingredients'),
+                                  Tab(text: 'Directions'),
                                 ],
                               ),
                               Expanded(

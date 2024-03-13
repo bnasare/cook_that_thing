@@ -89,8 +89,8 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                         title: Text(
                           '${reviews.length} ${reviews.length == 1 ? 'Review' : 'Reviews'}',
                           style: const TextStyle(
-                              color: ExtraColors.grey,
-                              fontSize: 15,
+                              color: ExtraColors.black,
+                              fontSize: 17,
                               fontWeight: FontWeight.w500),
                         ),
                         subtitle: Row(
@@ -98,9 +98,9 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                             Text(
                               '$averageReviews',
                               style: const TextStyle(
-                                  color: ExtraColors.grey,
+                                  color: ExtraColors.black,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 13),
+                                  fontSize: 15),
                             ),
                             RatingDisplay(rating: averageReviews),
                           ],

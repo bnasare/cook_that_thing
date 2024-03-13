@@ -26,6 +26,7 @@ class CreateRecipe implements UseCase<Recipe, RecipeParams> {
       params.chefID,
       params.id,
       params.chefToken,
+      params.createdAt,
       params.likes,
       params.ingredients,
       params.instructions,
@@ -46,6 +47,7 @@ class RecipeParams extends ObjectParams<Recipe> {
     String? chefID,
     String? id,
     required String chefTokenFuture,
+    required DateTime createdAt,
     List<String>? likes,
     required List<String> ingredients,
     required List<String> instructions,
@@ -62,6 +64,7 @@ class RecipeParams extends ObjectParams<Recipe> {
             chefID: FirebaseConsts.currentUser?.uid ?? 'UserID',
             id: id ?? const Uuid().v4(),
             chefToken: chefTokenFuture,
+            createdAt: createdAt,
             likes: [],
             ingredients: ingredients,
             instructions: instructions,
@@ -79,6 +82,7 @@ class RecipeParams extends ObjectParams<Recipe> {
   String get chefID => value.chefID;
   String get id => value.id;
   String get chefToken => value.chefToken;
+  DateTime get createdAt => value.createdAt;
   List<String> get likes => value.likes;
   List<String> get ingredients => value.ingredients;
   List<String> get instructions => value.instructions;

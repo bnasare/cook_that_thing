@@ -105,6 +105,7 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
           duration: durationController.text,
           category: category.value!,
           image: imageUrl,
+          createdAt: DateTime.now(),
           ingredients: submittedIngredients.value,
           instructions: submittedInstructions.value,
         );
