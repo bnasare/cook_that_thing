@@ -30,7 +30,7 @@ class ReviewTextField extends StatelessWidget {
         alignLabelWithHint: true,
         contentPadding:
             const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 10),
-        hintText: 'Describe your experience',
+        hintText: 'Add a detailed review of this recipe',
         hintStyle: const TextStyle(
             fontSize: 14,
             color: ExtraColors.darkGrey,

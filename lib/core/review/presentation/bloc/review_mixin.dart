@@ -9,10 +9,13 @@ import 'package:recipe_hub/shared/data/collection_ids.dart';
 import '../../../../injection_container.dart';
 import '../../../../shared/data/firebase_constants.dart';
 import '../../../../shared/platform/push_notification.dart';
+import '../../../recipes/domain/entities/recipe.dart';
+import '../../../recipes/presentation/bloc/recipe_bloc.dart';
 import 'review_bloc.dart';
 
 mixin ReviewMixin {
   final bloc = sl<ReviewBloc>();
+  final recipeBloc = sl<RecipeBloc>();
 
   Future<void> createAReview({
     required BuildContext context,
@@ -81,5 +84,21 @@ mixin ReviewMixin {
       }
       yield allReviews;
     }
+  }
+
+  Stream<Recipe> getRecipe({
+    required BuildContext context,
+    required String documentID,
+  }) async* {
+    final result = await recipeBloc.getRecipes(documentID);
+    yield result.fold(
+      (l) {
+        return Recipe.initial();
+      },
+      (r) {
+        return r.firstWhere((recipe) => recipe.id == documentID,
+            orElse: () => Recipe.initial());
+      },
+    );
   }
 }

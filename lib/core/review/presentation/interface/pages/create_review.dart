@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -11,6 +12,7 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/loading_manager.dart';
 
 import '../../../../../shared/data/firebase_constants.dart';
+import '../../../../recipes/domain/entities/recipe.dart';
 
 class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -50,7 +52,7 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'Add Review',
+            'Leave a Review',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 17,
@@ -68,8 +70,39 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      StreamBuilder<Recipe>(
+                          stream:
+                              getRecipe(context: context, documentID: recipeID),
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              Recipe recipe = snapshot.data!;
+                              return Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: FancyShimmerImage(
+                                      imageUrl: recipe.image,
+                                      height: 80,
+                                      width: 80,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    flex: 6,
+                                    child: ListTile(
+                                        title: Text(recipe.title,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.w600,
+                                                color: ExtraColors.black))),
+                                  )
+                                ],
+                              );
+                            } else {
+                              return Container();
+                            }
+                          }),
                       Padding(
-                        padding: const EdgeInsets.only(top: 10, bottom: 20),
+                        padding: const EdgeInsets.only(top: 40, bottom: 20),
                         child: ReviewTextField(
                           validator: Validator.validateReview,
                           controller: describeExperienceController,
