@@ -130,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                         obscureText: _obscureText,
                         keyboardType: TextInputType.visiblePassword,
                         validator: Validator.password,
-                        style: const TextStyle(color: Colors.black),
+                        style: const TextStyle(color: ExtraColors.black),
                         decoration: InputDecoration(
                           suffixIcon: GestureDetector(
                               onTap: () {
@@ -155,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   )),
               const SizedBox(
-                height: 33,
+                height: 30,
               ),
               ElevatedButton(
                 onPressed: () {

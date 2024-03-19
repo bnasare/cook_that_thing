@@ -22,6 +22,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final fullNameTextController = TextEditingController();
   final _passFocusNode = FocusNode();
   final _formKey = GlobalKey<FormState>();
+  bool _isAgreedToTerms = true;
   var _obscureText = true;
 
   @override
@@ -62,187 +63,188 @@ class _SignUpPageState extends State<SignUpPage> {
       resizeToAvoidBottomInset: false,
       body: LoadingManager(
         isLoading: isLoading,
-        child: Stack(children: [
-          Container(
-            color: Colors.black.withOpacity(0.7),
-          ),
-          SingleChildScrollView(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                const SizedBox(
-                  height: 120.0,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 100.0),
+              const Text(
+                'Create Account',
+                style: TextStyle(
+                    color: ExtraColors.black,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 8),
+              const Text(
+                "Fill your details to create your account",
+                style: TextStyle(
+                  color: ExtraColors.grey,
+                  fontSize: 16,
                 ),
-                const Text(
-                  'Welcome Back',
-                  style: TextStyle(
-                      color: ExtraColors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 8,
-                ),
-                const Text(
-                  "Sign up to continue",
-                  style: TextStyle(
-                    color: ExtraColors.white,
-                    fontSize: 18,
-                  ),
-                ),
-                const SizedBox(
-                  height: 30.0,
-                ),
-                Form(
-                    key: _formKey,
-                    child: Column(
-                      children: [
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          controller: fullNameTextController,
-                          keyboardType: TextInputType.name,
-                          validator: Validator.name,
-                          style: const TextStyle(color: ExtraColors.white),
-                          decoration: InputDecoration(
-                              hintText: 'Full name',
-                              hintStyle:
-                                  const TextStyle(color: ExtraColors.white),
-                              enabledBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: ExtraColors.white)),
-                              focusedBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: ExtraColors.white)),
-                              errorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          Theme.of(context).colorScheme.error)),
-                              focusedErrorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .error))),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        TextFormField(
-                          textInputAction: TextInputAction.next,
-                          onEditingComplete: () => FocusScope.of(context)
-                              .requestFocus(_passFocusNode),
-                          controller: emailTextController,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: Validator.email,
-                          style: const TextStyle(color: ExtraColors.white),
-                          decoration: InputDecoration(
-                              hintText: 'Email',
-                              hintStyle:
-                                  const TextStyle(color: ExtraColors.white),
-                              enabledBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: ExtraColors.white)),
-                              focusedBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: ExtraColors.white)),
-                              errorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          Theme.of(context).colorScheme.error)),
-                              focusedErrorBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: ExtraColors.white))),
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        //Password
-                        TextFormField(
-                          textInputAction: TextInputAction.done,
-                          onEditingComplete: () {
-                            _submitFormOnSignUp();
-                          },
-                          controller: passwordTextController,
-                          focusNode: _passFocusNode,
-                          obscureText: _obscureText,
-                          keyboardType: TextInputType.visiblePassword,
-                          validator: Validator.password,
-                          maxLines: 1,
-                          style: const TextStyle(color: Colors.white),
-                          decoration: InputDecoration(
-                              suffixIcon: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      _obscureText = !_obscureText;
-                                    });
-                                  },
-                                  child: Icon(
-                                    _obscureText
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    color: ExtraColors.white,
-                                  )),
-                              hintText: 'Password',
-                              hintStyle:
-                                  const TextStyle(color: ExtraColors.white),
-                              contentPadding:
-                                  const EdgeInsets.only(top: 10, left: 10),
-                              enabledBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: ExtraColors.white)),
-                              focusedBorder: const UnderlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: ExtraColors.white)),
-                              errorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color:
-                                          Theme.of(context).colorScheme.error)),
-                              focusedErrorBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .error))),
-                        ),
-                      ],
-                    )),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    _submitFormOnSignUp();
-                  },
-                  child: const Text('Sign Up',
-                      style: TextStyle(fontWeight: FontWeight.w600)),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                RichText(
-                  text: TextSpan(
-                    text: 'Already a user?',
-                    style: const TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              const SizedBox(height: 30.0),
+              Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextSpan(
-                        text: '  Sign in',
-                        style: TextStyle(
-                            color: Theme.of(context).primaryColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            NavigationHelper.navigateTo(context, LoginPage());
-                          },
+                      const Text('Name',
+                          style: TextStyle(
+                              color: ExtraColors.black, fontSize: 15)),
+                      const SizedBox(height: 7),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        controller: fullNameTextController,
+                        keyboardType: TextInputType.name,
+                        validator: Validator.name,
+                        style: const TextStyle(color: ExtraColors.black),
+                        decoration: const InputDecoration(
+                          hintText: 'John Doe',
+                          hintStyle: TextStyle(color: ExtraColors.darkGrey),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 20.0),
+                          filled: true,
+                        ),
                       ),
+                      const SizedBox(height: 20),
+                      const Text('Email',
+                          style: TextStyle(
+                              color: ExtraColors.black, fontSize: 15)),
+                      const SizedBox(height: 7),
+                      TextFormField(
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () =>
+                            FocusScope.of(context).requestFocus(_passFocusNode),
+                        controller: emailTextController,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: Validator.email,
+                        style: const TextStyle(color: ExtraColors.black),
+                        decoration: const InputDecoration(
+                          hintText: 'example@gmail.com',
+                          hintStyle: TextStyle(color: ExtraColors.darkGrey),
+                          contentPadding:
+                              EdgeInsets.symmetric(horizontal: 20.0),
+                          filled: true,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      //Password
+                      const Text('Password',
+                          style: TextStyle(
+                              color: ExtraColors.black, fontSize: 15)),
+                      const SizedBox(height: 7),
+                      TextFormField(
+                        textInputAction: TextInputAction.done,
+                        onEditingComplete: () {
+                          _submitFormOnSignUp();
+                        },
+                        controller: passwordTextController,
+                        focusNode: _passFocusNode,
+                        obscureText: _obscureText,
+                        keyboardType: TextInputType.visiblePassword,
+                        validator: Validator.password,
+                        maxLines: 1,
+                        style: const TextStyle(color: ExtraColors.black),
+                        decoration: InputDecoration(
+                          suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                              child: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: ExtraColors.darkGrey,
+                              )),
+                          hintText: '●●●●●●●',
+                          hintStyle:
+                              const TextStyle(color: ExtraColors.darkGrey),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 20.0),
+                          filled: true,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Checkbox(
+                              value: _isAgreedToTerms,
+                              onChanged: (value) {
+                                setState(() {
+                                  _isAgreedToTerms = value!;
+                                });
+                              },
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Agree to ',
+                                style: const TextStyle(
+                                  color: ExtraColors.grey,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Terms & Conditions',
+                                    style: TextStyle(
+                                      color: Theme.of(context).primaryColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ])
                     ],
+                  )),
+              const SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: _isAgreedToTerms ? _submitFormOnSignUp : null,
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30.0),
                   ),
-                )
-              ],
-            ),
-          )
-        ]),
+                ),
+                child: const Text(
+                  'Sign Up',
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              RichText(
+                text: TextSpan(
+                  text: 'Already have an account? ',
+                  style:
+                      const TextStyle(color: ExtraColors.black, fontSize: 16),
+                  children: [
+                    TextSpan(
+                      text: 'Sign in',
+                      style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          color: Theme.of(context).primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          NavigationHelper.navigateTo(context, LoginPage());
+                        },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
