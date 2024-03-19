@@ -171,7 +171,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                           chefName,
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(
-                                              fontSize: 18,
+                                              fontSize: 17,
                                               fontWeight: FontWeight.w500,
                                               overflow: TextOverflow.ellipsis),
                                         )

@@ -90,7 +90,7 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                           '${reviews.length} ${reviews.length == 1 ? 'Review' : 'Reviews'}',
                           style: const TextStyle(
                               color: ExtraColors.black,
-                              fontSize: 17,
+                              fontSize: 18,
                               fontWeight: FontWeight.w500),
                         ),
                         subtitle: Row(
@@ -100,9 +100,9 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                               style: const TextStyle(
                                   color: ExtraColors.black,
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 15),
+                                  fontSize: 18),
                             ),
-                            RatingDisplay(rating: averageReviews),
+                            RatingDisplay(rating: averageReviews, itemSize: 18),
                           ],
                         ),
                         trailing: FilledButton.icon(
@@ -137,9 +137,9 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                                 ),
                               );
                             },
-                            icon: const Icon(IconlyLight.edit, size: 15),
+                            icon: const Icon(IconlyLight.edit, size: 17),
                             label: const Text('Add Review',
-                                style: TextStyle(fontSize: 12))),
+                                style: TextStyle(fontSize: 17))),
                       ),
                       Expanded(
                         child: ListView.separated(

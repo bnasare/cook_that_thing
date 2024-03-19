@@ -21,7 +21,6 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme;
     String formattedDate = DateFormat('dd MMM, yyyy').format(time);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -39,10 +38,10 @@ class ReviewCard extends StatelessWidget {
                     child: Icon(
                       CupertinoIcons.person_alt_circle_fill,
                       color: ExtraColors.darkGrey,
-                      size: 40,
+                      size: 50,
                     ),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 5),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -51,7 +50,7 @@ class ReviewCard extends StatelessWidget {
                           name,
                           style: const TextStyle(
                             letterSpacing: -0.5,
-                            fontSize: 16,
+                            fontSize: 17,
                             fontWeight: FontWeight.w500,
                             color: ExtraColors.black,
                           ),
@@ -61,7 +60,7 @@ class ReviewCard extends StatelessWidget {
                         children: [
                           const Icon(
                             CupertinoIcons.calendar_today,
-                            size: 13,
+                            size: 16,
                             color: ExtraColors.grey,
                           ),
                           Text(
@@ -70,7 +69,7 @@ class ReviewCard extends StatelessWidget {
                               letterSpacing: -0.5,
                               color: ExtraColors.grey,
                               fontWeight: FontWeight.w500,
-                              fontSize: 12,
+                              fontSize: 15,
                             ),
                           ),
                         ],
@@ -91,7 +90,7 @@ class ReviewCard extends StatelessWidget {
                               text: '$rating',
                               style: const TextStyle(
                                 color: ExtraColors.grey,
-                                fontSize: 15,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
@@ -100,14 +99,14 @@ class ReviewCard extends StatelessWidget {
                               style: TextStyle(
                                 color: ExtraColors.grey,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 11,
+                                fontSize: 13,
                               ),
                             ),
                           ]),
                         ),
                         Row(
                           children: [
-                            RatingDisplay(rating: rating),
+                            RatingDisplay(rating: rating, itemSize: 14),
                           ],
                         ),
                       ],
@@ -123,7 +122,7 @@ class ReviewCard extends StatelessWidget {
                   review,
                   style: const TextStyle(
                     height: 1.4,
-                    fontSize: 16,
+                    fontSize: 17,
                     fontWeight: FontWeight.w400,
                     color: ExtraColors.black,
                   ),

@@ -79,7 +79,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                 Padding(
                                   padding: const EdgeInsets.only(left: 20),
                                   child: IconButton.filledTonal(
-                                    icon: const Icon(CupertinoIcons.backward),
+                                    icon: const Icon(Icons.arrow_back_ios_new),
                                     onPressed: () =>
                                         NavigationHelper.navigateBack(context),
                                     style: ButtonStyle(
@@ -132,7 +132,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                 overlayColor: MaterialStateProperty.all(
                                     Colors.transparent),
                                 labelStyle: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
+                                    fontSize: 20, fontWeight: FontWeight.w600),
                                 unselectedLabelColor: ExtraColors.grey,
                                 tabs: const [
                                   Tab(text: 'Overview'),
@@ -151,57 +151,58 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                         Padding(
                                           padding:
                                               const EdgeInsets.only(top: 15.0),
-                                          child: Text(recipe.overview),
+                                          child: Text(recipe.overview,
+                                              textAlign: TextAlign.justify,
+                                              style: const TextStyle(
+                                                  fontSize: 17)),
                                         ),
                                         ListTile(
-                                          contentPadding: EdgeInsets.zero,
-                                          title: const Text('Meal'),
-                                          trailing: Text(recipe.category,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 16)),
-                                        ),
+                                            contentPadding: EdgeInsets.zero,
+                                            title: const Text('Meal',
+                                                style: TextStyle(fontSize: 18)),
+                                            trailing: Text(recipe.category,
+                                                style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 18))),
                                         Divider(
                                             color: ExtraColors.darkGrey
                                                 .withOpacity(0.3)),
                                         ListTile(
                                           contentPadding: EdgeInsets.zero,
-                                          title: const Text('Diet'),
+                                          title: const Text('Diet',
+                                              style: TextStyle(fontSize: 18)),
                                           trailing: Text(recipe.diet,
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
-                                                  fontSize: 16)),
+                                                  fontSize: 18)),
                                         ),
                                         Divider(
                                             color: ExtraColors.darkGrey
                                                 .withOpacity(0.3)),
                                         ListTile(
                                           contentPadding: EdgeInsets.zero,
-                                          title: const Text('Cooking Time'),
+                                          title: const Text('Cooking Time',
+                                              style: TextStyle(fontSize: 18)),
                                           trailing: Text(recipe.duration,
                                               style: const TextStyle(
                                                   fontWeight: FontWeight.w500,
-                                                  fontSize: 16)),
+                                                  fontSize: 18)),
                                         )
                                       ],
                                     ),
-                                    ListView.separated(
+                                    ListView.builder(
                                       padding: const EdgeInsets.only(
                                           left: 30, right: 30, bottom: 10),
                                       shrinkWrap: true,
                                       itemCount: recipe.ingredients.length,
-                                      separatorBuilder: (context, index) =>
-                                          Divider(
-                                        color: ExtraColors.darkGrey
-                                            .withOpacity(0.3),
-                                      ),
                                       itemBuilder: (context, index) {
                                         return ListTile(
+                                          horizontalTitleGap: 5,
                                           contentPadding:
                                               const EdgeInsets.all(0),
-                                          leading: Text(
-                                            '${index + 1}.',
-                                            style: const TextStyle(
+                                          leading: const Text(
+                                            '● ',
+                                            style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16.0,
                                               color: Colors.black,
@@ -210,36 +211,31 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                           title: Text(recipe.ingredients[index],
                                               overflow: TextOverflow.ellipsis,
                                               style: const TextStyle(
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                   color: ExtraColors.grey)),
                                         );
                                       },
                                     ),
                                     ListView.separated(
+                                      separatorBuilder: (context, index) =>
+                                          const Icon(
+                                              Icons.arrow_downward_rounded,
+                                              color: ExtraColors.grey,
+                                              size: 45),
                                       padding: const EdgeInsets.only(
                                           left: 30, right: 30, bottom: 10),
                                       shrinkWrap: true,
                                       itemCount: recipe.instructions.length,
-                                      separatorBuilder: (context, index) =>
-                                          Divider(
-                                        color: ExtraColors.darkGrey
-                                            .withOpacity(0.3),
-                                      ),
                                       itemBuilder: (context, index) {
                                         return ListTile(
                                           contentPadding:
                                               const EdgeInsets.all(0),
-                                          leading: Text(
-                                            '${index + 1}.',
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16.0,
-                                              color: Colors.black,
-                                            ),
-                                          ),
                                           title: Text(
                                               recipe.instructions[index],
+                                              textAlign: TextAlign.justify,
                                               style: const TextStyle(
+                                                  fontSize: 18,
                                                   fontWeight: FontWeight.w500,
                                                   color: ExtraColors.grey)),
                                         );
@@ -292,9 +288,11 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                     icon: Icons.auto_graph_outlined,
                                     text: recipe.difficultyLevel,
                                     iconColor: ExtraColors.grey,
+                                    textSize: 18,
                                     textColor: ExtraColors.black),
                                 RecipeInfoItem(
                                     icon: CupertinoIcons.heart,
+                                    textSize: 18,
                                     text: recipe.likes.length.toString(),
                                     iconColor: ExtraColors.grey,
                                     textColor: ExtraColors.black),
@@ -304,6 +302,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                     builder: (context, snapshot) {
                                       return RecipeInfoItem(
                                           icon: Icons.grade,
+                                          textSize: 18,
                                           text: snapshot.data
                                                   ?.toStringAsFixed(1) ??
                                               '0.0',

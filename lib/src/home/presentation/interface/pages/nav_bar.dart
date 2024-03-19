@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:recipe_hub/core/chef/presentation/interface/pages/chefs_recipes.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/src/home/presentation/interface/pages/home.dart';
 import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
@@ -23,7 +22,6 @@ class _NavBarState extends State<NavBar> {
   List<Widget> _buildScreens() {
     return [
       HomePage(),
-      ChefsAndRecipes(),
       const CreateRecipeChoicePage(),
       ProfilePage(
         chefID: FirebaseConsts.currentUser!.uid,
@@ -39,12 +37,6 @@ class _NavBarState extends State<NavBar> {
         textStyle: Theme.of(context).textTheme.bodySmall,
         icon: const Icon(Icons.home_filled),
         title: localizations.home,
-        activeColorPrimary: Theme.of(context).colorScheme.primary,
-        inactiveColorPrimary: ExtraColors.darkGrey,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.group),
-        title: 'Chefs',
         activeColorPrimary: Theme.of(context).colorScheme.primary,
         inactiveColorPrimary: ExtraColors.darkGrey,
       ),

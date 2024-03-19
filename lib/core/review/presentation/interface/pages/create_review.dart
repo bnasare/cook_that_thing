@@ -12,7 +12,10 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/loading_manager.dart';
 
 import '../../../../../shared/data/firebase_constants.dart';
+import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 import '../../../../recipes/domain/entities/recipe.dart';
+import '../../../../recipes/presentation/interface/widgets/recipe_info_item.dart';
 
 class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -52,7 +55,7 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
         appBar: AppBar(
           centerTitle: true,
           title: const Text(
-            'Leave a Review',
+            'Leave Review',
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 17,
@@ -87,14 +90,78 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
                                       width: 80,
                                     ),
                                   ),
+                                  const SizedBox(width: 10),
                                   Flexible(
-                                    flex: 6,
-                                    child: ListTile(
-                                        title: Text(recipe.title,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: ExtraColors.black))),
-                                  )
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          recipe.title,
+                                          style: const TextStyle(
+                                            fontSize: 20,
+                                            overflow: TextOverflow.ellipsis,
+                                            fontWeight: FontWeight.w600,
+                                          ),
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            RecipeInfoItem(
+                                              textColor: ExtraColors.grey,
+                                              iconColor: ExtraColors.grey,
+                                              icon: Icons.av_timer_outlined,
+                                              text: recipe.duration,
+                                            ),
+                                            const Text(
+                                              '● ',
+                                              style: TextStyle(
+                                                  color: ExtraColors.darkGrey),
+                                            ),
+                                            Text(
+                                              recipe.difficultyLevel,
+                                              style: const TextStyle(
+                                                color: ExtraColors.grey,
+                                                wordSpacing: -2.2,
+                                                letterSpacing: 0,
+                                                fontSize: 16,
+                                              ),
+                                            ),
+                                            const Text(
+                                              ' ● ',
+                                              style: TextStyle(
+                                                  color: ExtraColors.darkGrey),
+                                            ),
+                                            Flexible(
+                                              child: Clickable(
+                                                onClick: () =>
+                                                    NavigationHelper.navigateTo(
+                                                        context,
+                                                        ProfilePage(
+                                                            chefID:
+                                                                recipe.chefID)),
+                                                child: Text(
+                                                    'by  ${recipe.chef}',
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                      color: ExtraColors.grey,
+                                                      wordSpacing: -2.2,
+                                                      letterSpacing: 0,
+                                                      fontSize: 16,
+                                                    )),
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                  ),
                                 ],
                               );
                             } else {

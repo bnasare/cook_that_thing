@@ -9,12 +9,14 @@ class RecipeInfoItem extends StatelessWidget {
   final String text;
   final Color? iconColor;
   final Color? textColor;
+  final double? textSize;
 
   const RecipeInfoItem({
     this.icon,
     required this.text,
     super.key,
     this.iconColor,
+    this.textSize = 16,
     this.textColor,
   });
 
@@ -38,7 +40,7 @@ class RecipeInfoItem extends StatelessWidget {
               color: textColor ?? ExtraColors.white,
               wordSpacing: -2.2,
               letterSpacing: 0,
-              fontSize: 16,
+              fontSize: textSize,
             ),
           ),
         ],

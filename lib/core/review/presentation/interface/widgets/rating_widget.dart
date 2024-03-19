@@ -3,9 +3,10 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 
 class RatingDisplay extends StatelessWidget {
-  const RatingDisplay({super.key, required this.rating});
+  const RatingDisplay({super.key, required this.rating, this.itemSize = 13});
 
   final double rating;
+  final double itemSize;
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +17,10 @@ class RatingDisplay extends StatelessWidget {
         direction: Axis.horizontal,
         allowHalfRating: true,
         itemCount: 5,
-        itemSize: 13,
+        itemSize: itemSize,
         itemPadding: EdgeInsets.zero,
         itemBuilder: (context, _) => const Icon(
-          Icons.star,
+          Icons.grade,
           color: ExtraColors.yellow,
         ),
         onRatingUpdate: (rating) {},
