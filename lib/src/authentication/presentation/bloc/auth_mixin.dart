@@ -21,7 +21,7 @@ mixin AuthMixin {
       name,
     );
     return result.fold(
-      (l) => l,
+      (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
       (r) {
         NavigationHelper.navigateTo(context, LoginPage());
       },
@@ -36,7 +36,8 @@ mixin AuthMixin {
       email,
       password,
     );
-    return result.fold((l) => l,
+    return result.fold(
+        (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
         (r) => NavigationHelper.navigateToReplacement(context, const NavBar()));
   }
 

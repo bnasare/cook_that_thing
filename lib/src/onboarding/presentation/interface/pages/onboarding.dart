@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:recipe_hub/shared/data/svg_assets.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
+import 'package:recipe_hub/shared/data/image_assets.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/src/authentication/presentation/interface/pages/login.dart';
-import 'package:recipe_hub/src/authentication/presentation/interface/pages/sign_up.dart';
 import 'package:recipe_hub/src/onboarding/presentation/bloc/onboarding_mixin.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Onboarding extends StatefulWidget with OnboardingMixin {
   Onboarding({super.key});
@@ -17,125 +12,84 @@ class Onboarding extends StatefulWidget with OnboardingMixin {
 }
 
 class _OnboardingState extends State<Onboarding> {
-  final _pageController = PageController();
-  List images = [
-    SvgAssets.book,
-    SvgAssets.female,
-    SvgAssets.male,
-  ];
-
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
-
-    List titles = [
-      localizations.titleDiscovery,
-      localizations.titleExcellence,
-      localizations.titleExquisite,
-    ];
-    List subtitles = [
-      localizations.subtitleDiscovery,
-      localizations.subtitleExcellence,
-      localizations.subtitleExquisite,
-    ];
-
     return Scaffold(
-      body: Column(
+      backgroundColor: Colors.black,
+      body: Stack(
         children: [
-          Flexible(
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: images.length,
-              itemBuilder: (context, index) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        images[index],
-                        width: 250,
-                        height: 250,
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        titles[index],
-                        style: Theme.of(context)
-                            .textTheme
-                            .titleLarge
-                            ?.copyWith(fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 30.0),
-                        child: Text(
-                          subtitles[index],
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(color: ExtraColors.grey),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+          const Image(
+            image: AssetImage(ImageAssets.getStarted),
           ),
-          SmoothPageIndicator(
-              controller: _pageController,
-              count: images.length,
-              effect: JumpingDotEffect(
-                activeDotColor: Theme.of(context).primaryColor,
-                dotColor: ExtraColors.darkGrey.withOpacity(0.3),
-                dotHeight: 13,
-                dotWidth: 13,
-                spacing: 10,
-              )),
-          const SizedBox(
-            height: 30,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: ElevatedButton(
-              onPressed: () async {
-                widget.completeOnboardingChecks();
-                NavigationHelper.navigateToReplacement(context, LoginPage());
-              },
-              child: const Text('Log In',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20, 0, 20, 80),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: ExtraColors.white,
-                foregroundColor: Theme.of(context).primaryColor,
-                side: BorderSide(
-                  width: 2,
-                  color: Theme.of(context).primaryColor,
-                ),
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Colors.black,
+                  Colors.transparent,
+                ],
+                stops: [
+                  0.2,
+                  1,
+                ],
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
               ),
-              onPressed: () {
-                widget.completeOnboardingChecks();
-                NavigationHelper.navigateToReplacement(context, SignUpPage());
-              },
-              child: const Text('Register',
-                  style: TextStyle(fontWeight: FontWeight.w600)),
             ),
           ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+                16,
+                MediaQuery.of(context).padding.top + 16,
+                16,
+                MediaQuery.of(context).padding.bottom + 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Spacer(),
+                Text(
+                  "Cooking &\nDelicious Food Easily",
+                  style: Theme.of(context)
+                      .textTheme
+                      .headlineMedium
+                      ?.copyWith(color: Colors.white),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  "Discover more than 1200 food recipes in your hands and cooking it easily!",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium
+                      ?.copyWith(color: Colors.white),
+                ),
+                const SizedBox(height: 32),
+                InkWell(
+                  onTap: () async {
+                    widget.completeOnboardingChecks();
+                    NavigationHelper.navigateToReplacement(
+                        context, LoginPage());
+                  },
+                  child: Container(
+                    height: 66,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Get Started",
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleLarge
+                          ?.copyWith(color: Colors.white),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
         ],
       ),
     );

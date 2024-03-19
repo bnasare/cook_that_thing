@@ -38,50 +38,31 @@ class _SignUpPageState extends State<SignUpPage> {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
     if (isValid) {
-      _formKey.currentState!.save();
       setState(() {
         isLoading = true;
       });
-    }
-    await widget.signUpUser(
-      context: context,
-      email: emailTextController.text,
-      password: passwordTextController.text,
-      name: fullNameTextController.text,
-    );
-    if (mounted) {
-      setState(() {
-        isLoading = false;
-      });
+      _formKey.currentState!.save();
+      await widget.signUpUser(
+        context: context,
+        email: emailTextController.text,
+        password: passwordTextController.text,
+        name: fullNameTextController.text,
+      );
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
     }
   }
-
-  // List svgs = [
-  // SvgAssets.male,
-  // SvgAssets.female,
-  // SvgAssets.book,
-  // ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: ExtraColors.white.withOpacity(0.7),
       resizeToAvoidBottomInset: false,
       body: LoadingManager(
         isLoading: isLoading,
         child: Stack(children: [
-          // Swiper(
-          // duration: 800,
-          // autoplayDelay: 8000,
-          // itemBuilder: (BuildContext context, int index) {
-          // return SvgPicture.asset(
-          // svgs[index],
-          // fit: BoxFit.fill,
-          // );
-          // },
-          // autoplay: true,
-          // itemCount: svgs.length,
-          // ),
           Container(
             color: Colors.black.withOpacity(0.7),
           ),
