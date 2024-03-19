@@ -5,18 +5,24 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_widget.dart';
+import 'package:recipe_hub/shared/data/firebase_constants.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/src/category/presentation/interface/widgets/category_tab.dart';
 import 'package:recipe_hub/src/home/presentation/interface/widgets/header.dart';
 import 'package:recipe_hub/src/home/presentation/interface/widgets/recipe_search_box.dart';
 
+import '../../../../../core/chef/domain/entities/chef.dart';
+import '../../../../../core/chef/presentation/interface/pages/all_chefs.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
+import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
 import '../../../../category/presentation/interface/pages/list_category.dart';
+import '../../../../profile/presentation/interface/pages/profile.dart';
 
 class HomePage extends HookWidget with RecipeMixin {
   HomePage({super.key});
@@ -70,9 +76,9 @@ class HomePage extends HookWidget with RecipeMixin {
                       contentPadding: const EdgeInsets.all(0),
                       leading: const Icon(CupertinoIcons.person_alt_circle_fill,
                           size: 50),
-                      title: const Text(
-                        'Hello Benedict!',
-                        style: TextStyle(
+                      title: Text(
+                        'Hello ${FirebaseConsts.currentUser!.displayName}!',
+                        style: const TextStyle(
                             overflow: TextOverflow.ellipsis,
                             color: ExtraColors.white),
                       ),
@@ -101,17 +107,89 @@ class HomePage extends HookWidget with RecipeMixin {
                   shrinkWrap: true,
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                   children: [
-                    Header(
-                      leading: localizations.category,
-                      trailing: localizations.seeMore,
-                      onClick: () {
-                        NavigationHelper.navigateTo(
-                            context, const CategoryListPage());
-                      },
+                    Padding(
+                      padding: const EdgeInsets.only(top: 20),
+                      child: Header(
+                        leading: 'Categories',
+                        trailing: localizations.seeMore,
+                        onClick: () {
+                          NavigationHelper.navigateTo(
+                              context, const CategoryListPage());
+                        },
+                      ),
                     ),
                     const CategoryTab(),
-                    const Header(
-                      leading: 'Popular Categories',
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Header(
+                        leading: 'Featured Chefs',
+                        trailing: localizations.seeMore,
+                        onClick: () {
+                          NavigationHelper.navigateTo(context, AllChefsPage());
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 15),
+                    StreamBuilder<List<Chef>>(
+                      stream: listChefStream(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return SpinKitFadingCircle(
+                            color: Theme.of(context).colorScheme.primary,
+                          );
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else {
+                          return SizedBox(
+                            height: 110,
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              itemCount: snapshot.data!.length > 4
+                                  ? 4
+                                  : snapshot.data!.length,
+                              itemBuilder: (context, index) {
+                                String chefName = snapshot.data![index].name;
+                                return SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.23,
+                                  child: Clickable(
+                                    onClick: () => NavigationHelper.navigateTo(
+                                      context,
+                                      ProfilePage(
+                                          chefID: snapshot.data![index].id),
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        const Icon(
+                                          CupertinoIcons.person_alt_circle_fill,
+                                          color: ExtraColors.darkGrey,
+                                          size: 80,
+                                        ),
+                                        Text(
+                                          chefName,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              overflow: TextOverflow.ellipsis),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Header(
+                        leading: 'Popular Recipes',
+                      ),
                     ),
                     StreamBuilder(
                         stream:
@@ -123,19 +201,10 @@ class HomePage extends HookWidget with RecipeMixin {
                           } else if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             // If the connection is still waiting, show a loading indicator or not
-                            return GridView.builder(
-                              padding: const EdgeInsets.only(top: 20),
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return const LoadingTextView(height: 25);
-                              },
-                              itemCount: 8,
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
-                                      crossAxisCount: 2),
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: LoadingTextView(
+                                  height: 230, width: double.infinity),
                             );
                           } else if (snapshot.hasData &&
                               snapshot.data!.isEmpty) {

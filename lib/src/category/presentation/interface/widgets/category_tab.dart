@@ -11,7 +11,7 @@ class CategoryTab extends StatelessWidget {
   Widget build(BuildContext context) {
     final localizations = AppLocalizations.of(context)!;
     return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 10),
+      padding: const EdgeInsets.only(top: 15, bottom: 20),
       child: SizedBox(
         height: 50,
         child: ListView(

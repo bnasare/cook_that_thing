@@ -76,19 +76,10 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                             } else if (snapshot.connectionState ==
                                 ConnectionState.waiting) {
                               // If the connection is still waiting, show a loading indicat
-                              return GridView.builder(
-                                padding: const EdgeInsets.only(top: 20),
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return const LoadingTextView(height: 25);
-                                },
-                                itemCount: 8,
-                                shrinkWrap: true,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                        mainAxisSpacing: 10,
-                                        crossAxisSpacing: 10,
-                                        crossAxisCount: 2),
+                              return const Padding(
+                                padding: EdgeInsets.only(top: 20.0),
+                                child: LoadingTextView(
+                                    height: 230, width: double.infinity),
                               );
                             } else if (snapshot.hasData &&
                                 snapshot.data!.isEmpty) {

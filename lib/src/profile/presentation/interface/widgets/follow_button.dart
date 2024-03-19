@@ -41,7 +41,6 @@ class FollowButton extends HookWidget with RecipeMixin {
               width: width ?? 75,
               decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primary,
-                  border: Border.all(color: ExtraColors.darkGrey),
                   borderRadius: BorderRadius.circular(8)),
               child: Center(
                 child: Text(

@@ -44,8 +44,8 @@ class CategoryWidget extends StatelessWidget {
             Center(
               child: Text(
                 category,
-                style: TextStyle(
-                  color: ExtraColors.white.withOpacity(0.8),
+                style: const TextStyle(
+                  color: ExtraColors.white,
                   fontSize: 15,
                   fontWeight: FontWeight.w600,
                 ),

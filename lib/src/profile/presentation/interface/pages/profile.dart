@@ -212,9 +212,6 @@ class ProfilePage extends HookWidget with ChefMixin {
                                                   color: Theme.of(context)
                                                       .colorScheme
                                                       .primary,
-                                                  border: Border.all(
-                                                      color:
-                                                          ExtraColors.darkGrey),
                                                   borderRadius:
                                                       BorderRadius.circular(8)),
                                               child: Center(
