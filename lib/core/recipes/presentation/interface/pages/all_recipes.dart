@@ -3,12 +3,11 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/src/home/presentation/interface/widgets/recipe_search_box.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../domain/entities/recipe.dart';
-import '../widgets/recipe_grid_widget.dart';
+import '../widgets/recipe_widget.dart';
 
 class AllRecipesPage extends HookWidget with RecipeMixin {
   AllRecipesPage({super.key});
@@ -85,20 +84,13 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
               shrinkWrap: true,
               children: [
                 const SizedBox(height: 5),
-                CustomSearchBox(
-                  handleSearch: handleSearch,
-                  controller: searchController,
-                  label: 'Search',
-                  hintText:
-                      'Search recipes by title, category, difficulty or chef',
-                ),
                 searchResults.value != null && searchController.text.isNotEmpty
                     ? searchResults.value!.isEmpty
                         ? const Padding(
                             padding: EdgeInsets.only(top: 50),
                             child: ErrorViewWidget(),
                           )
-                        : RecipeGridWidget(recipes: searchResults.value!)
+                        : RecipeWidget(recipes: searchResults.value!)
                     : searchController.text.isEmpty
                         ? StreamBuilder(
                             stream: fetchAllRecipes(context),
@@ -120,8 +112,7 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
                                   snapshot.data!.isEmpty) {
                                 return const ErrorViewWidget();
                               } else if (snapshot.hasData) {
-                                return RecipeGridWidget(
-                                    recipes: snapshot.data!);
+                                return RecipeWidget(recipes: snapshot.data!);
                               } else {
                                 return const ErrorViewWidget();
                               }

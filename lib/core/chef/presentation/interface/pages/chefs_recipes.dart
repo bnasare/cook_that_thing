@@ -8,7 +8,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:recipe_hub/core/chef/presentation/interface/pages/all_chefs.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_grid_widget.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_widget.dart';
 import 'package:recipe_hub/shared/data/svg_assets.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
@@ -138,7 +138,7 @@ class ChefsAndRecipes extends HookWidget with RecipeMixin {
                   } else if (snapshot.hasData) {
                     int itemCount =
                         snapshot.data!.length > 6 ? 6 : snapshot.data!.length;
-                    return RecipeGridWidget(
+                    return RecipeWidget(
                         recipes: snapshot.data!, itemCount: itemCount);
                   } else {
                     return const ErrorViewWidget();

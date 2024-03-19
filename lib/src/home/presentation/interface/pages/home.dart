@@ -1,12 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:colorful_safe_area/colorful_safe_area.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/pages/all_recipes.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_grid_widget.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_widget.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/src/category/presentation/interface/widgets/category_tab.dart';
@@ -50,7 +50,8 @@ class HomePage extends HookWidget with RecipeMixin {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: SafeArea(
+        body: ColorfulSafeArea(
+          color: Theme.of(context).primaryColor,
           child: Column(
             children: [
               Container(
@@ -109,15 +110,12 @@ class HomePage extends HookWidget with RecipeMixin {
                       },
                     ),
                     const CategoryTab(),
-                    Header(
-                        leading: localizations.proCook,
-                        trailing: localizations.seeMore,
-                        onClick: () {
-                          NavigationHelper.navigateTo(
-                              context, AllRecipesPage());
-                        }),
+                    const Header(
+                      leading: 'Popular Categories',
+                    ),
                     StreamBuilder(
-                        stream: fetchAllRecipes(context),
+                        stream:
+                            fetchAllRecipesSortedByAverageRatingStream(context),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             // If there's an error, return the error widget.
@@ -144,11 +142,11 @@ class HomePage extends HookWidget with RecipeMixin {
                             // If there's data but the list is empty, show a "no data" message or
                             return const ErrorViewWidget();
                           } else if (snapshot.hasData) {
-                            // If there's data, return the RecipeGridWidget.
-                            int itemCount = snapshot.data!.length > 6
-                                ? 6
+                            // If there's data, return the RecipeWidget.
+                            int itemCount = snapshot.data!.length > 3
+                                ? 3
                                 : snapshot.data!.length;
-                            return RecipeGridWidget(
+                            return RecipeWidget(
                                 recipes: snapshot.data!, itemCount: itemCount);
                           } else {
                             // If the snapshot is neither loading, with error, nor with data, show

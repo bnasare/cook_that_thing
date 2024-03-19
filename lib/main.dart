@@ -32,8 +32,6 @@ void main() async {
   /// Initialize widgets binding
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// Initialize Splash Screen
-  ///
   /// e1tInqbVQiCYJp-z5CRMd9:APA91bFCBHSCuZiIsu1kClEa0P4UPiJW5P6GFgF0rF6TUT5zXe6aC53zzQXexeQSzG-vo39NpPONrS7o22lVO1HboE_75Y4fLynZoxJUeWhfUWOwOtUUR9t8jA3sBTcnvdd0zHCt4k9m
 
   /// Initialize Firebase

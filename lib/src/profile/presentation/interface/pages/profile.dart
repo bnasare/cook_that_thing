@@ -8,8 +8,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:iconly/iconly.dart';
 import 'package:recipe_hub/core/chef/presentation/bloc/chef_mixin.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_grid_widget.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_info_item.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_widget.dart';
 import 'package:recipe_hub/shared/data/firebase_constants.dart';
 import 'package:recipe_hub/shared/data/svg_assets.dart';
 import 'package:recipe_hub/src/authentication/presentation/interface/pages/login.dart';
@@ -81,7 +81,7 @@ class ProfilePage extends HookWidget with ChefMixin {
                               snapshot.data!.isEmpty) {
                             return const ErrorViewWidget();
                           } else if (snapshot.hasData) {
-                            return RecipeGridWidget(recipes: snapshot.data!);
+                            return RecipeWidget(recipes: snapshot.data!);
                           } else {
                             return const ErrorViewWidget();
                           }

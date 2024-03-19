@@ -63,14 +63,14 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                               imageUrl: recipe.image,
                               height: MediaQuery.of(context).size.height * 0.4,
                               width: double.infinity,
-                              fit: BoxFit.fill,
+                              fit: BoxFit.cover,
                               placeholder: (context, url) => const SizedBox(),
                               errorWidget: (context, url, error) =>
                                   const Icon(Icons.error),
                             ),
                           ),
                           Positioned(
-                            top: 30,
+                            top: 50,
                             left: 0,
                             right: 0,
                             child: Row(
@@ -303,7 +303,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                         recipeID, context),
                                     builder: (context, snapshot) {
                                       return RecipeInfoItem(
-                                          icon: Icons.star,
+                                          icon: Icons.grade,
                                           text: snapshot.data
                                                   ?.toStringAsFixed(1) ??
                                               '0.0',

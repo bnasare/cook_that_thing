@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/shimmer.dart';
 import '../../bloc/recipe_mixin.dart';
+import 'recipe_info_item.dart';
 
 class ReviewButton extends HookWidget with RecipeMixin {
   final String recipeID;
@@ -25,27 +26,37 @@ class ReviewButton extends HookWidget with RecipeMixin {
       return subscription.cancel;
     }, [recipeID]);
 
-    return Material(
-      borderRadius: BorderRadius.circular(5),
-      color: ExtraColors.grey,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 3),
-        child: Row(
-          children: [
-            const Icon(
-              Icons.reviews_outlined,
-              color: ExtraColors.white,
-              size: 17,
-            ),
-            const SizedBox(width: 1),
-            reviewsNotifier.value == null
-                ? const LoadingTextView(width: 7, height: 7)
-                : Text(
-                    reviewsNotifier.value.toString(),
-                    style:
-                        const TextStyle(color: ExtraColors.white, fontSize: 16),
-                  ),
-          ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 3),
+      child: Material(
+        color: ExtraColors.white.withOpacity(0.9),
+        borderRadius: BorderRadius.circular(15),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              FutureBuilder(
+                  future: getAverageReviewsRating(recipeID, context),
+                  builder: (context, snapshot) {
+                    return RecipeInfoItem(
+                        icon: Icons.grade,
+                        text: snapshot.data?.toStringAsFixed(1) ?? '0.0',
+                        iconColor: ExtraColors.yellow,
+                        textColor: ExtraColors.grey);
+                  }),
+              const SizedBox(width: 1),
+              reviewsNotifier.value == null
+                  ? const LoadingTextView(width: 7, height: 7)
+                  : Text(
+                      '(${reviewsNotifier.value.toString()} ${reviewsNotifier.value == 1 ? 'Review' : 'Reviews'})',
+                      style: const TextStyle(
+                          color: ExtraColors.grey, fontSize: 16),
+                    ),
+              const SizedBox(width: 3),
+            ],
+          ),
         ),
       ),
     );

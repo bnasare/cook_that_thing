@@ -32,7 +32,7 @@ class CustomSearchBox extends HookWidget {
               contentPadding: const EdgeInsets.only(
                   left: 25, right: 25, top: 15, bottom: 10),
               filled: true,
-              fillColor: ExtraColors.white.withOpacity(0.7),
+              fillColor: ExtraColors.white,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,

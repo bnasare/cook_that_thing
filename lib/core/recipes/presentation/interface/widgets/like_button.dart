@@ -88,10 +88,10 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
         });
       },
       child: Material(
-        color: ExtraColors.lightGrey,
-        borderRadius: BorderRadius.circular(10),
+        color: ExtraColors.white.withOpacity(0.9),
+        shape: const StadiumBorder(),
         child: Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(10.0),
           child: Icon(
             _isLiked ? IconlyBold.heart : IconlyLight.heart,
             color: _isLiked ? Theme.of(context).primaryColor : ExtraColors.grey,

@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 
 import '../../../../../core/recipes/domain/entities/recipe.dart';
-import '../../../../../core/recipes/presentation/interface/widgets/recipe_grid_widget.dart';
+import '../../../../../core/recipes/presentation/interface/widgets/recipe_widget.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
@@ -98,8 +98,8 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                                 child: ErrorViewWidget(),
                               );
                             } else if (snapshot.hasData) {
-                              // If there's data, return the RecipeGridWidget.
-                              return RecipeGridWidget(recipes: snapshot.data!);
+                              // If there's data, return the RecipeWidget.
+                              return RecipeWidget(recipes: snapshot.data!);
                             } else {
                               return const Padding(
                                 padding: EdgeInsets.only(top: 90.0),
