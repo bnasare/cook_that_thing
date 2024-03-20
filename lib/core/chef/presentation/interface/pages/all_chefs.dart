@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:recipe_hub/core/chef/domain/entities/chef.dart';
@@ -7,6 +6,7 @@ import 'package:recipe_hub/core/chef/presentation/interface/widgets/chef_widget.
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/src/home/presentation/interface/widgets/recipe_search_box.dart';
 
+import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/error_view.dart';
 
@@ -15,7 +15,6 @@ class AllChefsPage extends HookWidget with RecipeMixin {
 
   @override
   Widget build(BuildContext context) {
-    final localizations = AppLocalizations.of(context)!;
     final totalChefs = useState<int?>(null);
     final searchController = useTextEditingController();
     final searchResults = useState<List<Chef>?>(null);
@@ -24,7 +23,8 @@ class AllChefsPage extends HookWidget with RecipeMixin {
       if (query.isEmpty) {
         searchResults.value = null;
       } else {
-        List<Chef> allChefs = await listChefStream().first;
+        List<Chef> allChefs =
+            await listChefStream(FirebaseConsts.currentUser!.uid).first;
         List<Chef> filteredChefs = allChefs
             .where(
                 (chef) => chef.name.toLowerCase().contains(query.toLowerCase()))
@@ -35,7 +35,8 @@ class AllChefsPage extends HookWidget with RecipeMixin {
 
     Future<void> fetchTotalRecipes() async {
       try {
-        final List<Chef> allChefs = await listChefStream().first;
+        final List<Chef> allChefs =
+            await listChefStream(FirebaseConsts.currentUser!.uid).first;
         totalChefs.value = allChefs.length;
       } catch (error) {
         debugPrint(error.toString());
@@ -65,7 +66,7 @@ class AllChefsPage extends HookWidget with RecipeMixin {
               ),
             ),
             subtitle: const Text(
-              'Enjoy your favorite chefs',
+              'Find the perfect chef for you',
               style: TextStyle(
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
@@ -94,7 +95,8 @@ class AllChefsPage extends HookWidget with RecipeMixin {
                         : ChefWidget(chefs: searchResults.value!)
                     : searchController.text.isEmpty
                         ? StreamBuilder(
-                            stream: listChefStream(),
+                            stream:
+                                listChefStream(FirebaseConsts.currentUser!.uid),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 return const ErrorViewWidget();

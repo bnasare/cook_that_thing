@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:recipe_hub/core/chef/presentation/interface/pages/all_chefs.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_widget.dart';
+import 'package:recipe_hub/shared/data/firebase_constants.dart';
 import 'package:recipe_hub/shared/data/svg_assets.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
@@ -55,7 +56,7 @@ class ChefsAndRecipes extends HookWidget with RecipeMixin {
             ),
             const SizedBox(height: 10),
             StreamBuilder<List<Chef>>(
-              stream: listChefStream(),
+              stream: listChefStream(FirebaseConsts.currentUser!.uid),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return SpinKitFadingCircle(

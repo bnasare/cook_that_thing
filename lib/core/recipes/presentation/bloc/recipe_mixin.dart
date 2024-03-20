@@ -315,13 +315,40 @@ mixin RecipeMixin {
     );
   }
 
-  Stream<List<Chef>> listChefStream() async* {
+  Stream<List<Chef>> listChefStreams() async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.chefs;
     Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .orderBy(FieldPath.documentId, descending: true)
         .snapshots();
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List<Chef> chefs = [];
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        Chef chef = Chef(
+          id: snapshot.id,
+          name: snapshot['name'],
+          email: snapshot['email'],
+          token: (snapshot['token'] as List<dynamic>).cast<String>(),
+          chefToken: snapshot['chefToken'],
+          followers: (snapshot['followers'] as List<dynamic>).cast<String>(),
+        );
+        chefs.add(chef);
+      }
+      yield chefs;
+    }
+  }
+
+  Stream<List<Chef>> listChefStream(String currentUserID) async* {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String collectionPath = DatabaseCollections.chefs;
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
+        .collection(collectionPath)
+        .where(FieldPath.documentId, isNotEqualTo: currentUserID)
+        .orderBy(FieldPath.documentId, descending: true)
+        .snapshots();
+
     await for (QuerySnapshot querySnapshot in querySnapshotStream) {
       List<Chef> chefs = [];
       for (DocumentSnapshot snapshot in querySnapshot.docs) {

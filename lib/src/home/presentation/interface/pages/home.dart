@@ -131,7 +131,7 @@ class HomePage extends HookWidget with RecipeMixin {
                     ),
                     const SizedBox(height: 15),
                     StreamBuilder<List<Chef>>(
-                      stream: listChefStream(),
+                      stream: listChefStreams(),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
