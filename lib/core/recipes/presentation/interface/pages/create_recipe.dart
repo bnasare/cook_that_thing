@@ -266,7 +266,10 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                backgroundColor: ExtraColors.white,
+                                elevation: 0,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
                                 title: const Text('Select a Category'),
                                 content: SingleChildScrollView(
                                   child: Column(
@@ -312,7 +315,10 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                backgroundColor: ExtraColors.white,
+                                elevation: 0,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
                                 title: const Text('Select diet type'),
                                 content: SingleChildScrollView(
                                   child: Column(
@@ -430,7 +436,10 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                backgroundColor: ExtraColors.white,
+                                elevation: 0,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
                                 shadowColor: ExtraColors.white,
                                 title: const Text('Select difficulty level'),
                                 content: SingleChildScrollView(
