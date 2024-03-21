@@ -59,8 +59,8 @@ class _FollowButtonState extends State<FollowButton> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
+    return FilledButton(
+      onPressed: () async {
         if (_isCurrentlyFollowing) {
           await unfollow();
         } else {
@@ -68,20 +68,16 @@ class _FollowButtonState extends State<FollowButton> {
         }
         await _updateFollowStatus();
       },
-      child: Container(
-        height: 35,
-        width: 85,
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.circular(8),
-        ),
-        child: Center(
-          child: Text(
-            _isCurrentlyFollowing ? 'Unfollow' : 'Follow',
-            style: const TextStyle(
-              fontSize: 15,
-              color: ExtraColors.white,
-            ),
+      style: FilledButton.styleFrom(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        minimumSize: const Size(75, 35),
+      ),
+      child: Center(
+        child: Text(
+          _isCurrentlyFollowing ? 'Unfollow' : 'Follow',
+          style: const TextStyle(
+            fontSize: 15,
+            color: ExtraColors.white,
           ),
         ),
       ),

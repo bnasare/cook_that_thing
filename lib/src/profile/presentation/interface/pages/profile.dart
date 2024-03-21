@@ -110,8 +110,8 @@ class ProfilePage extends HookWidget with ChefMixin {
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    const SizedBox(height: 11),
                     StreamBuilder(
                         stream: retrieveChefStream(
                             context: context,
@@ -128,80 +128,97 @@ class ProfilePage extends HookWidget with ChefMixin {
                             return const SizedBox.shrink();
                           }
                           final chef = snapshot.data;
-                          return Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                chef!.name,
-                                style: const TextStyle(
-                                    fontSize: 23,
-                                    fontWeight: FontWeight.w600,
-                                    height: 0),
-                              ),
-                              const SizedBox(width: 10),
-                              isCurrentUser
-                                  ? FilledButton.icon(
-                                      style: FilledButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(8)),
-                                        minimumSize: const Size(75, 35),
+                          return SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.7,
+                            child: Center(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      chef!.name,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                      onPressed: () {
-                                        logoutUser(context: context);
-                                        Navigator.of(context,
-                                                rootNavigator: true)
-                                            .pushAndRemoveUntil(
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) {
-                                              return LoginPage();
-                                            },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 10),
+                                  isCurrentUser
+                                      ? FilledButton.icon(
+                                          style: FilledButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8)),
+                                            minimumSize: const Size(75, 35),
                                           ),
-                                          (_) => false,
-                                        );
-                                      },
-                                      icon: const Icon(IconlyLight.logout,
-                                          size: 18),
-                                      label: const Text('Logout'))
-                                  : FollowButton(chefID: chefID),
-                            ],
+                                          onPressed: () {
+                                            logoutUser(context: context);
+                                            Navigator.of(context,
+                                                    rootNavigator: true)
+                                                .pushAndRemoveUntil(
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return LoginPage();
+                                                },
+                                              ),
+                                              (_) => false,
+                                            );
+                                          },
+                                          icon: const Icon(IconlyLight.logout,
+                                              size: 18),
+                                          label: const Text('Logout'))
+                                      : SizedBox(
+                                          width: 115,
+                                          child: FollowButton(chefID: chefID)),
+                                ],
+                              ),
+                            ),
                           );
                         }),
                     Divider(color: ExtraColors.darkGrey.withOpacity(0.3)),
-                    Center(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          StreamBuilder(
-                              stream: retrieveFollowersCount(
-                                  context: context,
-                                  chefId:
-                                      isCurrentUser ? currentUserID : chefID),
-                              builder: (context, snapshot) {
-                                final followersCount = snapshot.data ?? 0;
-                                return RecipeInfoItem(
-                                  icon: CupertinoIcons.person_2_alt,
-                                  text: '$followersCount',
-                                  iconColor: ExtraColors.grey,
-                                  textColor: ExtraColors.black,
-                                );
-                              }),
-                          StreamBuilder<int>(
-                            stream: retrieveRecipeLength(context,
-                                isCurrentUser ? currentUserID : chefID),
+                    const SizedBox(height: 11),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        StreamBuilder(
+                            stream: retrieveFollowersCount(
+                                context: context,
+                                chefId: isCurrentUser ? currentUserID : chefID),
                             builder: (context, snapshot) {
-                              final count = snapshot.data ?? 0;
+                              final followersCount = snapshot.data ?? 0;
                               return RecipeInfoItem(
-                                icon: Icons.restaurant_rounded,
-                                text: '$count',
+                                icon: CupertinoIcons.person_add_solid,
+                                text: '$followersCount',
+                                iconSize: 20,
+                                width: 4,
+                                textSize: 20,
                                 iconColor: ExtraColors.grey,
                                 textColor: ExtraColors.black,
                               );
-                            },
-                          ),
-                        ],
-                      ),
+                            }),
+                        StreamBuilder<int>(
+                          stream: retrieveRecipeLength(
+                              context, isCurrentUser ? currentUserID : chefID),
+                          builder: (context, snapshot) {
+                            final count = snapshot.data ?? 0;
+                            return RecipeInfoItem(
+                              icon: Icons.restaurant_rounded,
+                              text: '$count',
+                              textSize: 20,
+                              iconSize: 20,
+                              width: 4,
+                              iconColor: ExtraColors.grey,
+                              textColor: ExtraColors.black,
+                            );
+                          },
+                        ),
+                      ],
                     )
                   ],
                 ),

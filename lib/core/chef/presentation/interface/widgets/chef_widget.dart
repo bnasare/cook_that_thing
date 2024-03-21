@@ -49,7 +49,11 @@ class ChefWidget extends HookWidget with ChefMixin {
                   height: -2.39,
                   overflow: TextOverflow.ellipsis,
                 )),
-            trailing: FollowButton(chefID: chef.id));
+            trailing: SizedBox(
+              width: 115,
+              height: 40,
+              child: FollowButton(chefID: chef.id),
+            ));
       },
       separatorBuilder: (context, index) =>
           const Divider(color: ExtraColors.lightGrey, thickness: 2),

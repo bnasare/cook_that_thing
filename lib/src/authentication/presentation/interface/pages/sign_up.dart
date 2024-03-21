@@ -208,14 +208,27 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               ElevatedButton(
                 onPressed: _isAgreedToTerms ? _submitFormOnSignUp : null,
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30.0),
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                    (Set<MaterialState> states) {
+                      if (states.contains(MaterialState.disabled)) {
+                        return Theme.of(context).colorScheme.primaryContainer;
+                      }
+                      return Theme.of(context).colorScheme.primary;
+                    },
                   ),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30))),
                 ),
-                child: const Text(
+                child: Text(
                   'Sign Up',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18,
+                      color: _isAgreedToTerms
+                          ? ExtraColors.black
+                          : ExtraColors.darkGrey),
                 ),
               ),
               const SizedBox(

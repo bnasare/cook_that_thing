@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/pages/create_recipe.dart';
 import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
 
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/snackbar.dart';
 
@@ -56,7 +57,23 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
           children: [
             ListTile(
               contentPadding: const EdgeInsets.all(0),
-              title: const Text('Import from Web'),
+              title: const Text('Manual Entry', style: TextStyle(fontSize: 18)),
+              leading: Radio<AddRecipeOption>(
+                value: AddRecipeOption.manualEntry,
+                groupValue: _selectedOption,
+                onChanged: (AddRecipeOption? value) {
+                  setState(() {
+                    _selectedOption = value;
+                  });
+                },
+              ),
+            ),
+            ListTile(
+              contentPadding: const EdgeInsets.all(0),
+              title:
+                  const Text('Import from Web', style: TextStyle(fontSize: 18)),
+              subtitle: const Text('Feature not available yet',
+                  style: TextStyle(color: Colors.red)),
               leading: Radio<AddRecipeOption>(
                 value: AddRecipeOption.importWeb,
                 groupValue: _selectedOption,
@@ -69,7 +86,9 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
             ),
             ListTile(
               contentPadding: const EdgeInsets.all(0),
-              title: const Text('Voice Input'),
+              title: const Text('Voice Input', style: TextStyle(fontSize: 18)),
+              subtitle: const Text('Feature not available yet',
+                  style: TextStyle(color: Colors.red)),
               leading: Radio<AddRecipeOption>(
                 value: AddRecipeOption.voiceInput,
                 groupValue: _selectedOption,
@@ -82,22 +101,12 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
             ),
             ListTile(
               contentPadding: const EdgeInsets.all(0),
-              title: const Text('Recipe Scanner'),
+              title:
+                  const Text('Recipe Scanner', style: TextStyle(fontSize: 18)),
+              subtitle: const Text('Feature not available yet',
+                  style: TextStyle(color: Colors.red)),
               leading: Radio<AddRecipeOption>(
                 value: AddRecipeOption.recipeScanner,
-                groupValue: _selectedOption,
-                onChanged: (AddRecipeOption? value) {
-                  setState(() {
-                    _selectedOption = value;
-                  });
-                },
-              ),
-            ),
-            ListTile(
-              contentPadding: const EdgeInsets.all(0),
-              title: const Text('Manual Entry'),
-              leading: Radio<AddRecipeOption>(
-                value: AddRecipeOption.manualEntry,
                 groupValue: _selectedOption,
                 onChanged: (AddRecipeOption? value) {
                   setState(() {
@@ -111,12 +120,23 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
               onPressed: _selectedOption == null
                   ? null
                   : () => _onNextPressed(context),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.primary,
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                  (Set<MaterialState> states) {
+                    if (states.contains(MaterialState.disabled)) {
+                      return Theme.of(context).colorScheme.primaryContainer;
+                    }
+                    return Theme.of(context).colorScheme.primary;
+                  },
+                ),
               ),
-              child: const Text('Next'),
+              child: Text('Next',
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: _selectedOption == null
+                          ? ExtraColors.darkGrey
+                          : ExtraColors.black)),
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

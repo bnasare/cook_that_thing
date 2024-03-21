@@ -10,6 +10,8 @@ class RecipeInfoItem extends StatelessWidget {
   final Color? iconColor;
   final Color? textColor;
   final double? textSize;
+  final double? iconSize;
+  final double? width;
 
   const RecipeInfoItem({
     this.icon,
@@ -17,6 +19,8 @@ class RecipeInfoItem extends StatelessWidget {
     super.key,
     this.iconColor,
     this.textSize = 16,
+    this.iconSize = 16,
+    this.width = 1,
     this.textColor,
   });
 
@@ -31,9 +35,9 @@ class RecipeInfoItem extends StatelessWidget {
           Icon(
             icon,
             color: iconColor ?? ExtraColors.white,
-            size: 17,
+            size: iconSize,
           ),
-          const SizedBox(width: 1),
+          SizedBox(width: width),
           Text(
             text,
             style: TextStyle(
