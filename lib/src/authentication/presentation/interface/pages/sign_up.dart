@@ -227,7 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       fontWeight: FontWeight.w600,
                       fontSize: 18,
                       color: _isAgreedToTerms
-                          ? ExtraColors.black
+                          ? ExtraColors.white
                           : ExtraColors.darkGrey),
                 ),
               ),

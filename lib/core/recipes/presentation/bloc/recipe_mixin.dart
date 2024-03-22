@@ -51,7 +51,7 @@ mixin RecipeMixin {
     return result.fold(
       (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
       (r) {
-        SnackBarHelper.showSuccessSnackBar(context, 'Recipe created');
+        r;
         final String chefId = FirebaseConsts.currentUser!.uid;
         final tokenStream =
             retrieveChefStream(context: context, chefId: chefId);
@@ -112,9 +112,8 @@ mixin RecipeMixin {
       List<Recipe> recipes =
           await getRecipes(context: context, documentID: documentId).first;
       allRecipes.addAll(recipes);
-
-      yield allRecipes;
     }
+    yield allRecipes;
   }
 
   Stream<List<Recipe>> fetchAllRecipesByCategory(

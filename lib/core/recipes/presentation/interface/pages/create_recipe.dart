@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:recipe_hub/bottom_navbar.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/build_dialog_item.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
@@ -17,10 +18,10 @@ import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/loading_manager.dart';
 import 'package:recipe_hub/shared/widgets/snackbar.dart';
-import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/widgets/fullscreen_dialog.dart';
 import '../widgets/custom_textfeld.dart';
 import '../widgets/list_ingredients.dart';
 import '../widgets/list_instructions.dart';
@@ -108,7 +109,21 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
           instructions: submittedInstructions.value,
         );
         isLoading.value = false;
-        NavigationHelper.navigateToAndRemoveUntil(context, const NavBar());
+        await showDialog(
+          context: context,
+          builder: (BuildContext context) => FullscreenDialog(
+            title: 'Recipe published successfully!',
+            content: 'Access your recipes from your profile',
+            dialogType: DialogType.success,
+            primaryButtonLabel: 'OK',
+            primaryAction: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        );
+
+        NavigationHelper.navigateToAndRemoveUntil(
+            context, const NavBar(initialIndex: 2));
         titleController.clear();
         overviewController.clear();
         ingredientsController.clear();

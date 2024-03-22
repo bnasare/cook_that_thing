@@ -15,12 +15,21 @@ class RecipeWidget extends StatelessWidget {
   final List<Recipe> recipes;
   final int? itemCount;
   final Axis axis;
+  final double? height;
+  final double sizedBoxHeight;
+  final double paddingTop;
+  final double paddingBottom;
 
-  const RecipeWidget(
-      {super.key,
-      required this.recipes,
-      this.itemCount,
-      this.axis = Axis.horizontal});
+  const RecipeWidget({
+    super.key,
+    required this.recipes,
+    this.itemCount,
+    this.sizedBoxHeight = 0,
+    this.paddingTop = 20,
+    this.paddingBottom = 20,
+    this.axis = Axis.horizontal,
+    this.height = 270,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +37,13 @@ class RecipeWidget extends StatelessWidget {
 
     return SizedBox(
       width: screenWidth,
-      height: 270,
+      height: height,
       child: ListView.separated(
         addSemanticIndexes: true,
         physics: const BouncingScrollPhysics(),
-        separatorBuilder: (context, index) => const SizedBox(width: 20),
-        padding: const EdgeInsets.only(top: 20, bottom: 20),
+        separatorBuilder: (context, index) =>
+            SizedBox(width: 20, height: sizedBoxHeight),
+        padding: EdgeInsets.only(top: paddingTop, bottom: paddingBottom),
         shrinkWrap: true,
         scrollDirection: axis,
         itemBuilder: (context, index) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:recipe_hub/bottom_navbar.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/pages/create_recipe.dart';
-import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
@@ -135,7 +135,7 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
                       fontSize: 18,
                       color: _selectedOption == null
                           ? ExtraColors.darkGrey
-                          : ExtraColors.black)),
+                          : ExtraColors.white)),
             ),
           ],
         ),

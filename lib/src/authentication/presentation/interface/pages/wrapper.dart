@@ -2,7 +2,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
+import 'package:recipe_hub/bottom_navbar.dart';
 
 import 'login.dart';
 

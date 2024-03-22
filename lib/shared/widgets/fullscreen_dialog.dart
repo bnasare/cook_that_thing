@@ -100,9 +100,6 @@ class FullscreenDialog extends HookWidget {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Color(0x63000000)),
         automaticallyImplyLeading: false,
-        actions: [
-          if (canPop) const CloseButton(),
-        ],
       ),
       body: SafeArea(
         minimum: const EdgeInsets.only(left: 16, right: 16, bottom: 20),
@@ -136,7 +133,7 @@ class FullscreenDialog extends HookWidget {
                 child: Text(
                   content!,
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 16,
                     color: ExtraColors.grey,
                   ),
                   textAlign: TextAlign.justify,

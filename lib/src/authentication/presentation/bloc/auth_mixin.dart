@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/src/home/presentation/interface/pages/nav_bar.dart';
+import 'package:recipe_hub/bottom_navbar.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../shared/utils/navigation.dart';

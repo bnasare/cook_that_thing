@@ -6,12 +6,15 @@ import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/src/home/presentation/interface/pages/home.dart';
 import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
 
-import '../../../../../core/recipes/presentation/interface/pages/create_recipe_method.dart';
-import '../../../../../shared/data/firebase_constants.dart';
+import 'core/recipes/presentation/interface/pages/create_recipe_method.dart';
+import 'shared/data/firebase_constants.dart';
 
 class NavBar extends StatefulWidget {
+  final int initialIndex;
+
   const NavBar({
     super.key,
+    this.initialIndex = 0,
   });
 
   @override
@@ -58,9 +61,8 @@ class _NavBarState extends State<NavBar> {
   late PersistentTabController controller;
 
   @override
-  void initState() {
-    super.initState();
-    controller = PersistentTabController(initialIndex: 0);
+  _NavBarState({int initialIndex = 0}) {
+    controller = PersistentTabController(initialIndex: initialIndex);
   }
 
   @override

@@ -54,7 +54,10 @@ class ProfilePage extends HookWidget with ChefMixin {
                   child: Column(
                     children: [
                       Text('Chef\'s Recipes',
-                          style: Theme.of(context).textTheme.titleLarge),
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(fontSize: 20)),
                       StreamBuilder<List<Recipe>>(
                         stream: fetchAllRecipesByChefID(context, chefID),
                         builder: (BuildContext context,
@@ -63,24 +66,20 @@ class ProfilePage extends HookWidget with ChefMixin {
                             return const ErrorViewWidget();
                           } else if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return GridView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              itemBuilder: (context, index) {
-                                return const LoadingTextView(height: 25);
-                              },
-                              itemCount: 8,
-                              shrinkWrap: true,
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      mainAxisSpacing: 10,
-                                      crossAxisSpacing: 10,
-                                      crossAxisCount: 2),
+                            return const Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: LoadingTextView(
+                                  height: 230, width: double.infinity),
                             );
                           } else if (snapshot.hasData &&
                               snapshot.data!.isEmpty) {
                             return const ErrorViewWidget();
                           } else if (snapshot.hasData) {
-                            return RecipeWidget(recipes: snapshot.data!);
+                            return RecipeWidget(
+                                sizedBoxHeight: 20,
+                                recipes: snapshot.data!,
+                                height: null,
+                                axis: Axis.vertical);
                           } else {
                             return const ErrorViewWidget();
                           }

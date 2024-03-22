@@ -7,6 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/pages/all_recipes.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_widget.dart';
 import 'package:recipe_hub/shared/data/firebase_constants.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
@@ -192,8 +193,47 @@ class HomePage extends HookWidget with RecipeMixin {
                       ),
                     ),
                     StreamBuilder(
-                        stream:
-                            fetchAllRecipesSortedByAverageRatingStream(context),
+                      stream:
+                          fetchAllRecipesSortedByAverageRatingStream(context),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          // If there's an error, return the error widget.
+                          return const ErrorViewWidget();
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          // If the connection is still waiting, show a loading indicator or not
+                          return const Padding(
+                            padding: EdgeInsets.only(top: 20.0),
+                            child: LoadingTextView(
+                                height: 230, width: double.infinity),
+                          );
+                        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+                          // If there's data but the list is empty, show a "no data" message or
+                          return const ErrorViewWidget();
+                        } else if (snapshot.hasData) {
+                          // If there's data, return the RecipeWidget.
+                          int itemCount = snapshot.data!.length > 3
+                              ? 3
+                              : snapshot.data!.length;
+                          return RecipeWidget(
+                              recipes: snapshot.data!, itemCount: itemCount);
+                        } else {
+                          // If the snapshot is neither loading, with error, nor with data, show
+                          return const ErrorViewWidget();
+                        }
+                      },
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15),
+                      child: Header(
+                        leading: 'New Recipes',
+                        trailing: localizations.seeMore,
+                        onClick: () => NavigationHelper.navigateTo(
+                            context, AllRecipesPage()),
+                      ),
+                    ),
+                    StreamBuilder(
+                        stream: fetchAllRecipes(context),
                         builder: (context, snapshot) {
                           if (snapshot.hasError) {
                             // If there's an error, return the error widget.

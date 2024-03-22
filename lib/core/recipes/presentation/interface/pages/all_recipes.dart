@@ -112,7 +112,13 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
                                   snapshot.data!.isEmpty) {
                                 return const ErrorViewWidget();
                               } else if (snapshot.hasData) {
-                                return RecipeWidget(recipes: snapshot.data!);
+                                return RecipeWidget(
+                                    sizedBoxHeight: 20,
+                                    recipes: snapshot.data!,
+                                    height: null,
+                                    paddingBottom: 0,
+                                    paddingTop: 0,
+                                    axis: Axis.vertical);
                               } else {
                                 return const ErrorViewWidget();
                               }
