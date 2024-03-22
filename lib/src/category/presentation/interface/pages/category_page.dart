@@ -90,7 +90,13 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                               );
                             } else if (snapshot.hasData) {
                               // If there's data, return the RecipeWidget.
-                              return RecipeWidget(recipes: snapshot.data!);
+                              return RecipeWidget(
+                                  sizedBoxHeight: 20,
+                                  recipes: snapshot.data!,
+                                  height: null,
+                                  paddingBottom: 0,
+                                  paddingTop: 0,
+                                  axis: Axis.vertical);
                             } else {
                               return const Padding(
                                 padding: EdgeInsets.only(top: 90.0),

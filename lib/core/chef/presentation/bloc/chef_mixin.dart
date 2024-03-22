@@ -79,23 +79,22 @@ mixin ChefMixin {
       BuildContext context, String chefID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.recipes;
-
-    QuerySnapshot querySnapshot = await firestore
+    Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .where('chefID', isEqualTo: chefID)
         .orderBy("createdAt", descending: true)
-        .get();
+        .snapshots();
 
-    List<Recipe> allRecipes = [];
-
-    for (DocumentSnapshot snapshot in querySnapshot.docs) {
-      String documentId = snapshot.id;
-      List<Recipe> recipesForDocumentId =
-          await getRecipes(context: context, documentID: documentId).first;
-      allRecipes.addAll(recipesForDocumentId);
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List<Recipe> allRecipes = [];
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        List<Recipe> recipesForDocumentId =
+            await getRecipes(context: context, documentID: documentId).first;
+        allRecipes.addAll(recipesForDocumentId);
+      }
+      yield allRecipes;
     }
-
-    yield allRecipes;
   }
 
   Stream<int> retrieveRecipeLength(
