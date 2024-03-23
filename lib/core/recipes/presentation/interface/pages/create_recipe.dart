@@ -47,7 +47,7 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
     final categoryController = useTextEditingController();
     final dietController = useTextEditingController();
     final overviewController = useTextEditingController();
-    final durationController = useTextEditingController(text: '30min');
+    final durationController = useTextEditingController(text: '45min');
 
     Future<void> pickImage() async {
       if (!kIsWeb) {
@@ -381,12 +381,27 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
-                      child: GestureDetector(
+                      child: CustomTextFormField(
+                        controller: durationController,
+                        labelText: 'Duration',
+                        hintText: durationController.text,
+                        validator: Validator.validateTime,
+                        readOnly: true,
                         onTap: () async {
-                          final initialMinutes = int.tryParse(
-                              durationController.text.split('min')[0]);
-                          final initialTime =
-                              Duration(minutes: initialMinutes ?? 30);
+                          final durationPattern =
+                              RegExp(r'(\d+)h\s*(\d+)min|\d+min');
+                          final match = durationPattern
+                              .firstMatch(durationController.text);
+                          int initialMinutes = 45;
+                          if (match != null) {
+                            final hours =
+                                int.tryParse(match.group(1) ?? '0') ?? 0;
+                            final minutes = int.tryParse(match.group(2) ??
+                                    match.group(0)!.split('min')[0]) ??
+                                0;
+                            initialMinutes = hours * 60 + minutes;
+                          }
+                          final initialTime = Duration(minutes: initialMinutes);
                           var resultingDuration = await showDurationPicker(
                             context: context,
                             initialTime: initialTime,
@@ -409,34 +424,6 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                             }
                           }
                         },
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 25),
-                          height: 49,
-                          width: double.maxFinite,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: ExtraColors.transparent,
-                            border: Border.all(
-                              color: ExtraColors.darkGrey.withOpacity(0.5),
-                            ),
-                          ),
-                          alignment: Alignment.centerLeft,
-                          child: Row(
-                            children: [
-                              const Icon(Icons.timer_outlined,
-                                  color: ExtraColors.darkGrey, size: 20),
-                              const SizedBox(width: 7),
-                              Text(
-                                durationController.text,
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: ExtraColors.grey.withOpacity(0.7),
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
                       ),
                     ),
                     const SizedBox(width: 20),
