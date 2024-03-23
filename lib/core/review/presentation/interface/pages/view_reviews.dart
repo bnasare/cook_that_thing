@@ -172,6 +172,6 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
       sum += rating;
     }
     double average = sum / reviews.length;
-    return double.parse(average.toStringAsFixed(2));
+    return double.parse(average.toStringAsFixed(1));
   }
 }

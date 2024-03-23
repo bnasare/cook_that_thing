@@ -50,7 +50,7 @@ class AllChefsPage extends HookWidget with RecipeMixin {
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: AppBar(title: const Text('All Chefs')),
+      appBar: AppBar(title: const Text('Other Chefs')),
       body: Column(
         children: [
           ListTile(

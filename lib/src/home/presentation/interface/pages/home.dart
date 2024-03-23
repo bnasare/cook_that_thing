@@ -26,9 +26,6 @@ import '../../../../category/presentation/interface/pages/list_category.dart';
 import '../../../../profile/presentation/interface/pages/profile.dart';
 
 class HomePage extends HookWidget with RecipeMixin {
-  static final GlobalKey<ScaffoldState> _scaffoldKey =
-      GlobalKey<ScaffoldState>();
-
   HomePage({super.key});
 
   @override
@@ -59,7 +56,6 @@ class HomePage extends HookWidget with RecipeMixin {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
-        key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         body: ColorfulSafeArea(
           color: Theme.of(context).primaryColor,

@@ -21,40 +21,20 @@ class ReviewTextField extends StatelessWidget {
       onEditingComplete: onEditingComplete,
       textInputAction: TextInputAction.done,
       style: const TextStyle(
-          fontSize: 14, color: ExtraColors.grey, fontWeight: FontWeight.w500),
+          fontSize: 16, color: ExtraColors.grey, fontWeight: FontWeight.w500),
       textAlignVertical: TextAlignVertical.top,
-      maxLines: 12,
-      decoration: InputDecoration(
-        labelText: 'Review',
-        labelStyle: const TextStyle(fontSize: 22, color: ExtraColors.black),
+      maxLines: 6,
+      decoration: const InputDecoration(
+        labelStyle: TextStyle(fontSize: 15, color: ExtraColors.darkGrey),
         alignLabelWithHint: true,
         contentPadding:
-            const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 10),
+            EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
         hintText: 'Add a detailed review of this recipe',
-        hintStyle: const TextStyle(
+        hintStyle: TextStyle(
             fontSize: 14,
             color: ExtraColors.darkGrey,
             fontWeight: FontWeight.w500),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: ExtraColors.darkGrey.withOpacity(0.5),
-          ),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: ExtraColors.darkGrey,
-          ),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: Theme.of(context).colorScheme.error,
-          ),
-        ),
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        filled: false,
+        filled: true,
       ),
     );
   }

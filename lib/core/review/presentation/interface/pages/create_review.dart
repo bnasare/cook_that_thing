@@ -3,6 +3,7 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:recipe_hub/core/review/presentation/bloc/review_mixin.dart';
 import 'package:recipe_hub/core/review/presentation/interface/widgets/review_textfield.dart';
@@ -168,8 +169,52 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
                               return Container();
                             }
                           }),
+                      const SizedBox(height: 20),
+                      const Divider(color: ExtraColors.lightGrey, thickness: 2),
+                      const SizedBox(height: 10),
+                      const Center(
+                          child: Text('How Would You \nRate This Recipe?',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 28,
+                              ))),
+                      const SizedBox(height: 10),
+                      const Divider(color: ExtraColors.lightGrey, thickness: 2),
+                      const SizedBox(height: 20),
+                      const Center(
+                          child: Text('Your overall rating',
+                              style: TextStyle(
+                                  fontSize: 18, color: ExtraColors.darkGrey))),
+                      const SizedBox(height: 20),
+                      Center(
+                        child: RatingBar.builder(
+                          initialRating: sliderValue.value,
+                          minRating: 1,
+                          direction: Axis.horizontal,
+                          unratedColor: ExtraColors.darkGrey.withOpacity(0.5),
+                          allowHalfRating: true,
+                          itemSize: 40,
+                          itemCount: 5,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 12.0),
+                          itemBuilder: (context, _) => const Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            sliderValue.value = rating;
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const Divider(color: ExtraColors.lightGrey, thickness: 2),
+                      const SizedBox(height: 20),
+                      const Text('Add detailed review',
+                          style: TextStyle(
+                              color: ExtraColors.black, fontSize: 15)),
+                      const SizedBox(height: 7),
                       Padding(
-                        padding: const EdgeInsets.only(top: 40, bottom: 20),
+                        padding: const EdgeInsets.only(top: 0, bottom: 20),
                         child: ReviewTextField(
                           validator: Validator.validateReview,
                           controller: describeExperienceController,
@@ -178,50 +223,6 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
                             handleReviewCreation();
                           },
                         ),
-                      ),
-                      const Text(
-                        'Star',
-                        style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w500),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const Text(
-                            '0.0',
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w500),
-                          ),
-                          Expanded(
-                            child: SliderTheme(
-                              data: const SliderThemeData(
-                                trackHeight: 8.0,
-                                trackShape: RoundedRectSliderTrackShape(),
-                              ),
-                              child: Slider.adaptive(
-                                thumbColor: color.primary,
-                                inactiveColor: ExtraColors.lightGrey,
-                                value: sliderValue.value,
-                                activeColor: color.primary,
-                                min: 0.0,
-                                max: 5.0,
-                                divisions: 50,
-                                label: sliderValue.value.toStringAsFixed(1),
-                                onChanged: (value) {
-                                  sliderValue.value = value;
-                                },
-                              ),
-                            ),
-                          ),
-                          const Text(
-                            '5.0',
-                            style: TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.w500),
-                          ),
-                        ],
                       ),
                     ],
                   ),
