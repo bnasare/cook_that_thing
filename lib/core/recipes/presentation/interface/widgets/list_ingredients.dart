@@ -3,12 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/widgets/clickable.dart';
 
-// ignore: must_be_immutable
 class ListIngredients extends StatefulWidget {
   final TextEditingController ingredientsController;
-  List<String> submittedIngredients;
+  final List<String> submittedIngredients;
 
-  ListIngredients({
+  const ListIngredients({
     super.key,
     required this.ingredientsController,
     required this.submittedIngredients,

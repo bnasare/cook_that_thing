@@ -23,7 +23,6 @@ import 'package:uuid/uuid.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/fullscreen_dialog.dart';
 import '../widgets/custom_textfeld.dart';
-import '../widgets/list_instructions.dart';
 
 class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -476,10 +475,10 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                   ],
                 ),
                 const SizedBox(height: 30),
-                ListInstructions(
-                  instructionsController: instructionsController,
-                  submittedInstructions: submittedInstructions,
-                ),
+                // ListInstructions(
+                //   instructionsController: instructionsController,
+                //   submittedInstructions: submittedInstructions,
+                // ),
               ],
             ),
           )

@@ -37,7 +37,7 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
             NavigationHelper.navigateToReplacement(context, const NavBar());
             return true;
           },
-          child: const AddRecipeScreen(),
+          child: AddRecipeScreen(),
         );
       }));
     } else {
