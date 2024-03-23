@@ -241,7 +241,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       const TextStyle(color: ExtraColors.black, fontSize: 16),
                   children: [
                     TextSpan(
-                      text: 'Sign in',
+                      text: 'Sign In',
                       style: TextStyle(
                           decoration: TextDecoration.underline,
                           color: Theme.of(context).primaryColor,

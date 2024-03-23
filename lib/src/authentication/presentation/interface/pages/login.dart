@@ -237,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
                             imageHeight: 40,
                             imageWidth: 40))
                   ]),
-              const SizedBox(height: 30),
+              const SizedBox(height: 38),
               RichText(
                 text: TextSpan(
                   text: 'Don\'t have an account? ',
