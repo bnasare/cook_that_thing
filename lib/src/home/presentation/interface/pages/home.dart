@@ -26,6 +26,9 @@ import '../../../../category/presentation/interface/pages/list_category.dart';
 import '../../../../profile/presentation/interface/pages/profile.dart';
 
 class HomePage extends HookWidget with RecipeMixin {
+  static final GlobalKey<ScaffoldState> _scaffoldKey =
+      GlobalKey<ScaffoldState>();
+
   HomePage({super.key});
 
   @override
@@ -56,6 +59,7 @@ class HomePage extends HookWidget with RecipeMixin {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
+        key: _scaffoldKey,
         resizeToAvoidBottomInset: false,
         body: ColorfulSafeArea(
           color: Theme.of(context).primaryColor,
@@ -94,177 +98,219 @@ class HomePage extends HookWidget with RecipeMixin {
                     const Spacer(),
                     CustomSearchBox(
                       handleSearch: handleSearch,
+                      fillColor: ExtraColors.white,
                       controller: searchController,
                       label: 'Search',
-                      hintText:
-                          'Search recipes by title, category, difficulty or chef',
+                      hintText: 'Search recipes by title or tags',
                     ),
                   ],
                 ),
               ),
-              Expanded(
-                child: ListView(
-                  physics: const BouncingScrollPhysics(),
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20),
-                      child: Header(
-                        leading: 'Categories',
-                        trailing: localizations.seeMore,
-                        onClick: () {
-                          NavigationHelper.navigateTo(
-                              context, const CategoryListPage());
-                        },
-                      ),
-                    ),
-                    const CategoryTab(),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Header(
-                        leading: 'Featured Chefs',
-                        trailing: localizations.seeMore,
-                        onClick: () {
-                          NavigationHelper.navigateTo(context, AllChefsPage());
-                        },
-                      ),
-                    ),
-                    const SizedBox(height: 15),
-                    StreamBuilder<List<Chef>>(
-                      stream: listChefStreams(),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return SpinKitFadingCircle(
-                            color: Theme.of(context).colorScheme.primary,
-                          );
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          return SizedBox(
-                            height: 110,
-                            child: ListView.builder(
-                              physics: const NeverScrollableScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: snapshot.data!.length > 4
-                                  ? 4
-                                  : snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                String chefName = snapshot.data![index].name;
-                                return SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.23,
-                                  child: Clickable(
-                                    onClick: () => NavigationHelper.navigateTo(
-                                      context,
-                                      ProfilePage(
-                                          chefID: snapshot.data![index].id),
-                                    ),
-                                    child: Column(
-                                      children: [
-                                        const Icon(
-                                          CupertinoIcons.person_alt_circle_fill,
-                                          color: ExtraColors.darkGrey,
-                                          size: 80,
-                                        ),
-                                        Text(
-                                          chefName,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: const TextStyle(
-                                              fontSize: 17,
-                                              fontWeight: FontWeight.w500,
-                                              overflow: TextOverflow.ellipsis),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        }
-                      },
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: Header(
-                        leading: 'Popular Recipes',
-                      ),
-                    ),
-                    StreamBuilder(
-                      stream:
-                          fetchAllRecipesSortedByAverageRatingStream(context),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasError) {
-                          // If there's an error, return the error widget.
-                          return const ErrorViewWidget();
-                        } else if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          // If the connection is still waiting, show a loading indicator or not
-                          return const Padding(
-                            padding: EdgeInsets.only(top: 20.0),
-                            child: LoadingTextView(
-                                height: 230, width: double.infinity),
-                          );
-                        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-                          // If there's data but the list is empty, show a "no data" message or
-                          return const ErrorViewWidget();
-                        } else if (snapshot.hasData) {
-                          // If there's data, return the RecipeWidget.
-                          int itemCount = snapshot.data!.length > 3
-                              ? 3
-                              : snapshot.data!.length;
-                          return RecipeWidget(
-                              recipes: snapshot.data!, itemCount: itemCount);
-                        } else {
-                          // If the snapshot is neither loading, with error, nor with data, show
-                          return const ErrorViewWidget();
-                        }
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15),
-                      child: Header(
-                        leading: 'New Recipes',
-                        trailing: localizations.seeMore,
-                        onClick: () => NavigationHelper.navigateTo(
-                            context, AllRecipesPage()),
-                      ),
-                    ),
-                    StreamBuilder(
-                        stream: fetchAllRecipes(context),
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            // If there's an error, return the error widget.
-                            return const ErrorViewWidget();
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            // If the connection is still waiting, show a loading indicator or not
-                            return const Padding(
-                              padding: EdgeInsets.only(top: 20.0),
-                              child: LoadingTextView(
-                                  height: 230, width: double.infinity),
-                            );
-                          } else if (snapshot.hasData &&
-                              snapshot.data!.isEmpty) {
-                            // If there's data but the list is empty, show a "no data" message or
-                            return const ErrorViewWidget();
-                          } else if (snapshot.hasData) {
-                            // If there's data, return the RecipeWidget.
-                            int itemCount = snapshot.data!.length > 3
-                                ? 3
-                                : snapshot.data!.length;
-                            return RecipeWidget(
-                                recipes: snapshot.data!, itemCount: itemCount);
-                          } else {
-                            // If the snapshot is neither loading, with error, nor with data, show
-                            return const ErrorViewWidget();
-                          }
-                        }),
-                  ],
-                ),
-              ),
+              searchResults.value != null && searchController.text.isNotEmpty
+                  ? searchResults.value!.isEmpty
+                      ? const Padding(
+                          padding: EdgeInsets.only(top: 50.0),
+                          child: ErrorViewWidget(),
+                        )
+                      : Expanded(
+                          child: ListView(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                            scrollDirection: Axis.vertical,
+                            children: [
+                              RecipeWidget(
+                                  sizedBoxHeight: 20,
+                                  recipes: searchResults.value!,
+                                  height: null,
+                                  paddingBottom: 0,
+                                  paddingTop: 0,
+                                  axis: Axis.vertical),
+                            ],
+                          ),
+                        )
+                  : searchController.text.isEmpty
+                      ? Expanded(
+                          child: ListView(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Header(
+                                  leading: 'Categories',
+                                  trailing: localizations.seeMore,
+                                  onClick: () {
+                                    NavigationHelper.navigateTo(
+                                        context, const CategoryListPage());
+                                  },
+                                ),
+                              ),
+                              const CategoryTab(),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: Header(
+                                  leading: 'Featured Chefs',
+                                  trailing: localizations.seeMore,
+                                  onClick: () {
+                                    NavigationHelper.navigateTo(
+                                        context, AllChefsPage());
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 15),
+                              StreamBuilder<List<Chef>>(
+                                stream: listChefStreams(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return SpinKitFadingCircle(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                    );
+                                  } else if (snapshot.hasError) {
+                                    return Text('Error: ${snapshot.error}');
+                                  } else {
+                                    return SizedBox(
+                                      height: 110,
+                                      child: ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        scrollDirection: Axis.horizontal,
+                                        itemCount: snapshot.data!.length > 4
+                                            ? 4
+                                            : snapshot.data!.length,
+                                        itemBuilder: (context, index) {
+                                          String chefName =
+                                              snapshot.data![index].name;
+                                          return SizedBox(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.23,
+                                            child: Clickable(
+                                              onClick: () =>
+                                                  NavigationHelper.navigateTo(
+                                                context,
+                                                ProfilePage(
+                                                    chefID: snapshot
+                                                        .data![index].id),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  const Icon(
+                                                    CupertinoIcons
+                                                        .person_alt_circle_fill,
+                                                    color: ExtraColors.darkGrey,
+                                                    size: 80,
+                                                  ),
+                                                  Text(
+                                                    chefName,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: const TextStyle(
+                                                        fontSize: 17,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                              const Padding(
+                                padding: EdgeInsets.only(top: 15),
+                                child: Header(
+                                  leading: 'Popular Recipes',
+                                ),
+                              ),
+                              StreamBuilder(
+                                stream:
+                                    fetchAllRecipesSortedByAverageRatingStream(
+                                        context),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasError) {
+                                    // If there's an error, return the error widget.
+                                    return const ErrorViewWidget();
+                                  } else if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    // If the connection is still waiting, show a loading indicator or not
+                                    return const Padding(
+                                      padding: EdgeInsets.only(top: 20.0),
+                                      child: LoadingTextView(
+                                          height: 230, width: double.infinity),
+                                    );
+                                  } else if (snapshot.hasData &&
+                                      snapshot.data!.isEmpty) {
+                                    // If there's data but the list is empty, show a "no data" message or
+                                    return const ErrorViewWidget();
+                                  } else if (snapshot.hasData) {
+                                    // If there's data, return the RecipeWidget.
+                                    int itemCount = snapshot.data!.length > 3
+                                        ? 3
+                                        : snapshot.data!.length;
+                                    return RecipeWidget(
+                                        recipes: snapshot.data!,
+                                        itemCount: itemCount);
+                                  } else {
+                                    // If the snapshot is neither loading, with error, nor with data, show
+                                    return const ErrorViewWidget();
+                                  }
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 15),
+                                child: Header(
+                                  leading: 'New Recipes',
+                                  trailing: localizations.seeMore,
+                                  onClick: () => NavigationHelper.navigateTo(
+                                      context, AllRecipesPage()),
+                                ),
+                              ),
+                              StreamBuilder(
+                                  stream: fetchAllRecipes(context),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      // If there's an error, return the error widget.
+                                      return const ErrorViewWidget();
+                                    } else if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      // If the connection is still waiting, show a loading indicator or not
+                                      return const Padding(
+                                        padding: EdgeInsets.only(top: 20.0),
+                                        child: LoadingTextView(
+                                            height: 230,
+                                            width: double.infinity),
+                                      );
+                                    } else if (snapshot.hasData &&
+                                        snapshot.data!.isEmpty) {
+                                      // If there's data but the list is empty, show a "no data" message or
+                                      return const ErrorViewWidget();
+                                    } else if (snapshot.hasData) {
+                                      // If there's data, return the RecipeWidget.
+                                      int itemCount = snapshot.data!.length > 3
+                                          ? 3
+                                          : snapshot.data!.length;
+                                      return RecipeWidget(
+                                          recipes: snapshot.data!,
+                                          itemCount: itemCount);
+                                    } else {
+                                      // If the snapshot is neither loading, with error, nor with data, show
+                                      return const ErrorViewWidget();
+                                    }
+                                  }),
+                            ],
+                          ),
+                        )
+                      : const ErrorViewWidget(),
             ],
           ),
         ),

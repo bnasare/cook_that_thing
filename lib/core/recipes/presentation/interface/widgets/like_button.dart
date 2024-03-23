@@ -39,9 +39,11 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
     List<dynamic> likes = recipeDoc['likes'] ?? [];
     bool isLiked = likes.contains(FirebaseAuth.instance.currentUser!.uid);
 
-    setState(() {
-      _isLiked = isLiked;
-    });
+    if (mounted) {
+      setState(() {
+        _isLiked = isLiked;
+      });
+    }
   }
 
   @override
@@ -83,9 +85,11 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
               recipeId: widget.recipeID, likers: newLikers, context: context);
         }
 
-        setState(() {
-          _isLiked = !isLiked;
-        });
+        if (mounted) {
+          setState(() {
+            _isLiked = !isLiked;
+          });
+        }
       },
       child: Material(
         color: ExtraColors.white.withOpacity(0.9),

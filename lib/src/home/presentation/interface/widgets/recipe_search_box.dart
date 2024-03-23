@@ -9,9 +9,11 @@ class CustomSearchBox extends HookWidget {
   final TextEditingController controller;
   final String label;
   final String hintText;
+  final Color fillColor;
   const CustomSearchBox({
     super.key,
     required this.handleSearch,
+    this.fillColor = ExtraColors.lightGrey,
     required this.controller,
     required this.label,
     required this.hintText,
@@ -32,7 +34,7 @@ class CustomSearchBox extends HookWidget {
               contentPadding: const EdgeInsets.only(
                   left: 25, right: 25, top: 15, bottom: 10),
               filled: true,
-              fillColor: ExtraColors.lightGrey,
+              fillColor: fillColor,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(8),
                 borderSide: BorderSide.none,
@@ -42,6 +44,9 @@ class CustomSearchBox extends HookWidget {
                 color: Theme.of(context).primaryColor,
                 size: 25,
               ),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(13)),
               hintText: hintText,
               hintStyle: const TextStyle(
                 fontSize: 18,
