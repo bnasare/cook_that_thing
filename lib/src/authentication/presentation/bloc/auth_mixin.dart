@@ -38,7 +38,8 @@ mixin AuthMixin {
     );
     return result.fold(
         (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
-        (r) => NavigationHelper.navigateToReplacement(context, const NavBar()));
+        (r) =>
+            NavigationHelper.navigateToAndRemoveUntil(context, const NavBar()));
   }
 
   Future<void> logoutUser({required BuildContext context}) async {

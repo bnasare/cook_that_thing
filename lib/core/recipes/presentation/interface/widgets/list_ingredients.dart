@@ -1,15 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/custom_textfeld.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/clickable.dart';
 
 // ignore: must_be_immutable
-class ListIngredients extends HookWidget {
-  TextEditingController ingredientsController = useTextEditingController();
-  ValueNotifier<List<String>> submittedIngredients = useState<List<String>>([]);
+class ListIngredients extends StatefulWidget {
+  final TextEditingController ingredientsController;
+  List<String> submittedIngredients;
 
   ListIngredients({
     super.key,
@@ -18,37 +15,39 @@ class ListIngredients extends HookWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
+  _ListIngredientsState createState() => _ListIngredientsState();
+}
+
+class _ListIngredientsState extends State<ListIngredients> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomTextFormField(
-          controller: ingredientsController,
-          labelText: 'Ingredients',
-          hintText: 'List of ingredients',
-          validator: (value) {
-            return Validator.recipeIngredientsList(submittedIngredients.value);
-          },
+        TextField(
           textInputAction: TextInputAction.done,
-          maxLines: 1,
-          onFieldSubmitted: (String value) {
-            final newIngredients = List<String>.from(submittedIngredients.value)
-              ..add(value);
-            submittedIngredients.value = newIngredients;
-            ingredientsController.clear();
+          controller: widget.ingredientsController,
+          decoration: const InputDecoration(
+            filled: true,
+            hintText: 'Add an ingredient',
+          ),
+          onSubmitted: (String value) {
+            setState(() {
+              widget.submittedIngredients.add(value);
+              widget.ingredientsController.clear();
+            });
           },
         ),
         ListView.separated(
           separatorBuilder: (context, index) => const SizedBox(height: 7),
           shrinkWrap: true,
           padding: EdgeInsets.only(
-            top: submittedIngredients.value.isNotEmpty ? 7 : 0,
-            right: 25,
-            left: 25,
+            top: widget.submittedIngredients.isNotEmpty ? 7 : 0,
           ),
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: submittedIngredients.value.length,
+          itemCount: widget.submittedIngredients.length,
           itemBuilder: (context, index) {
-            final ingredient = submittedIngredients.value[index];
+            final ingredient = widget.submittedIngredients[index];
             final ingredientNumber = index + 1;
             return SizedBox(
               child: Row(
@@ -57,8 +56,9 @@ class ListIngredients extends HookWidget {
                   Flexible(
                     child: Text(
                       '$ingredientNumber. $ingredient',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                        fontStyle: FontStyle.italic,
                         color: ExtraColors.grey,
                       ),
                     ),
@@ -66,10 +66,9 @@ class ListIngredients extends HookWidget {
                   const SizedBox(width: 10),
                   Clickable(
                     onClick: () {
-                      final newIngredients =
-                          List<String>.from(submittedIngredients.value)
-                            ..removeAt(index);
-                      submittedIngredients.value = newIngredients;
+                      setState(() {
+                        widget.submittedIngredients.removeAt(index);
+                      });
                     },
                     child: Icon(
                       CupertinoIcons.trash_fill,

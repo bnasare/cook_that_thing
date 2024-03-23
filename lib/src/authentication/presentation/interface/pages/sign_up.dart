@@ -49,6 +49,9 @@ class _SignUpPageState extends State<SignUpPage> {
         password: passwordTextController.text,
         name: fullNameTextController.text,
       );
+      emailTextController.clear();
+      passwordTextController.clear();
+      fullNameTextController.clear();
       if (mounted) {
         setState(() {
           isLoading = false;

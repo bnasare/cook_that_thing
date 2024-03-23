@@ -23,7 +23,6 @@ import 'package:uuid/uuid.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/fullscreen_dialog.dart';
 import '../widgets/custom_textfeld.dart';
-import '../widgets/list_ingredients.dart';
 import '../widgets/list_instructions.dart';
 
 class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
@@ -370,10 +369,10 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
                   ],
                 ),
                 const SizedBox(height: 30),
-                ListIngredients(
-                  ingredientsController: ingredientsController,
-                  submittedIngredients: submittedIngredients,
-                ),
+                // ListIngredients(
+                //   ingredientsController: ingredientsController,
+                //   submittedIngredients: submittedIngredients,
+                // ),
                 SizedBox(
                     height: submittedIngredients.value.isNotEmpty ? 20 : 30),
                 Row(
