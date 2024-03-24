@@ -1,16 +1,15 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:iconly/iconly.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_info_item.dart';
-import 'package:recipe_hub/core/review/presentation/interface/pages/view_reviews.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
+import 'package:recipe_hub/shared/data/svg_assets.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../domain/entities/recipe.dart';
+import '../widgets/ingredient_item.dart';
+import '../widgets/recipe_detail_appbar.dart';
 
 class RecipeDetailsPage extends HookWidget with RecipeMixin {
   final String recipeID;
@@ -47,271 +46,173 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                 return const Center(child: Text('Recipe not found'));
               }
 
-              return Stack(
-                children: [
-                  Column(
-                    children: [
-                      Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          const SizedBox(
-                            height: 300,
-                            width: double.infinity,
-                          ),
-                          Positioned(
-                            child: CachedNetworkImage(
-                              imageUrl: recipe.image,
-                              height: MediaQuery.of(context).size.height * 0.4,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => const SizedBox(),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                            ),
-                          ),
-                          Positioned(
-                            top: 50,
-                            left: 0,
-                            right: 0,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: IconButton.filledTonal(
-                                    icon: const Icon(Icons.arrow_back_ios_new),
-                                    onPressed: () =>
-                                        NavigationHelper.navigateBack(context),
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              ExtraColors.white),
-                                      minimumSize: MaterialStateProperty.all(
-                                          const Size(20, 20)),
-                                      iconSize: MaterialStateProperty.all(20),
-                                      foregroundColor:
-                                          MaterialStateProperty.all(
-                                              ExtraColors.black),
-                                    ),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 20),
-                                  child: IconButton.filledTonal(
-                                    style: ButtonStyle(
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              ExtraColors.white),
-                                      minimumSize: MaterialStateProperty.all(
-                                          const Size(20, 20)),
-                                      iconSize: MaterialStateProperty.all(20),
-                                      foregroundColor:
-                                          MaterialStateProperty.all(
-                                              ExtraColors.black),
-                                    ),
-                                    icon: const Icon(IconlyLight.message),
-                                    onPressed: () {
-                                      NavigationHelper.navigateTo(context,
-                                          ViewReviewsPage(recipeID: recipe.id));
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 80),
-                      Expanded(
-                        child: DefaultTabController(
-                          length: 3,
-                          child: Column(
-                            children: [
-                              TabBar(
-                                dividerHeight: 0,
-                                overlayColor: MaterialStateProperty.all(
-                                    Colors.transparent),
-                                labelStyle: const TextStyle(
-                                    fontSize: 20, fontWeight: FontWeight.w600),
-                                unselectedLabelColor: ExtraColors.grey,
-                                tabs: const [
-                                  Tab(text: 'Overview'),
-                                  Tab(text: 'Ingredients'),
-                                  Tab(text: 'Directions'),
-                                ],
-                              ),
-                              Expanded(
-                                child: TabBarView(
-                                  children: [
-                                    ListView(
-                                      padding: const EdgeInsets.only(
-                                          left: 30, right: 30, bottom: 10),
-                                      shrinkWrap: true,
-                                      children: [
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 15.0),
-                                          child: Text(recipe.overview,
-                                              textAlign: TextAlign.justify,
-                                              style: const TextStyle(
-                                                  fontSize: 17)),
-                                        ),
-                                        ListTile(
-                                            contentPadding: EdgeInsets.zero,
-                                            title: const Text('Meal',
-                                                style: TextStyle(fontSize: 18)),
-                                            trailing: Text(recipe.category,
-                                                style: const TextStyle(
-                                                    fontWeight: FontWeight.w500,
-                                                    fontSize: 18))),
-                                        Divider(
-                                            color: ExtraColors.darkGrey
-                                                .withOpacity(0.3)),
-                                        ListTile(
-                                          contentPadding: EdgeInsets.zero,
-                                          title: const Text('Diet',
-                                              style: TextStyle(fontSize: 18)),
-                                          trailing: Text(recipe.diet,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18)),
-                                        ),
-                                        Divider(
-                                            color: ExtraColors.darkGrey
-                                                .withOpacity(0.3)),
-                                        ListTile(
-                                          contentPadding: EdgeInsets.zero,
-                                          title: const Text('Cooking Time',
-                                              style: TextStyle(fontSize: 18)),
-                                          trailing: Text(recipe.duration,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 18)),
-                                        )
-                                      ],
-                                    ),
-                                    ListView.builder(
-                                      padding: const EdgeInsets.only(
-                                          left: 30, right: 30, bottom: 10),
-                                      shrinkWrap: true,
-                                      itemCount: recipe.ingredients.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          horizontalTitleGap: 5,
-                                          contentPadding:
-                                              const EdgeInsets.all(0),
-                                          leading: const Text(
-                                            '● ',
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 16.0,
-                                              color: Colors.black,
-                                            ),
-                                          ),
-                                          title: Text(recipe.ingredients[index],
-                                              overflow: TextOverflow.ellipsis,
-                                              style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: ExtraColors.grey)),
-                                        );
-                                      },
-                                    ),
-                                    ListView.separated(
-                                      separatorBuilder: (context, index) =>
-                                          const Icon(
-                                              Icons.arrow_downward_rounded,
-                                              color: ExtraColors.grey,
-                                              size: 45),
-                                      padding: const EdgeInsets.only(
-                                          left: 30, right: 30, bottom: 10),
-                                      shrinkWrap: true,
-                                      itemCount: recipe.instructions.length,
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          contentPadding:
-                                              const EdgeInsets.all(0),
-                                          title: Text(
-                                              recipe.instructions[index],
-                                              textAlign: TextAlign.justify,
-                                              style: const TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: ExtraColors.grey)),
-                                        );
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    top: MediaQuery.of(context).size.height * 0.323,
-                    right: 0,
-                    left: 0,
-                    height: 130,
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 30),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        boxShadow: [
-                          BoxShadow(
-                              color: ExtraColors.black.withOpacity(0.5),
-                              offset: const Offset(0, 2),
-                              blurRadius: 6.0),
-                        ],
-                      ),
+              return CustomScrollView(
+                slivers: <Widget>[
+                  RecipeDetailAppBar(imageUrl: recipe.image),
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             recipe.title,
-                            style: const TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.w600,
-                                height: 0),
+                            style: Theme.of(context).textTheme.titleMedium,
                           ),
-                          Divider(color: ExtraColors.darkGrey.withOpacity(0.3)),
-                          Center(
+                          const SizedBox(height: 8.0),
+                          DefaultTextStyle(
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: ExtraColors.black),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                RecipeInfoItem(
-                                    icon: Icons.auto_graph_outlined,
-                                    text: recipe.difficultyLevel,
-                                    iconColor: ExtraColors.grey,
-                                    textSize: 18,
-                                    textColor: ExtraColors.black),
-                                RecipeInfoItem(
-                                    icon: CupertinoIcons.heart,
-                                    textSize: 18,
-                                    text: recipe.likes.length.toString(),
-                                    iconColor: ExtraColors.grey,
-                                    textColor: ExtraColors.black),
-                                FutureBuilder(
-                                    future: getAverageReviewsRating(
-                                        recipeID, context),
-                                    builder: (context, snapshot) {
-                                      return RecipeInfoItem(
-                                          icon: Icons.grade,
-                                          textSize: 18,
-                                          text: snapshot.data
-                                                  ?.toStringAsFixed(1) ??
-                                              '0.0',
-                                          iconColor: ExtraColors.yellow,
-                                          textColor: ExtraColors.black);
-                                    }),
+                                Text(recipe.category),
+                                const SizedBox(width: 8.0),
+                                Container(
+                                  height: 5.0,
+                                  width: 5.0,
+                                  decoration: const BoxDecoration(
+                                    color: ExtraColors.darkGrey,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                Text(recipe.duration),
                               ],
                             ),
-                          )
+                          ),
+                          const SizedBox(height: 16.0),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 32.0,
+                                    width: 32.0,
+                                    margin: const EdgeInsets.only(right: 8.0),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      boxShadow: [
+                                        BoxShadow(
+                                          offset: const Offset(0, 4),
+                                          blurRadius: 4.0,
+                                          color: Colors.black.withOpacity(0.25),
+                                        ),
+                                      ],
+                                    ),
+                                    child: const Icon(
+                                      CupertinoIcons.person_alt_circle,
+                                      color: ExtraColors.darkGrey,
+                                      size: 40.0,
+                                    ),
+                                  ),
+                                  Text(
+                                    recipe.chef,
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 32.0,
+                                    width: 32.0,
+                                    alignment: Alignment.center,
+                                    margin: const EdgeInsets.only(right: 8.0),
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color:
+                                          Theme.of(context).colorScheme.error,
+                                    ),
+                                    child: SvgPicture.asset(SvgAssets.heart),
+                                  ),
+                                  Text(
+                                    recipe.likes.length.toString(),
+                                    style:
+                                        Theme.of(context).textTheme.titleSmall,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 16.0),
+                          const Divider(
+                              color: ExtraColors.lightGrey, thickness: 2),
+                          const SizedBox(height: 16.0),
+                          Text(
+                            'Description',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 8.0),
+                          Text(
+                            recipe.overview,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: ExtraColors.grey),
+                          ),
+                          const SizedBox(height: 16.0),
+                          const Divider(
+                              color: ExtraColors.lightGrey, thickness: 2),
+                          const SizedBox(height: 16.0),
+                          Text(
+                            'Ingredients',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 16.0),
+                          Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: recipe.ingredients.length,
+                                itemBuilder: (context, index) {
+                                  return IngredientItem(
+                                      title: recipe.ingredients[index]);
+                                }),
+                          ),
+                          const Divider(
+                              color: ExtraColors.lightGrey, thickness: 2),
+                          const SizedBox(height: 16.0),
+                          Text(
+                            'Steps',
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
+                          const SizedBox(height: 16.0),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: recipe.instructions.length,
+                              itemBuilder: (context, index) {
+                                return Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 24.0,
+                                      width: 24.0,
+                                      alignment: Alignment.center,
+                                      margin:
+                                          const EdgeInsets.only(right: 16.0),
+                                      decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: ExtraColors.darkBlue,
+                                      ),
+                                      child: Text(
+                                        (index + 1).toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall!
+                                            .copyWith(
+                                                color: ExtraColors.white,
+                                                fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
+                          const SizedBox(height: 32.0),
                         ],
                       ),
                     ),

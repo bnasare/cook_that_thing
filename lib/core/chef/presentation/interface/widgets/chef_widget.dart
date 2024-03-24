@@ -34,7 +34,7 @@ class ChefWidget extends HookWidget with ChefMixin {
               );
             },
             leading: const Icon(
-              CupertinoIcons.person_alt_circle_fill,
+              CupertinoIcons.person_alt_circle,
               size: 50,
               color: ExtraColors.darkGrey,
             ),

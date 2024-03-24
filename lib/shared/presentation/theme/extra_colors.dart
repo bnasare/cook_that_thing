@@ -4,6 +4,7 @@ class ExtraColors {
   // Blues
   static const Color link = Color(0xFF4994EC);
   static const Color linkLight = Color(0XFFC2DDF8);
+  static const Color darkBlue = Color(0xFF2E3E5C);
 
   // Greens
   static const Color success = Color(0xFF56875A);
