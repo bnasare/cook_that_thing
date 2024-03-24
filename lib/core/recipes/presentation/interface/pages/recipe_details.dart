@@ -7,6 +7,8 @@ import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/core/review/presentation/interface/pages/view_reviews.dart';
 import 'package:recipe_hub/shared/data/svg_assets.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
+import 'package:recipe_hub/shared/widgets/clickable.dart';
+import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../domain/entities/recipe.dart';
@@ -111,40 +113,46 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 32.0,
-                                    width: 32.0,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: ExtraColors.lightGrey,
-                                      boxShadow: [
-                                        BoxShadow(
-                                          offset: const Offset(0, 4),
-                                          blurRadius: 4.0,
-                                          color: Colors.black.withOpacity(0.25),
-                                        ),
-                                      ],
+                              Clickable(
+                                onClick: () => NavigationHelper.navigateTo(
+                                    context,
+                                    ProfilePage(chefID: recipe.chefID)),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      height: 32.0,
+                                      width: 32.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: ExtraColors.lightGrey,
+                                        boxShadow: [
+                                          BoxShadow(
+                                            offset: const Offset(0, 4),
+                                            blurRadius: 4.0,
+                                            color: ExtraColors.black
+                                                .withOpacity(0.25),
+                                          ),
+                                        ],
+                                      ),
+                                      child: const Icon(
+                                        CupertinoIcons.person_alt_circle,
+                                        color: ExtraColors.darkGrey,
+                                        size: 45.0,
+                                      ),
                                     ),
-                                    child: const Icon(
-                                      CupertinoIcons.person_alt_circle,
-                                      color: ExtraColors.darkGrey,
-                                      size: 45.0,
+                                    const SizedBox(width: 15),
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 5.0),
+                                      child: Text(
+                                        recipe.chef,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(fontSize: 17),
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 15),
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 5.0),
-                                    child: Text(
-                                      recipe.chef,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .titleMedium
-                                          ?.copyWith(fontSize: 17),
-                                    ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                               Row(
                                 children: [
@@ -286,7 +294,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
             NavigationHelper.navigateTo(
                 context, ViewReviewsPage(recipeID: recipeID));
           },
-          label: const Text('Leave Review')),
+          label: const Text('View Reviews')),
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/pages/all_recipes.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_info.dart';
 import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_widget.dart';
 import 'package:recipe_hub/shared/data/firebase_constants.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
@@ -19,6 +20,7 @@ import 'package:recipe_hub/src/home/presentation/interface/widgets/recipe_search
 import '../../../../../core/chef/domain/entities/chef.dart';
 import '../../../../../core/chef/presentation/interface/pages/all_chefs.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
+import '../../../../../core/recipes/presentation/interface/pages/recipe_details.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
@@ -75,7 +77,7 @@ class HomePage extends HookWidget with RecipeMixin {
                     ListTile(
                       horizontalTitleGap: 5,
                       contentPadding: const EdgeInsets.all(0),
-                      leading: const Icon(CupertinoIcons.person_alt_circle_fill,
+                      leading: const Icon(CupertinoIcons.person_alt_circle,
                           size: 50),
                       title: Text(
                         'Hello ${FirebaseConsts.currentUser!.displayName}!',
@@ -115,13 +117,24 @@ class HomePage extends HookWidget with RecipeMixin {
                             padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                             scrollDirection: Axis.vertical,
                             children: [
-                              RecipeWidget(
-                                  sizedBoxHeight: 20,
-                                  recipes: searchResults.value!,
-                                  height: null,
-                                  paddingBottom: 0,
-                                  paddingTop: 0,
-                                  axis: Axis.vertical),
+                              Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: ExtraColors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: ExtraColors.darkGrey
+                                            .withOpacity(0.4),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(3, 3),
+                                      )
+                                    ]),
+                                child: RecipeInfo(
+                                  recipe: searchResults.value!.first,
+                                  recipeID: searchResults.value!.first.id,
+                                ),
+                              )
                             ],
                           ),
                         )
@@ -157,71 +170,76 @@ class HomePage extends HookWidget with RecipeMixin {
                                 ),
                               ),
                               const SizedBox(height: 15),
-                              StreamBuilder<List<Chef>>(
-                                stream: listChefStreams(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return SpinKitFadingCircle(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                    );
-                                  } else if (snapshot.hasError) {
-                                    return Text('Error: ${snapshot.error}');
-                                  } else {
-                                    return SizedBox(
-                                      height: 110,
-                                      child: ListView.builder(
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: snapshot.data!.length > 4
-                                            ? 4
-                                            : snapshot.data!.length,
-                                        itemBuilder: (context, index) {
-                                          String chefName =
-                                              snapshot.data![index].name;
-                                          return SizedBox(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width *
-                                                0.23,
-                                            child: Clickable(
-                                              onClick: () =>
-                                                  NavigationHelper.navigateTo(
-                                                context,
-                                                ProfilePage(
-                                                    chefID: snapshot
-                                                        .data![index].id),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15.0),
+                                child: StreamBuilder<List<Chef>>(
+                                  stream: listChefStreams(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return SpinKitFadingCircle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary,
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      return SizedBox(
+                                        height: 110,
+                                        child: ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: snapshot.data!.length > 4
+                                              ? 4
+                                              : snapshot.data!.length,
+                                          itemBuilder: (context, index) {
+                                            String chefName =
+                                                snapshot.data![index].name;
+                                            return SizedBox(
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.23,
+                                              child: Clickable(
+                                                onClick: () =>
+                                                    NavigationHelper.navigateTo(
+                                                        context,
+                                                        ProfilePage(
+                                                            chefID: snapshot
+                                                                .data![index]
+                                                                .id)),
+                                                child: Column(
+                                                  children: [
+                                                    const Icon(
+                                                        CupertinoIcons
+                                                            .person_alt_circle,
+                                                        color: ExtraColors
+                                                            .darkGrey,
+                                                        size: 80),
+                                                    Text(
+                                                      chefName,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          fontSize: 17,
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          overflow: TextOverflow
+                                                              .ellipsis),
+                                                    )
+                                                  ],
+                                                ),
                                               ),
-                                              child: Column(
-                                                children: [
-                                                  const Icon(
-                                                    CupertinoIcons
-                                                        .person_alt_circle_fill,
-                                                    color: ExtraColors.darkGrey,
-                                                    size: 80,
-                                                  ),
-                                                  Text(
-                                                    chefName,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                        fontSize: 17,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        overflow: TextOverflow
-                                                            .ellipsis),
-                                                  )
-                                                ],
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  }
-                                },
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
                               ),
                               const Padding(
                                 padding: EdgeInsets.only(
@@ -242,7 +260,11 @@ class HomePage extends HookWidget with RecipeMixin {
                                       ConnectionState.waiting) {
                                     // If the connection is still waiting, show a loading indicator or not
                                     return const Padding(
-                                      padding: EdgeInsets.only(top: 20.0),
+                                      padding: EdgeInsets.only(
+                                          top: 20.0,
+                                          left: 20,
+                                          right: 20,
+                                          bottom: 20),
                                       child: LoadingTextView(
                                           height: 230, width: double.infinity),
                                     );
@@ -256,7 +278,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                         ? 3
                                         : snapshot.data!.length;
                                     return RecipeWidget(
-                                        width: 250,
+                                        width: 300,
                                         recipes: snapshot.data!,
                                         itemCount: itemCount);
                                   } else {
@@ -285,9 +307,13 @@ class HomePage extends HookWidget with RecipeMixin {
                                         ConnectionState.waiting) {
                                       // If the connection is still waiting, show a loading indicator or not
                                       return const Padding(
-                                        padding: EdgeInsets.only(top: 20.0),
+                                        padding: EdgeInsets.only(
+                                            top: 20.0,
+                                            left: 20,
+                                            right: 20,
+                                            bottom: 20),
                                         child: LoadingTextView(
-                                            height: 230,
+                                            height: 160,
                                             width: double.infinity),
                                       );
                                     } else if (snapshot.hasData &&
@@ -295,14 +321,66 @@ class HomePage extends HookWidget with RecipeMixin {
                                       // If there's data but the list is empty, show a "no data" message or
                                       return const ErrorViewWidget();
                                     } else if (snapshot.hasData) {
-                                      // If there's data, return the RecipeWidget.
-                                      int itemCount = snapshot.data!.length > 3
-                                          ? 3
-                                          : snapshot.data!.length;
-                                      return RecipeWidget(
-                                          width: 250,
-                                          recipes: snapshot.data!,
-                                          itemCount: itemCount);
+                                      return SizedBox(
+                                        height: 160,
+                                        width: 300,
+                                        child: ListView.separated(
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(width: 20),
+                                          padding: const EdgeInsets.only(
+                                              left: 20, right: 20, bottom: 20),
+                                          addSemanticIndexes: true,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.horizontal,
+                                          itemCount: snapshot.data!.length,
+                                          itemBuilder: (context, index) {
+                                            Recipe recipe =
+                                                snapshot.data![index];
+                                            return Clickable(
+                                              onClick: () =>
+                                                  NavigationHelper.navigateTo(
+                                                      context,
+                                                      RecipeDetailsPage(
+                                                          recipeID: recipe.id)),
+                                              child: Container(
+                                                margin: const EdgeInsets.only(
+                                                    top: 20),
+                                                padding: const EdgeInsets.only(
+                                                    left: 10,
+                                                    right: 5,
+                                                    top: 10,
+                                                    bottom: 10),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: ExtraColors.white,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: ExtraColors
+                                                            .darkGrey
+                                                            .withOpacity(0.4),
+                                                        spreadRadius: 2,
+                                                        blurRadius: 5,
+                                                        offset:
+                                                            const Offset(3, 3),
+                                                      )
+                                                    ]),
+                                                child: SizedBox(
+                                                  width: 290,
+                                                  height: 160,
+                                                  child: RecipeInfo(
+                                                    recipe: recipe,
+                                                    recipeID: recipe.id,
+                                                  ),
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                      );
                                     } else {
                                       // If the snapshot is neither loading, with error, nor with data, show
                                       return const ErrorViewWidget();

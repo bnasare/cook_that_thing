@@ -1,6 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -13,10 +12,8 @@ import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/loading_manager.dart';
 
 import '../../../../../shared/data/firebase_constants.dart';
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 import '../../../../recipes/domain/entities/recipe.dart';
-import '../../../../recipes/presentation/interface/widgets/recipe_info_item.dart';
+import '../../../../recipes/presentation/interface/widgets/recipe_info.dart';
 
 class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
   static final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -26,7 +23,6 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = useState<bool>(false);
-    final color = Theme.of(context).colorScheme;
     final sliderValue = useState(4.0);
     final TextEditingController describeExperienceController =
         useTextEditingController();
@@ -75,100 +71,18 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       StreamBuilder<Recipe>(
-                          stream:
-                              getRecipe(context: context, documentID: recipeID),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              Recipe recipe = snapshot.data!;
-                              return Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(10),
-                                    child: FancyShimmerImage(
-                                      imageUrl: recipe.image,
-                                      height: 80,
-                                      width: 80,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Flexible(
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          recipe.title,
-                                          style: const TextStyle(
-                                            fontSize: 20,
-                                            overflow: TextOverflow.ellipsis,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            RecipeInfoItem(
-                                              textColor: ExtraColors.grey,
-                                              iconColor: ExtraColors.grey,
-                                              icon: Icons.av_timer_outlined,
-                                              text: recipe.duration,
-                                            ),
-                                            const Text(
-                                              '● ',
-                                              style: TextStyle(
-                                                  color: ExtraColors.darkGrey),
-                                            ),
-                                            Text(
-                                              recipe.difficultyLevel,
-                                              style: const TextStyle(
-                                                color: ExtraColors.grey,
-                                                wordSpacing: -2.2,
-                                                letterSpacing: 0,
-                                                fontSize: 16,
-                                              ),
-                                            ),
-                                            const Text(
-                                              ' ● ',
-                                              style: TextStyle(
-                                                  color: ExtraColors.darkGrey),
-                                            ),
-                                            Flexible(
-                                              child: Clickable(
-                                                onClick: () =>
-                                                    NavigationHelper.navigateTo(
-                                                        context,
-                                                        ProfilePage(
-                                                            chefID:
-                                                                recipe.chefID)),
-                                                child: Text(
-                                                    'by  ${recipe.chef}',
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                      color: ExtraColors.grey,
-                                                      wordSpacing: -2.2,
-                                                      letterSpacing: 0,
-                                                      fontSize: 16,
-                                                    )),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }),
+                        stream:
+                            getRecipe(context: context, documentID: recipeID),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            Recipe recipe = snapshot.data!;
+                            return RecipeInfo(
+                                recipe: recipe, recipeID: recipeID);
+                          } else {
+                            return Container();
+                          }
+                        },
+                      ),
                       const SizedBox(height: 20),
                       const Divider(color: ExtraColors.lightGrey, thickness: 2),
                       const SizedBox(height: 10),

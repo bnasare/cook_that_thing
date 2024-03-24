@@ -68,22 +68,21 @@ mixin ReviewMixin {
       BuildContext context, String recipeID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.reviews;
-
-    Stream<QuerySnapshot> querySnapshotStream = firestore
+    QuerySnapshot querySnapshot = await firestore
         .collection(collectionPath)
         .where('recipeID', isEqualTo: recipeID)
-        .orderBy('time', descending: true)
-        .snapshots();
+        .get();
 
-    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
-      List<Review> allReviews = [];
-      for (DocumentSnapshot snapshot in querySnapshot.docs) {
-        List<Review> reviews =
-            await getReviews(context: context, documentID: snapshot.id);
-        allReviews.addAll(reviews);
-      }
-      yield allReviews;
+    List<Review> allReviews = [];
+
+    for (DocumentSnapshot snapshot in querySnapshot.docs) {
+      String documentId = snapshot.id;
+      List<Review> reviews =
+          await getReviews(context: context, documentID: documentId);
+      allReviews.addAll(reviews);
     }
+
+    yield allReviews;
   }
 
   Stream<Recipe> getRecipe({
@@ -100,5 +99,18 @@ mixin ReviewMixin {
             orElse: () => Recipe.initial());
       },
     );
+  }
+
+  Future<double> getAverageReviewsRating(
+      String recipeId, BuildContext context) async {
+    double sum = 0;
+    int count = 0;
+    await for (var reviews in fetchReviewsByRecipeID(context, recipeId)) {
+      for (var review in reviews) {
+        sum += review.rating;
+        count++;
+      }
+    }
+    return count != 0 ? sum / count : 0;
   }
 }

@@ -38,13 +38,16 @@ class RecipeInfoItem extends StatelessWidget {
             size: iconSize,
           ),
           SizedBox(width: width),
-          Text(
-            text,
-            style: TextStyle(
-              color: textColor ?? ExtraColors.white,
-              wordSpacing: -2.2,
-              letterSpacing: 0,
-              fontSize: textSize,
+          Flexible(
+            child: Text(
+              text,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(
+                color: textColor ?? ExtraColors.white,
+                letterSpacing: 0,
+                fontSize: textSize,
+              ),
             ),
           ),
         ],

@@ -100,20 +100,23 @@ mixin RecipeMixin {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.recipes;
 
-    QuerySnapshot querySnapshot = await firestore
+    Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .orderBy("createdAt", descending: true)
-        .get();
+        .snapshots();
 
-    List<Recipe> allRecipes = [];
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List<Recipe> allRecipes = [];
 
-    for (DocumentSnapshot snapshot in querySnapshot.docs) {
-      String documentId = snapshot.id;
-      List<Recipe> recipes =
-          await getRecipes(context: context, documentID: documentId).first;
-      allRecipes.addAll(recipes);
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        List<Recipe> recipes =
+            await getRecipes(context: context, documentID: documentId).first;
+        allRecipes.addAll(recipes);
+      }
+
+      yield allRecipes;
     }
-    yield allRecipes;
   }
 
   Stream<List<Recipe>> fetchAllRecipesByCategory(
@@ -124,16 +127,17 @@ mixin RecipeMixin {
     Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .where('category', isEqualTo: category)
+        .orderBy("createdAt", descending: true)
         .snapshots();
 
     await for (QuerySnapshot querySnapshot in querySnapshotStream) {
       List<Recipe> allRecipes = [];
+
       for (DocumentSnapshot snapshot in querySnapshot.docs) {
         String documentId = snapshot.id;
-        await for (List<Recipe> recipes
-            in getRecipes(context: context, documentID: documentId)) {
-          allRecipes.addAll(recipes);
-        }
+        List<Recipe> recipes =
+            await getRecipes(context: context, documentID: documentId).first;
+        allRecipes.addAll(recipes);
       }
       yield allRecipes;
     }
