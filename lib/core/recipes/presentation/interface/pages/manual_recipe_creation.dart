@@ -12,7 +12,10 @@ import 'package:recipe_hub/shared/widgets/clickable.dart';
 import 'package:recipe_hub/shared/widgets/loading_manager.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../../../bottom_navbar.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/widgets/fullscreen_dialog.dart';
 import '../../../../../shared/widgets/warning_modal.dart';
 import '../widgets/build_dialog_item.dart';
 import '../widgets/list_ingredients.dart';
@@ -64,13 +67,13 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Add Recipe"),
-      ),
-      body: LoadingManager(
-        isLoading: _isSaving,
-        child: SizedBox(
+    return LoadingManager(
+      isLoading: _isSaving,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Add Recipe"),
+        ),
+        body: SizedBox(
           child: Stepper(
             currentStep: _index,
             onStepTapped: (value) {
@@ -140,8 +143,8 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     title: titleController.text,
                     overview: overviewController.text,
                     duration: duration.inMinutes >= 60
-                        ? "${duration.inHours} h"
-                        : "${duration.inMinutes} min",
+                        ? '${duration.inHours}h ${duration.inMinutes.remainder(60)}min'
+                        : '${duration.inMinutes}min',
                     category: categoryController.text,
                     image: imageUrl,
                     createdAt: DateTime.now(),
@@ -149,8 +152,33 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     instructions: submittedInstructions,
                   );
                   setState(() {
-                    _isSaving = true;
+                    _isSaving = false;
                   });
+                  await showDialog(
+                    context: context,
+                    builder: (BuildContext context) => FullscreenDialog(
+                      title: 'Recipe published successfully!',
+                      content: 'Access your recipes from your profile',
+                      dialogType: DialogType.success,
+                      primaryButtonLabel: 'OK',
+                      primaryAction: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  );
+
+                  NavigationHelper.navigateToAndRemoveUntil(
+                      context, const NavBar());
+                  titleController.clear();
+                  overviewController.clear();
+                  ingredientsController.clear();
+                  instructionsController.clear();
+                  difficultyLevelController.clear();
+                  categoryController.clear();
+                  duration = const Duration(minutes: 0);
+                  _image = null;
+                  submittedIngredients = [];
+                  submittedInstructions = [];
                 }
               }
             },
@@ -178,7 +206,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                             ? Image.file(
                                 _image!,
                                 width: double.infinity,
-                                fit: BoxFit.fill,
+                                fit: BoxFit.cover,
                               )
                             : DottedBorder(
                                 strokeWidth: 1,
@@ -226,9 +254,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   overflow: TextOverflow.fade,
                 ),
                 content: TextField(
+                  maxLines: null,
                   controller: overviewController,
-                  decoration:
-                      const InputDecoration(hintText: "Title", filled: true),
+                  decoration: const InputDecoration(
+                      hintText: "Description", filled: true),
                 ),
               ),
               Step(
@@ -247,7 +276,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8))),
                           shadowColor: ExtraColors.white,
-                          title: const Text('Select difficulty level'),
+                          title: const Text('Select meal type'),
                           content: SingleChildScrollView(
                               child: Column(
                             mainAxisSize: MainAxisSize.min,

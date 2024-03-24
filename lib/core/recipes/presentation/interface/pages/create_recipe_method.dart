@@ -49,7 +49,7 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add Recipe'),
+        title: const Text('Choose Recipe Creation Method'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),

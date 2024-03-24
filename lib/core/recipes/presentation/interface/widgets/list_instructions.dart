@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/custom_textfeld.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/shared/utils/validator.dart';
 import 'package:recipe_hub/shared/widgets/clickable.dart';
 
 class ListInstructions extends StatefulWidget {
@@ -25,17 +23,15 @@ class _ListInstructionsState extends State<ListInstructions> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        CustomTextFormField(
+        TextField(
           controller: widget.instructionsController,
-          labelText: 'Instructions',
-          hintText: 'List of instructions',
-          validator: (value) {
-            return Validator.recipeInstructionsList(
-                widget.submittedInstructions);
-          },
+          decoration: const InputDecoration(
+            hintText: 'Add an instruction',
+            filled: true,
+          ),
           textInputAction: TextInputAction.done,
-          maxLines: 2,
-          onFieldSubmitted: (String value) {
+          maxLines: null,
+          onSubmitted: (String value) {
             setState(() {
               widget.submittedInstructions.add(value);
               widget.instructionsController.clear();
@@ -47,8 +43,6 @@ class _ListInstructionsState extends State<ListInstructions> {
           shrinkWrap: true,
           padding: EdgeInsets.only(
             top: widget.submittedInstructions.isNotEmpty ? 7 : 0,
-            right: 25,
-            left: 25,
           ),
           physics: const NeverScrollableScrollPhysics(),
           itemCount: widget.submittedInstructions.length,
@@ -63,7 +57,6 @@ class _ListInstructionsState extends State<ListInstructions> {
                     child: Text(
                       '$instructionNumber. $instruction',
                       style: const TextStyle(
-                        fontStyle: FontStyle.italic,
                         color: ExtraColors.grey,
                       ),
                     ),
