@@ -254,6 +254,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                         ? 3
                                         : snapshot.data!.length;
                                     return RecipeWidget(
+                                        width: 300,
                                         recipes: snapshot.data!,
                                         itemCount: itemCount);
                                   } else {
@@ -296,6 +297,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                           ? 3
                                           : snapshot.data!.length;
                                       return RecipeWidget(
+                                          width: 300,
                                           recipes: snapshot.data!,
                                           itemCount: itemCount);
                                     } else {

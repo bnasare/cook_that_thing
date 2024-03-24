@@ -19,6 +19,7 @@ class RecipeWidget extends StatelessWidget {
   final double sizedBoxHeight;
   final double paddingTop;
   final double paddingBottom;
+  final double? width;
 
   const RecipeWidget({
     super.key,
@@ -27,6 +28,7 @@ class RecipeWidget extends StatelessWidget {
     this.sizedBoxHeight = 0,
     this.paddingTop = 20,
     this.paddingBottom = 20,
+    this.width,
     this.axis = Axis.horizontal,
     this.height = 270,
   });
@@ -36,7 +38,7 @@ class RecipeWidget extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width * 0.9;
 
     return SizedBox(
-      width: screenWidth,
+      width: width ?? screenWidth,
       height: height,
       child: ListView.separated(
         addSemanticIndexes: true,

@@ -27,8 +27,20 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                 child: Text(snapshot.error.toString()),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return SpinKitFadingCircle(
-                color: Theme.of(context).colorScheme.primary,
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SpinKitFadingCircle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    const SizedBox(height: 16.0),
+                    const Text('Loading',
+                        style:
+                            TextStyle(fontSize: 16.0, color: ExtraColors.grey)),
+                  ],
+                ),
               );
             } else if (snapshot.hasData && snapshot.data!.isEmpty) {
               return const Center(
