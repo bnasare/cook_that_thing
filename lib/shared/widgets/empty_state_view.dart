@@ -64,6 +64,7 @@ class EmptyStateView extends StatelessWidget {
           child: Text(
             buttonText,
             style: const TextStyle(
+              fontSize: 18,
               color: ExtraColors.white,
               fontWeight: FontWeight.w600,
             ),

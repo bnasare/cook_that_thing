@@ -44,11 +44,6 @@ class HomePage extends HookWidget with RecipeMixin {
         List<Recipe> filteredRecipes = allRecipes
             .where((recipe) =>
                 recipe.title.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.category.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.diet.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.difficultyLevel
-                    .toLowerCase()
-                    .contains(query.toLowerCase()) ||
                 recipe.chef.toLowerCase().contains(query.toLowerCase()))
             .toList();
         searchResults.value = filteredRecipes;
@@ -99,7 +94,7 @@ class HomePage extends HookWidget with RecipeMixin {
                       fillColor: ExtraColors.white,
                       controller: searchController,
                       label: 'Search',
-                      hintText: 'Search recipes by title or tags',
+                      hintText: 'Search recipe by title or chef',
                     ),
                   ],
                 ),
@@ -111,33 +106,36 @@ class HomePage extends HookWidget with RecipeMixin {
                           child: ErrorViewWidget(),
                         )
                       : Expanded(
-                          child: ListView(
-                            physics: const BouncingScrollPhysics(),
-                            shrinkWrap: true,
-                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                            scrollDirection: Axis.vertical,
-                            children: [
-                              Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: ExtraColors.white,
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: ExtraColors.darkGrey
-                                            .withOpacity(0.4),
-                                        spreadRadius: 2,
-                                        blurRadius: 5,
-                                        offset: const Offset(3, 3),
-                                      )
-                                    ]),
-                                child: RecipeInfo(
-                                  recipe: searchResults.value!.first,
-                                  recipeID: searchResults.value!.first.id,
-                                ),
-                              )
-                            ],
-                          ),
-                        )
+                          child: ListView.separated(
+                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                          separatorBuilder: (context, index) =>
+                              const SizedBox(height: 20),
+                          physics: const BouncingScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: searchResults.value!.length,
+                          itemBuilder: (context, index) {
+                            Recipe recipe = searchResults.value![index];
+                            return Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: ExtraColors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          ExtraColors.darkGrey.withOpacity(0.4),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: const Offset(3, 3),
+                                    )
+                                  ]),
+                              child: RecipeInfo(
+                                recipe: recipe,
+                                recipeID: recipe.id,
+                              ),
+                            );
+                          },
+                        ))
                   : searchController.text.isEmpty
                       ? Expanded(
                           child: ListView(
@@ -274,8 +272,8 @@ class HomePage extends HookWidget with RecipeMixin {
                                     return const ErrorViewWidget();
                                   } else if (snapshot.hasData) {
                                     // If there's data, return the RecipeWidget.
-                                    int itemCount = snapshot.data!.length > 3
-                                        ? 3
+                                    int itemCount = snapshot.data!.length > 4
+                                        ? 4
                                         : snapshot.data!.length;
                                     return RecipeWidget(
                                         width: 300,
@@ -313,7 +311,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                             right: 20,
                                             bottom: 20),
                                         child: LoadingTextView(
-                                            height: 160,
+                                            height: 140,
                                             width: double.infinity),
                                       );
                                     } else if (snapshot.hasData &&
@@ -334,16 +332,18 @@ class HomePage extends HookWidget with RecipeMixin {
                                               const BouncingScrollPhysics(),
                                           shrinkWrap: true,
                                           scrollDirection: Axis.horizontal,
-                                          itemCount: snapshot.data!.length,
+                                          itemCount: snapshot.data!.length > 4
+                                              ? 4
+                                              : snapshot.data!.length,
                                           itemBuilder: (context, index) {
-                                            Recipe recipe =
-                                                snapshot.data![index];
                                             return Clickable(
                                               onClick: () =>
                                                   NavigationHelper.navigateTo(
                                                       context,
                                                       RecipeDetailsPage(
-                                                          recipeID: recipe.id)),
+                                                          recipeID: snapshot
+                                                              .data![index]
+                                                              .id)),
                                               child: Container(
                                                 margin: const EdgeInsets.only(
                                                     top: 20),
@@ -372,8 +372,10 @@ class HomePage extends HookWidget with RecipeMixin {
                                                   width: 290,
                                                   height: 160,
                                                   child: RecipeInfo(
-                                                    recipe: recipe,
-                                                    recipeID: recipe.id,
+                                                    recipe:
+                                                        snapshot.data![index],
+                                                    recipeID: snapshot
+                                                        .data![index].id,
                                                   ),
                                                 ),
                                               ),

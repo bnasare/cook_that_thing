@@ -86,14 +86,22 @@ mixin RecipeMixin {
     required BuildContext context,
     required String documentID,
   }) async* {
-    final result = await bloc.getRecipes(documentID);
-    yield result.fold(
-      (l) {
-        l;
-        return <Recipe>[];
-      },
-      (r) => r,
-    );
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String collectionPath = DatabaseCollections.recipes;
+
+    Stream<DocumentSnapshot> documentStream =
+        firestore.collection(collectionPath).doc(documentID).snapshots();
+
+    await for (var snapshot in documentStream) {
+      if (snapshot.exists && snapshot.data() != null) {
+        List<Recipe> recipes = [
+          Recipe.fromJson(snapshot.data() as Map<String, dynamic>)
+        ];
+        yield recipes;
+      } else {
+        yield <Recipe>[];
+      }
+    }
   }
 
   Stream<List<Recipe>> fetchAllRecipes(BuildContext context) async* {

@@ -1,13 +1,15 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:recipe_hub/core/recipes/domain/entities/recipe.dart';
-import 'package:recipe_hub/core/review/presentation/bloc/review_mixin.dart';
+import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/widgets/like_button.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import 'recipe_info_item.dart';
 
-class RecipeInfo extends StatefulWidget with ReviewMixin {
+class RecipeInfo extends HookWidget with RecipeMixin {
   final Recipe recipe;
   final String recipeID;
 
@@ -18,11 +20,6 @@ class RecipeInfo extends StatefulWidget with ReviewMixin {
   });
 
   @override
-  State<RecipeInfo> createState() => _RecipeInfoState();
-}
-
-class _RecipeInfoState extends State<RecipeInfo> {
-  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
@@ -30,7 +27,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
         ClipRRect(
           borderRadius: BorderRadius.circular(10),
           child: FancyShimmerImage(
-            imageUrl: widget.recipe.image,
+            imageUrl: recipe.image,
             height: 110,
             width: 110,
           ),
@@ -44,7 +41,7 @@ class _RecipeInfoState extends State<RecipeInfo> {
               Padding(
                 padding: const EdgeInsets.only(left: 5.0),
                 child: Text(
-                  widget.recipe.title,
+                  recipe.title,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
                     fontSize: 20,
@@ -60,41 +57,61 @@ class _RecipeInfoState extends State<RecipeInfo> {
                   RecipeInfoItem(
                     textSize: 17,
                     iconSize: 20,
-                    width: 4,
+                    width: 2.5,
                     textColor: ExtraColors.grey,
                     iconColor: ExtraColors.darkGrey,
                     icon: Icons.av_timer_outlined,
-                    text: widget.recipe.duration,
+                    text: recipe.duration,
                   ),
                   const SizedBox(width: 3),
                   Flexible(
                     child: RecipeInfoItem(
                       textSize: 17,
                       iconSize: 20,
-                      width: 4,
+                      width: 2.5,
                       textColor: ExtraColors.grey,
                       iconColor: ExtraColors.darkGrey,
                       icon: CupertinoIcons.person_alt_circle_fill,
-                      text: widget.recipe.chef,
+                      text: recipe.chef,
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 3),
-              FutureBuilder(
-                future:
-                    widget.getAverageReviewsRating(widget.recipeID, context),
-                builder: (context, snapshot) {
-                  return RecipeInfoItem(
-                    icon: Icons.grade,
-                    textSize: 17,
-                    iconSize: 20,
-                    width: 4,
-                    text: snapshot.data?.toStringAsFixed(1) ?? '0.0',
-                    iconColor: ExtraColors.yellow,
-                    textColor: ExtraColors.grey,
-                  );
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FutureBuilder(
+                    future: getAverageReviewsRating(recipe.id, context),
+                    builder: (context, snapshot) {
+                      return Material(
+                        color: ExtraColors.yellow,
+                        borderRadius: BorderRadius.circular(15),
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 3, right: 5),
+                          child: RecipeInfoItem(
+                            icon: Icons.grade,
+                            textSize: 17,
+                            iconSize: 20,
+                            width: 2.5,
+                            text: snapshot.data?.toStringAsFixed(1) ?? '0.0',
+                            iconColor: ExtraColors.black,
+                            textColor: ExtraColors.black,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: ExtraColors.lightGrey,
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(30.0),
+                    ),
+                    child: LikeButton(recipeID),
+                  )
+                ],
               ),
             ],
           ),

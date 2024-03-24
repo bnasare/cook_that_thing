@@ -32,19 +32,22 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
   }
 
   Future<void> _checkIsLiked() async {
-    DocumentSnapshot recipeDoc = await FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection(DatabaseCollections.recipes)
         .doc(widget.recipeID)
-        .get();
+        .snapshots()
+        .listen((DocumentSnapshot recipeDoc) {
+      if (recipeDoc.exists) {
+        List<dynamic> likes = recipeDoc['likes'] ?? [];
+        bool isLiked = likes.contains(FirebaseAuth.instance.currentUser!.uid);
 
-    List<dynamic> likes = recipeDoc['likes'] ?? [];
-    bool isLiked = likes.contains(FirebaseAuth.instance.currentUser!.uid);
-
-    if (mounted) {
-      setState(() {
-        _isLiked = isLiked;
-      });
-    }
+        if (mounted) {
+          setState(() {
+            _isLiked = isLiked;
+          });
+        }
+      }
+    });
   }
 
   @override

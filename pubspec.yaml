@@ -54,6 +54,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   google_sign_in: ^6.2.1
   colorful_safe_area: ^1.0.0
+  timeago: ^3.6.1
 
 
 dev_dependencies:

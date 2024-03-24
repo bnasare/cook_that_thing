@@ -10,21 +10,20 @@ class RatingDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: RatingBar.builder(
-        initialRating: rating,
-        minRating: 1,
-        direction: Axis.horizontal,
-        allowHalfRating: true,
-        itemCount: 5,
-        itemSize: itemSize,
-        itemPadding: EdgeInsets.zero,
-        itemBuilder: (context, _) => const Icon(
-          Icons.grade,
-          color: ExtraColors.yellow,
-        ),
-        onRatingUpdate: (rating) {},
+    return RatingBar.builder(
+      initialRating: rating,
+      minRating: 1,
+      direction: Axis.horizontal,
+      allowHalfRating: true,
+      itemCount: 5,
+      itemSize: itemSize,
+      unratedColor: ExtraColors.darkGrey.withOpacity(0.5),
+      itemPadding: const EdgeInsets.symmetric(horizontal: 0),
+      itemBuilder: (context, _) => const Icon(
+        Icons.grade,
+        color: ExtraColors.yellow,
       ),
+      onRatingUpdate: (rating) {},
     );
   }
 }

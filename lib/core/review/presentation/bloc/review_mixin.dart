@@ -68,21 +68,27 @@ mixin ReviewMixin {
       BuildContext context, String recipeID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.reviews;
-    QuerySnapshot querySnapshot = await firestore
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .where('recipeID', isEqualTo: recipeID)
-        .get();
+        .orderBy('time', descending: true)
+        .snapshots();
 
-    List<Review> allReviews = [];
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List<Review> allReviews = [];
+      List<Future<List<Review>>> reviewFutures = [];
 
-    for (DocumentSnapshot snapshot in querySnapshot.docs) {
-      String documentId = snapshot.id;
-      List<Review> reviews =
-          await getReviews(context: context, documentID: documentId);
-      allReviews.addAll(reviews);
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        reviewFutures.add(getReviews(context: context, documentID: documentId));
+      }
+
+      List<List<Review>> reviewsLists = await Future.wait(reviewFutures);
+      allReviews = reviewsLists.expand((reviews) => reviews).toList();
+
+      yield allReviews;
     }
-
-    yield allReviews;
   }
 
   Stream<Recipe> getRecipe({
@@ -112,5 +118,26 @@ mixin ReviewMixin {
       }
     }
     return count != 0 ? sum / count : 0;
+  }
+
+  Future<double> getAverageReviewsRatingForRecipeAsync(
+      Stream<List<Review>> reviewsStream, String recipeID) async {
+    double totalRating = 0.0;
+    int reviewCount = 0;
+
+    await for (List<Review> reviews in reviewsStream) {
+      // Filter reviews for the specific recipe ID
+      List<Review> reviewsForRecipe =
+          reviews.where((review) => review.recipeID == recipeID).toList();
+
+      if (reviewsForRecipe.isNotEmpty) {
+        for (Review review in reviewsForRecipe) {
+          totalRating += review.rating;
+        }
+        reviewCount += reviewsForRecipe.length;
+      }
+    }
+
+    return reviewCount > 0 ? totalRating / reviewCount : 0.0;
   }
 }

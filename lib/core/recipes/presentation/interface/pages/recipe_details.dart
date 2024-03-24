@@ -291,8 +291,20 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
           }),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: () {
-            NavigationHelper.navigateTo(
-                context, ViewReviewsPage(recipeID: recipeID));
+            Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  // ignore: deprecated_member_use
+                  return WillPopScope(
+                    onWillPop: () async {
+                      Navigator.pop(context);
+                      return true;
+                    },
+                    child: ViewReviewsPage(recipeID: recipeID),
+                  );
+                },
+              ),
+            );
           },
           label: const Text('View Reviews')),
     );

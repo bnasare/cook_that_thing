@@ -3,11 +3,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
+import 'package:recipe_hub/core/recipes/presentation/interface/pages/recipe_details.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
+import '../../../../../src/home/presentation/interface/widgets/recipe_search_box.dart';
 import '../../../domain/entities/recipe.dart';
-import '../widgets/recipe_widget.dart';
+import '../widgets/recipe_info.dart';
 
 class AllRecipesPage extends HookWidget with RecipeMixin {
   AllRecipesPage({super.key});
@@ -27,11 +31,6 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
         List<Recipe> filteredRecipes = allRecipes
             .where((recipe) =>
                 recipe.title.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.category.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.diet.toLowerCase().contains(query.toLowerCase()) ||
-                recipe.difficultyLevel
-                    .toLowerCase()
-                    .contains(query.toLowerCase()) ||
                 recipe.chef.toLowerCase().contains(query.toLowerCase()))
             .toList();
         searchResults.value = filteredRecipes;
@@ -78,19 +77,55 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
               ),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.only(left: 20.0, right: 20, bottom: 10),
+            child: CustomSearchBox(
+              handleSearch: handleSearch,
+              controller: searchController,
+              label: 'Search',
+              hintText: 'Search recipe by title or chef',
+            ),
+          ),
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
               shrinkWrap: true,
               children: [
-                const SizedBox(height: 5),
                 searchResults.value != null && searchController.text.isNotEmpty
                     ? searchResults.value!.isEmpty
                         ? const Padding(
                             padding: EdgeInsets.only(top: 50),
                             child: ErrorViewWidget(),
                           )
-                        : RecipeWidget(recipes: searchResults.value!)
+                        : ListView.separated(
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 20),
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: searchResults.value!.length,
+                            itemBuilder: (context, index) {
+                              Recipe recipe = searchResults.value![index];
+                              return Container(
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: ExtraColors.white,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: ExtraColors.darkGrey
+                                            .withOpacity(0.4),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: const Offset(3, 3),
+                                      )
+                                    ]),
+                                child: RecipeInfo(
+                                  recipe: recipe,
+                                  recipeID: recipe.id,
+                                ),
+                              );
+                            },
+                          )
                     : searchController.text.isEmpty
                         ? StreamBuilder(
                             stream: fetchAllRecipes(context),
@@ -112,13 +147,43 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
                                   snapshot.data!.isEmpty) {
                                 return const ErrorViewWidget();
                               } else if (snapshot.hasData) {
-                                return RecipeWidget(
-                                    sizedBoxHeight: 20,
-                                    recipes: snapshot.data!,
-                                    height: null,
-                                    paddingBottom: 0,
-                                    paddingTop: 0,
-                                    axis: Axis.vertical);
+                                return ListView.separated(
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(height: 20),
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: snapshot.data!.length,
+                                  itemBuilder: (context, index) {
+                                    Recipe recipe = snapshot.data![index];
+                                    return Clickable(
+                                      onClick: () =>
+                                          NavigationHelper.navigateTo(
+                                              context,
+                                              RecipeDetailsPage(
+                                                  recipeID: recipe.id)),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(8),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: ExtraColors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: ExtraColors.darkGrey
+                                                    .withOpacity(0.4),
+                                                spreadRadius: 2,
+                                                blurRadius: 5,
+                                                offset: const Offset(3, 3),
+                                              )
+                                            ]),
+                                        child: RecipeInfo(
+                                          recipe: recipe,
+                                          recipeID: recipe.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                );
                               } else {
                                 return const ErrorViewWidget();
                               }

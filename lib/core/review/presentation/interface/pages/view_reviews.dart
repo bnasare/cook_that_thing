@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:iconly/iconly.dart';
 import 'package:recipe_hub/core/review/presentation/interface/pages/create_review.dart';
 import 'package:recipe_hub/shared/widgets/empty_state_view.dart';
 
@@ -83,43 +82,50 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                       const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                   child: Column(
                     children: [
-                      ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 15),
-                        title: Text(
-                          '${reviews.length} ${reviews.length == 1 ? 'Review' : 'Reviews'}',
-                          style: const TextStyle(
-                              color: ExtraColors.black,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500),
+                      const SizedBox(height: 5),
+                      Text(
+                        '$averageReviews',
+                        style: Theme.of(context)
+                            .textTheme
+                            .displayLarge
+                            ?.copyWith(fontWeight: FontWeight.w100),
+                      ),
+                      const SizedBox(height: 3),
+                      RatingDisplay(rating: averageReviews, itemSize: 40),
+                      const SizedBox(height: 10),
+                      Text(
+                        '(${reviews.length} ${reviews.length == 1 ? 'Review' : 'Reviews'})',
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            fontWeight: FontWeight.normal,
+                            color: ExtraColors.darkGrey),
+                      ),
+                      const SizedBox(height: 10),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20),
+                        child:
+                            Divider(color: ExtraColors.lightGrey, thickness: 2),
+                      ),
+                      Expanded(
+                        child: ListView.separated(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          scrollDirection: Axis.vertical,
+                          itemCount: reviews.length,
+                          separatorBuilder: (context, index) => const Divider(
+                              color: ExtraColors.lightGrey, thickness: 2),
+                          itemBuilder: (context, index) {
+                            return ReviewCard(
+                              name: reviews[index].name,
+                              rating: reviews[index].rating,
+                              time: reviews[index].time,
+                              review: reviews[index].review,
+                            );
+                          },
                         ),
-                        subtitle: Row(
-                          children: [
-                            Text(
-                              '$averageReviews',
-                              style: const TextStyle(
-                                  color: ExtraColors.black,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18),
-                            ),
-                            RatingDisplay(rating: averageReviews, itemSize: 18),
-                          ],
-                        ),
-                        trailing: FilledButton.icon(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Theme.of(context).colorScheme.primary),
-                              shape: MaterialStateProperty.all<
-                                  RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                ),
-                              ),
-                              padding:
-                                  MaterialStateProperty.all<EdgeInsetsGeometry>(
-                                      const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5)),
-                            ),
+                      ),
+                      const Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: ElevatedButton(
                             onPressed: () {
                               Navigator.of(context, rootNavigator: true).push(
                                 MaterialPageRoute(
@@ -137,25 +143,10 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                                 ),
                               );
                             },
-                            icon: const Icon(IconlyLight.edit, size: 17),
-                            label: const Text('Add Review',
-                                style: TextStyle(fontSize: 17))),
-                      ),
-                      Expanded(
-                        child: ListView.separated(
-                          scrollDirection: Axis.vertical,
-                          itemCount: reviews.length,
-                          separatorBuilder: (context, index) =>
-                              const SizedBox(height: 5.0),
-                          itemBuilder: (context, index) {
-                            return ReviewCard(
-                              name: reviews[index].name,
-                              rating: reviews[index].rating,
-                              time: reviews[index].time,
-                              review: reviews[index].review,
-                            );
-                          },
-                        ),
+                            child: const Text(
+                              'Write a Review',
+                              style: TextStyle(fontSize: 18),
+                            )),
                       ),
                     ],
                   ),
