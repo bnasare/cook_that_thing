@@ -31,7 +31,10 @@ class IngredientItem extends StatelessWidget {
           ),
           Text(
             title,
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context)
+                .textTheme
+                .bodyLarge!
+                .copyWith(color: ExtraColors.grey, fontSize: 16),
           ),
         ],
       ),

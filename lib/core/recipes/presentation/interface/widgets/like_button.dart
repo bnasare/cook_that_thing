@@ -101,7 +101,7 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
         }
       },
       child: Material(
-        color: ExtraColors.white.withOpacity(0.9),
+        color: ExtraColors.white,
         shape: const StadiumBorder(),
         child: Padding(
           padding: const EdgeInsets.all(10.0),

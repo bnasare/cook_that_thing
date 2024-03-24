@@ -4,7 +4,9 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
+import 'package:recipe_hub/core/review/presentation/interface/pages/view_reviews.dart';
 import 'package:recipe_hub/shared/data/svg_assets.dart';
+import 'package:recipe_hub/shared/utils/navigation.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../domain/entities/recipe.dart';
@@ -224,7 +226,6 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                   ],
                                 );
                               }),
-                          const SizedBox(height: 32.0),
                         ],
                       ),
                     ),
@@ -233,6 +234,12 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
               );
             }
           }),
+      floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            NavigationHelper.navigateTo(
+                context, ViewReviewsPage(recipeID: recipeID));
+          },
+          label: const Text('Leave Review')),
     );
   }
 }

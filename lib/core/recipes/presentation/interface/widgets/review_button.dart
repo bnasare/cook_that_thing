@@ -29,7 +29,7 @@ class ReviewButton extends HookWidget with RecipeMixin {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 3),
       child: Material(
-        color: ExtraColors.white.withOpacity(0.9),
+        color: ExtraColors.white,
         borderRadius: BorderRadius.circular(15),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),

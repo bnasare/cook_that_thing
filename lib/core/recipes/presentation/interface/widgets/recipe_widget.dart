@@ -109,7 +109,7 @@ class RecipeWidget extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
-                              color: ExtraColors.white.withOpacity(0.9),
+                              color: ExtraColors.white,
                               borderRadius: BorderRadius.circular(8)),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
