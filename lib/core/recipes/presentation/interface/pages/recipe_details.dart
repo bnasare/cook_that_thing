@@ -71,17 +71,28 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                         children: [
                           Text(
                             recipe.title,
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                           const SizedBox(height: 8.0),
                           DefaultTextStyle(
                             style: Theme.of(context)
                                 .textTheme
-                                .bodyMedium!
-                                .copyWith(color: ExtraColors.black),
+                                .bodyLarge!
+                                .copyWith(color: ExtraColors.grey),
                             child: Row(
                               children: [
                                 Text(recipe.category),
+                                const SizedBox(width: 8.0),
+                                Container(
+                                  height: 5.0,
+                                  width: 5.0,
+                                  decoration: const BoxDecoration(
+                                    color: ExtraColors.darkGrey,
+                                    shape: BoxShape.circle,
+                                  ),
+                                ),
+                                const SizedBox(width: 8.0),
+                                Text(recipe.difficultyLevel),
                                 const SizedBox(width: 8.0),
                                 Container(
                                   height: 5.0,
@@ -105,9 +116,9 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                   Container(
                                     height: 32.0,
                                     width: 32.0,
-                                    margin: const EdgeInsets.only(right: 8.0),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
+                                      color: ExtraColors.lightGrey,
                                       boxShadow: [
                                         BoxShadow(
                                           offset: const Offset(0, 4),
@@ -119,13 +130,19 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                     child: const Icon(
                                       CupertinoIcons.person_alt_circle,
                                       color: ExtraColors.darkGrey,
-                                      size: 40.0,
+                                      size: 45.0,
                                     ),
                                   ),
-                                  Text(
-                                    recipe.chef,
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
+                                  const SizedBox(width: 15),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 5.0),
+                                    child: Text(
+                                      recipe.chef,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(fontSize: 17),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -138,15 +155,19 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                     margin: const EdgeInsets.only(right: 8.0),
                                     decoration: BoxDecoration(
                                       shape: BoxShape.circle,
-                                      color:
-                                          Theme.of(context).colorScheme.error,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .error
+                                          .withOpacity(0.8),
                                     ),
                                     child: SvgPicture.asset(SvgAssets.heart),
                                   ),
                                   Text(
                                     recipe.likes.length.toString(),
-                                    style:
-                                        Theme.of(context).textTheme.titleSmall,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium
+                                        ?.copyWith(color: ExtraColors.grey),
                                   ),
                                 ],
                               ),
@@ -158,15 +179,20 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                           const SizedBox(height: 16.0),
                           Text(
                             'Description',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontSize: 18),
                           ),
                           const SizedBox(height: 8.0),
                           Text(
                             recipe.overview,
+                            textAlign: TextAlign.justify,
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium!
-                                .copyWith(color: ExtraColors.grey),
+                                .copyWith(
+                                    color: ExtraColors.grey, fontSize: 16),
                           ),
                           const SizedBox(height: 16.0),
                           const Divider(
@@ -174,56 +200,77 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                           const SizedBox(height: 16.0),
                           Text(
                             'Ingredients',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontSize: 18),
                           ),
                           const SizedBox(height: 16.0),
-                          Expanded(
-                            child: ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: recipe.ingredients.length,
-                                itemBuilder: (context, index) {
-                                  return IngredientItem(
-                                      title: recipe.ingredients[index]);
-                                }),
-                          ),
+                          ListView.builder(
+                              padding: EdgeInsets.zero,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: recipe.ingredients.length,
+                              itemBuilder: (context, index) {
+                                return IngredientItem(
+                                    title: recipe.ingredients[index]);
+                              }),
                           const Divider(
                               color: ExtraColors.lightGrey, thickness: 2),
                           const SizedBox(height: 16.0),
                           Text(
                             'Steps',
-                            style: Theme.of(context).textTheme.titleMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleMedium
+                                ?.copyWith(fontSize: 18),
                           ),
                           const SizedBox(height: 16.0),
                           ListView.builder(
+                              padding: EdgeInsets.zero,
                               shrinkWrap: true,
                               physics: const NeverScrollableScrollPhysics(),
                               itemCount: recipe.instructions.length,
                               itemBuilder: (context, index) {
-                                return Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 24.0,
-                                      width: 24.0,
-                                      alignment: Alignment.center,
-                                      margin:
-                                          const EdgeInsets.only(right: 16.0),
-                                      decoration: const BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        color: ExtraColors.darkBlue,
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 16.0),
+                                  child: Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                        height: 24.0,
+                                        width: 24.0,
+                                        alignment: Alignment.center,
+                                        margin:
+                                            const EdgeInsets.only(right: 16.0),
+                                        decoration: const BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: ExtraColors.darkBlue,
+                                        ),
+                                        child: Text(
+                                          (index + 1).toString(),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall!
+                                              .copyWith(
+                                                  color: ExtraColors.white,
+                                                  fontWeight: FontWeight.w700),
+                                        ),
                                       ),
-                                      child: Text(
-                                        (index + 1).toString(),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall!
-                                            .copyWith(
-                                                color: ExtraColors.white,
-                                                fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                  ],
+                                      Flexible(
+                                        child: Text(
+                                          recipe.instructions[index],
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyMedium!
+                                              .copyWith(
+                                                  color: ExtraColors.grey,
+                                                  fontSize: 16),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 );
                               }),
                         ],

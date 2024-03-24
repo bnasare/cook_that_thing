@@ -25,7 +25,7 @@ class Header extends StatelessWidget {
           child: Text(
             trailing?.trim() ?? '',
             style: TextStyle(
-              fontWeight: FontWeight.w400,
+              fontWeight: FontWeight.w600,
               fontSize: 15,
               color: Theme.of(context).colorScheme.primary,
             ),

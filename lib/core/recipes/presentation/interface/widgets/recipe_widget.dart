@@ -45,7 +45,8 @@ class RecipeWidget extends StatelessWidget {
         physics: const BouncingScrollPhysics(),
         separatorBuilder: (context, index) =>
             SizedBox(width: 20, height: sizedBoxHeight),
-        padding: EdgeInsets.only(top: paddingTop, bottom: paddingBottom),
+        padding: EdgeInsets.only(
+            top: paddingTop, bottom: paddingBottom, left: 20, right: 20),
         shrinkWrap: true,
         scrollDirection: axis,
         itemBuilder: (context, index) {
@@ -60,7 +61,7 @@ class RecipeWidget extends StatelessWidget {
               );
             },
             child: Container(
-              width: screenWidth,
+              width: width ?? screenWidth,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8.0),
                 color: Colors.white,
@@ -107,6 +108,7 @@ class RecipeWidget extends StatelessWidget {
                         left: 0,
                         right: 0,
                         child: Container(
+                          margin: const EdgeInsets.all(8),
                           padding: const EdgeInsets.all(8.0),
                           decoration: BoxDecoration(
                               color: ExtraColors.white,

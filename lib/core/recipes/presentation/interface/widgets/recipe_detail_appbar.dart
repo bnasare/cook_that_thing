@@ -57,7 +57,7 @@ class RecipeDetailAppBar extends StatelessWidget {
           ),
         ),
       ),
-      leadingWidth: 80.0,
+      leadingWidth: 70.0,
       leading: Clickable(
         onClick: () => NavigationHelper.navigateBack(context),
         child: Container(
@@ -67,8 +67,8 @@ class RecipeDetailAppBar extends StatelessWidget {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
               child: Container(
-                height: 30.0,
-                width: 30.0,
+                height: 45.0,
+                width: 45.0,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,

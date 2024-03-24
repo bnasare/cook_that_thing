@@ -306,7 +306,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     );
                   },
                   decoration: const InputDecoration(
-                      hintText: "Difficulty", filled: true),
+                      hintText: "Meal type", filled: true),
                 ),
               ),
               Step(

@@ -130,10 +130,10 @@ class HomePage extends HookWidget with RecipeMixin {
                           child: ListView(
                             physics: const BouncingScrollPhysics(),
                             shrinkWrap: true,
-                            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(top: 20),
+                                padding: const EdgeInsets.only(
+                                    top: 15, left: 20, right: 20),
                                 child: Header(
                                   leading: 'Categories',
                                   trailing: localizations.seeMore,
@@ -145,7 +145,8 @@ class HomePage extends HookWidget with RecipeMixin {
                               ),
                               const CategoryTab(),
                               Padding(
-                                padding: const EdgeInsets.only(top: 5),
+                                padding: const EdgeInsets.only(
+                                    top: 15, left: 20, right: 20),
                                 child: Header(
                                   leading: 'Featured Chefs',
                                   trailing: localizations.seeMore,
@@ -223,7 +224,8 @@ class HomePage extends HookWidget with RecipeMixin {
                                 },
                               ),
                               const Padding(
-                                padding: EdgeInsets.only(top: 15),
+                                padding: EdgeInsets.only(
+                                    top: 15, left: 20, right: 20),
                                 child: Header(
                                   leading: 'Popular Recipes',
                                 ),
@@ -254,7 +256,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                         ? 3
                                         : snapshot.data!.length;
                                     return RecipeWidget(
-                                        width: 300,
+                                        width: 250,
                                         recipes: snapshot.data!,
                                         itemCount: itemCount);
                                   } else {
@@ -264,7 +266,8 @@ class HomePage extends HookWidget with RecipeMixin {
                                 },
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(top: 15),
+                                padding: const EdgeInsets.only(
+                                    top: 10, left: 20, right: 20),
                                 child: Header(
                                   leading: 'New Recipes',
                                   trailing: localizations.seeMore,
@@ -297,7 +300,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                           ? 3
                                           : snapshot.data!.length;
                                       return RecipeWidget(
-                                          width: 300,
+                                          width: 250,
                                           recipes: snapshot.data!,
                                           itemCount: itemCount);
                                     } else {
