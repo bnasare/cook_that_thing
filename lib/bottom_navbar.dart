@@ -23,7 +23,7 @@ class _NavBarState extends State<NavBar> {
   List<Widget> _buildScreens() {
     return [
       HomePage(),
-      const FavoritesPage(),
+      FavoritesPage(),
       const CreateRecipeChoicePage(),
       ProfilePage(
         chefID: FirebaseConsts.currentUser!.uid,

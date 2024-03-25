@@ -1,16 +1,17 @@
-// ignore_for_file: use_build_context_synchronously
+import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-import '../../domain/entities/chef.dart';
-import '../../../../shared/data/collection_ids.dart';
-import '../../../../src/authentication/presentation/interface/pages/wrapper.dart';
 
 import '../../../../injection_container.dart';
+import '../../../../shared/data/collection_ids.dart';
+import '../../../../shared/data/firebase_constants.dart';
 import '../../../../shared/utils/navigation.dart';
 import '../../../../src/authentication/presentation/bloc/auth_bloc.dart';
+import '../../../../src/authentication/presentation/interface/pages/wrapper.dart';
 import '../../../recipes/domain/entities/recipe.dart';
 import '../../../recipes/presentation/bloc/recipe_bloc.dart';
+import '../../domain/entities/chef.dart';
 import 'chef_bloc.dart';
 
 mixin ChefMixin {
@@ -75,6 +76,30 @@ mixin ChefMixin {
     );
   }
 
+  Stream<List<Recipe>> list({
+    required BuildContext context,
+    required List<String> documentIDs,
+  }) async* {
+    var controller = StreamController<List<Recipe>>();
+
+    try {
+      for (String id in documentIDs) {
+        final result = await recipeBloc.getRecipes(id);
+        List<Recipe> recipes = result.fold(
+          (l) => <Recipe>[],
+          (r) => r,
+        );
+        controller.add(recipes);
+      }
+      controller.close();
+    } catch (error) {
+      controller.addError(error);
+      controller.close();
+    }
+
+    yield* controller.stream;
+  }
+
   Stream<List<Recipe>> fetchAllRecipesByChefID(
       BuildContext context, String chefID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -95,6 +120,50 @@ mixin ChefMixin {
       }
       yield allRecipes;
     }
+  }
+
+  Stream<List<Recipe>> fetchFavorites(BuildContext context) {
+    final user = FirebaseConsts.currentUser;
+
+    if (user == null) {
+      return Stream.value([]);
+    }
+
+    var controller = StreamController<List<Recipe>>();
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String chefCollectionPath = DatabaseCollections.chefs;
+
+    firestore.collection(chefCollectionPath).doc(user.uid).snapshots().listen(
+      (chefDocSnapshot) {
+        if (chefDocSnapshot.exists) {
+          List<dynamic> favorites = chefDocSnapshot.data()?['favorites'] ?? [];
+          List<String> favoriteIds = List<String>.from(favorites);
+
+          if (favoriteIds.isNotEmpty) {
+            firestore
+                .collection(DatabaseCollections.recipes)
+                .where(FieldPath.documentId, whereIn: favoriteIds)
+                .snapshots()
+                .listen((recipeSnapshot) {
+              List<Recipe> favoriteRecipes = recipeSnapshot.docs
+                  .map<Recipe>((doc) => Recipe.fromJson(doc.data()))
+                  .toList();
+              controller.add(favoriteRecipes);
+            });
+          } else {
+            // If there are no favorites, emit an empty list
+            controller.add([]);
+          }
+        } else {
+          // If the chef document doesn't exist, emit an empty list
+          controller.add([]);
+        }
+      },
+      onError: controller.addError,
+    );
+
+    return controller.stream;
   }
 
   Stream<int> retrieveRecipeLength(

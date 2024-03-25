@@ -36,6 +36,11 @@ class HomePage extends HookWidget with RecipeMixin {
     final searchController = useTextEditingController();
     final searchResults = useState<List<Recipe>?>(null);
 
+    final Stream<List<Chef>> chefStream = listChefStreams();
+    final Stream<List<Recipe>> popularRecipesStream =
+        fetchAllRecipesSortedByAverageRatingStream(context);
+    final Stream<List<Recipe>> newRecipesStream = fetchAllRecipes(context);
+
     void handleSearch(String query) async {
       if (query.isEmpty) {
         searchResults.value = null;
@@ -172,7 +177,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 15.0),
                                 child: StreamBuilder<List<Chef>>(
-                                  stream: listChefStreams(),
+                                  stream: chefStream,
                                   builder: (context, snapshot) {
                                     if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
@@ -246,10 +251,8 @@ class HomePage extends HookWidget with RecipeMixin {
                                   leading: 'Popular Recipes',
                                 ),
                               ),
-                              StreamBuilder(
-                                stream:
-                                    fetchAllRecipesSortedByAverageRatingStream(
-                                        context),
+                              StreamBuilder<List<Recipe>>(
+                                stream: popularRecipesStream,
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
                                     // If there's an error, return the error widget.
@@ -295,8 +298,8 @@ class HomePage extends HookWidget with RecipeMixin {
                                       context, AllRecipesPage()),
                                 ),
                               ),
-                              StreamBuilder(
-                                  stream: fetchAllRecipes(context),
+                              StreamBuilder<List<Recipe>>(
+                                  stream: newRecipesStream,
                                   builder: (context, snapshot) {
                                     if (snapshot.hasError) {
                                       // If there's an error, return the error widget.

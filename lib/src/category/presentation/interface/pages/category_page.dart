@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../../core/recipes/domain/entities/recipe.dart';
 import '../../../../../core/recipes/presentation/bloc/recipe_mixin.dart';
@@ -11,6 +12,7 @@ import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
+import '../../../../../shared/widgets/shimmer.dart';
 import '../../../../home/presentation/interface/widgets/recipe_search_box.dart';
 
 class RecipeCategoryPage extends HookWidget with RecipeMixin {
@@ -40,19 +42,16 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
       }
     }
 
-    Future<void> fetchTotalRecipes() async {
-      try {
-        final List<Recipe> allRecipes =
-            await fetchAllRecipesByCategory(context, category).first;
-        totalRecipes.value = allRecipes.length;
-      } catch (error) {
-        debugPrint(error.toString());
-      }
-    }
-
     useEffect(() {
-      fetchTotalRecipes();
-      return () {};
+      final StreamSubscription<List<Recipe>> subscription =
+          fetchAllRecipesByCategory(context, category).listen(
+              (categoryRecipes) {
+        totalRecipes.value = categoryRecipes.length;
+      }, onError: (error) {
+        debugPrint(error.toString());
+      });
+
+      return subscription.cancel;
     }, []);
 
     return Scaffold(
@@ -60,6 +59,8 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
       body: StreamBuilder(
           stream: fetchAllRecipesByCategory(context, category),
           builder: (context, snapshot) {
+            final List<Recipe>? categoryRecipes = snapshot.data;
+
             return Column(
               children: [
                 ListTile(
@@ -87,11 +88,12 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                   padding:
                       const EdgeInsets.only(left: 20.0, right: 20, bottom: 10),
                   child: CustomSearchBox(
-                    handleSearch: handleSearch,
-                    controller: searchController,
-                    label: 'Search',
-                    hintText: 'Search recipe by title or chef',
-                  ),
+                      handleSearch: handleSearch,
+                      controller: searchController,
+                      label: 'Search',
+                      hintText: 'Search recipe by title or chef',
+                      readOnly:
+                          categoryRecipes == null || categoryRecipes.isEmpty),
                 ),
                 Expanded(
                   child: ListView(
@@ -142,26 +144,31 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                                   builder: (context, snapshot) {
                                     if (snapshot.hasError) {
                                       return const Padding(
-                                        padding: EdgeInsets.only(top: 90.0),
+                                        padding: EdgeInsets.only(top: 80.0),
                                         child: ErrorViewWidget(),
                                       );
                                     } else if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return Padding(
-                                        padding: EdgeInsets.only(
-                                            top: MediaQuery.of(context)
-                                                    .size
-                                                    .height *
-                                                0.3),
-                                        child: SpinKitFadingCircle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary),
+                                      return ListView.separated(
+                                        separatorBuilder: (context, index) =>
+                                            const SizedBox(height: 20),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return const LoadingTextView(
+                                              height: 130,
+                                              width: double.infinity);
+                                        },
+                                        itemCount: snapshot.data?.length ?? 5,
                                       );
                                     } else if (snapshot.hasData &&
                                         snapshot.data!.isEmpty) {
                                       return const Padding(
-                                        padding: EdgeInsets.only(top: 90.0),
+                                        padding: EdgeInsets.only(top: 80.0),
                                         child: ErrorViewWidget(),
                                       );
                                     } else if (snapshot.hasData) {
@@ -206,7 +213,7 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                                       );
                                     } else {
                                       return const Padding(
-                                        padding: EdgeInsets.only(top: 90.0),
+                                        padding: EdgeInsets.only(top: 80.0),
                                         child: ErrorViewWidget(),
                                       );
                                     }

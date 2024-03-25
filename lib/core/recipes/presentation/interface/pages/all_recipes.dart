@@ -1,9 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import '../../bloc/recipe_mixin.dart';
-import 'recipe_details.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
@@ -11,7 +11,9 @@ import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../src/home/presentation/interface/widgets/recipe_search_box.dart';
 import '../../../domain/entities/recipe.dart';
+import '../../bloc/recipe_mixin.dart';
 import '../widgets/recipe_info.dart';
+import 'recipe_details.dart';
 
 class AllRecipesPage extends HookWidget with RecipeMixin {
   AllRecipesPage({super.key});
@@ -37,18 +39,15 @@ class AllRecipesPage extends HookWidget with RecipeMixin {
       }
     }
 
-    Future<void> fetchTotalRecipes() async {
-      try {
-        final List<Recipe> allRecipes = await fetchAllRecipes(context).first;
-        totalRecipes.value = allRecipes.length;
-      } catch (error) {
-        debugPrint(error.toString());
-      }
-    }
-
     useEffect(() {
-      fetchTotalRecipes();
-      return () {};
+      final StreamSubscription<List<Recipe>> subscription =
+          fetchAllRecipes(context).listen((allRecipes) {
+        totalRecipes.value = allRecipes.length;
+      }, onError: (error) {
+        debugPrint(error.toString());
+      });
+
+      return subscription.cancel;
     }, []);
 
     return Scaffold(

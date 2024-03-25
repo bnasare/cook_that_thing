@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'create_review.dart';
-import '../../../../../shared/widgets/empty_state_view.dart';
 
-import '../../../../../shared/data/image_assets.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/widgets/empty_state_view.dart';
+import '../../../../../shared/widgets/error_view.dart';
 import '../../../domain/entities/review.dart';
 import '../../bloc/review_mixin.dart';
 import '../widgets/rating_widget.dart';
 import '../widgets/review_card.dart';
+import 'create_review.dart';
 
 class ViewReviewsPage extends HookWidget with ReviewMixin {
   final String recipeID;
@@ -35,30 +35,17 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
             );
           }
           if (snapshot.hasError) {
-            return Center(
+            return const Center(
                 child: Padding(
-              padding: const EdgeInsets.only(top: 100.0),
-              child: Column(
-                children: [
-                  Image.asset(ImageAssets.viewed, width: 300, height: 300),
-                  const SizedBox(height: 30),
-                  Text(
-                    'Nothing to show here..',
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.error,
-                        fontSize: 21,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ],
-              ),
-            ));
+                    padding: EdgeInsets.only(top: 100.0),
+                    child: ErrorViewWidget()));
           }
 
           double averageReviews = getAverageReviews(reviews!);
 
           return reviews.isEmpty
               ? EmptyStateView(
-                  title: 'No Reviews',
+                  title: 'No Reviews yet',
                   buttonText: 'Write a Review',
                   onPressed: () {
                     Navigator.of(context, rootNavigator: true).push(

@@ -10,6 +10,7 @@ class CustomSearchBox extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final String hintText;
+  final bool readOnly;
   final Color fillColor;
   final Duration debounceDuration;
 
@@ -17,6 +18,7 @@ class CustomSearchBox extends StatefulWidget {
     super.key,
     required this.handleSearch,
     this.fillColor = ExtraColors.lightGrey,
+    this.readOnly = false,
     required this.controller,
     required this.label,
     required this.hintText,
@@ -50,6 +52,7 @@ class _CustomSearchBoxState extends State<CustomSearchBox> {
       children: [
         Expanded(
           child: TextField(
+            readOnly: widget.readOnly,
             maxLines: 1,
             onChanged: _handleSearch,
             controller: widget.controller,
