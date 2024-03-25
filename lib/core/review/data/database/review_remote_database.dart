@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:recipe_hub/shared/data/collection_ids.dart';
+import '../../../../shared/data/collection_ids.dart';
 
 import '../../domain/entities/review.dart';
 

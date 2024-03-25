@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/shared/error/failure.dart';
-import 'package:recipe_hub/src/authentication/domain/usecase/google_sign_in.dart';
+import '../../../../shared/error/failure.dart';
+import '../../domain/usecase/google_sign_in.dart';
 
 import '../../../../core/chef/domain/entities/chef.dart';
 import '../../../../shared/usecase/usecase.dart';

@@ -9,17 +9,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:recipe_hub/firebase_options.dart';
-import 'package:recipe_hub/shared/presentation/theme/theme.dart';
-import 'package:recipe_hub/shared/utils/connectivity.dart';
-import 'package:recipe_hub/src/authentication/presentation/interface/pages/wrapper.dart';
-import 'package:recipe_hub/src/onboarding/presentation/bloc/onboarding_mixin.dart';
 
+import 'firebase_options.dart';
 import 'injection_container.dart' as di;
 import 'injection_container.dart';
 import 'shared/platform/network_info.dart';
 import 'shared/platform/push_notification.dart';
+import 'shared/presentation/theme/theme.dart';
+import 'shared/utils/connectivity.dart';
 import 'shared/widgets/fullscreen_dialog.dart';
+import 'src/authentication/presentation/interface/pages/wrapper.dart';
+import 'src/onboarding/presentation/bloc/onboarding_mixin.dart';
 import 'src/onboarding/presentation/interface/pages/onboarding.dart';
 
 Future<void> backgroundMessage(RemoteMessage message) async {

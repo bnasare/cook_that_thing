@@ -6,26 +6,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/pages/all_recipes.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_info.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/widgets/recipe_widget.dart';
-import 'package:recipe_hub/shared/data/firebase_constants.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
-import 'package:recipe_hub/src/category/presentation/interface/widgets/category_tab.dart';
-import 'package:recipe_hub/src/home/presentation/interface/widgets/header.dart';
-import 'package:recipe_hub/src/home/presentation/interface/widgets/recipe_search_box.dart';
 
 import '../../../../../core/chef/domain/entities/chef.dart';
 import '../../../../../core/chef/presentation/interface/pages/all_chefs.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
+import '../../../../../core/recipes/presentation/bloc/recipe_mixin.dart';
+import '../../../../../core/recipes/presentation/interface/pages/all_recipes.dart';
 import '../../../../../core/recipes/presentation/interface/pages/recipe_details.dart';
+import '../../../../../core/recipes/presentation/interface/widgets/recipe_info.dart';
+import '../../../../../core/recipes/presentation/interface/widgets/recipe_widget.dart';
+import '../../../../../shared/data/firebase_constants.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
 import '../../../../category/presentation/interface/pages/list_category.dart';
+import '../../../../category/presentation/interface/widgets/category_tab.dart';
 import '../../../../profile/presentation/interface/pages/profile.dart';
+import '../widgets/header.dart';
+import '../widgets/recipe_search_box.dart';
 
 class HomePage extends HookWidget with RecipeMixin {
   HomePage({super.key});

@@ -2,9 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
-import 'package:recipe_hub/core/chef/domain/entities/chef.dart';
-import 'package:recipe_hub/shared/data/collection_ids.dart';
-import 'package:recipe_hub/src/authentication/presentation/interface/pages/wrapper.dart';
+import '../../domain/entities/chef.dart';
+import '../../../../shared/data/collection_ids.dart';
+import '../../../../src/authentication/presentation/interface/pages/wrapper.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../shared/utils/navigation.dart';

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/bottom_navbar.dart';
-import 'package:recipe_hub/core/recipes/presentation/interface/pages/manual_recipe_creation.dart';
+import '../../../../../bottom_navbar.dart';
+import 'manual_recipe_creation.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';

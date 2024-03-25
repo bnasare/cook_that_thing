@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/shared/error/failure.dart';
-import 'package:recipe_hub/src/onboarding/data/database/onboarding_local_database.dart';
+import '../../../../shared/error/failure.dart';
+import '../database/onboarding_local_database.dart';
 
 import '../../domain/repository/onboarding_repository.dart';
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:recipe_hub/shared/data/image_assets.dart';
-import 'package:recipe_hub/src/category/presentation/interface/widgets/category_widget.dart';
+
+import '../../../../../shared/data/image_assets.dart';
+import 'category_widget.dart';
 
 class CategoryTab extends StatelessWidget {
   const CategoryTab({super.key});

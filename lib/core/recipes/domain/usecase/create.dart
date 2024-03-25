@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/shared/data/firebase_constants.dart';
+import '../../../../shared/data/firebase_constants.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../shared/error/failure.dart';

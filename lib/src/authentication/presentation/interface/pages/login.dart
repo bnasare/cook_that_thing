@@ -1,12 +1,12 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/shared/data/image_assets.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/shared/utils/validator.dart';
-import 'package:recipe_hub/shared/widgets/snackbar.dart';
 
+import '../../../../../shared/data/image_assets.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/utils/validator.dart';
 import '../../../../../shared/widgets/loading_manager.dart';
+import '../../../../../shared/widgets/snackbar.dart';
 import '../../bloc/auth_mixin.dart';
 import '../widgets/social_auth_button.dart';
 import 'sign_up.dart';

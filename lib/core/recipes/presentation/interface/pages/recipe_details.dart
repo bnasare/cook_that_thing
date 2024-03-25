@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/core/review/presentation/interface/pages/view_reviews.dart';
-import 'package:recipe_hub/shared/data/svg_assets.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
-import 'package:recipe_hub/shared/widgets/clickable.dart';
-import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
+import '../../bloc/recipe_mixin.dart';
+import '../../../../review/presentation/interface/pages/view_reviews.dart';
+import '../../../../../shared/data/svg_assets.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../domain/entities/recipe.dart';

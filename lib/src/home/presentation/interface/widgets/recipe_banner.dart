@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
+
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 
 class RecipeBanner extends StatelessWidget {
   final String title;

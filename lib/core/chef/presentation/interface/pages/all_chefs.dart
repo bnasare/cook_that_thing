@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:recipe_hub/core/chef/domain/entities/chef.dart';
-import 'package:recipe_hub/core/chef/presentation/interface/widgets/chef_widget.dart';
-import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/src/home/presentation/interface/widgets/recipe_search_box.dart';
+import '../../../domain/entities/chef.dart';
+import '../widgets/chef_widget.dart';
+import '../../../../recipes/presentation/bloc/recipe_mixin.dart';
+import '../../../../../src/home/presentation/interface/widgets/recipe_search_box.dart';
 
 import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';

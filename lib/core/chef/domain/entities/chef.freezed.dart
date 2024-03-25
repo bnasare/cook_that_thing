@@ -26,6 +26,7 @@ mixin _$Chef {
   String get chefToken => throw _privateConstructorUsedError;
   List<String> get followers => throw _privateConstructorUsedError;
   List<String> get token => throw _privateConstructorUsedError;
+  List<String> get favorites => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +44,8 @@ abstract class $ChefCopyWith<$Res> {
       String id,
       String chefToken,
       List<String> followers,
-      List<String> token});
+      List<String> token,
+      List<String> favorites});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$ChefCopyWithImpl<$Res, $Val extends Chef>
     Object? chefToken = null,
     Object? followers = null,
     Object? token = null,
+    Object? favorites = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -91,6 +94,10 @@ class _$ChefCopyWithImpl<$Res, $Val extends Chef>
           ? _value.token
           : token // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      favorites: null == favorites
+          ? _value.favorites
+          : favorites // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ) as $Val);
   }
 }
@@ -108,7 +115,8 @@ abstract class _$$ChefImplCopyWith<$Res> implements $ChefCopyWith<$Res> {
       String id,
       String chefToken,
       List<String> followers,
-      List<String> token});
+      List<String> token,
+      List<String> favorites});
 }
 
 /// @nodoc
@@ -127,6 +135,7 @@ class __$$ChefImplCopyWithImpl<$Res>
     Object? chefToken = null,
     Object? followers = null,
     Object? token = null,
+    Object? favorites = null,
   }) {
     return _then(_$ChefImpl(
       name: null == name
@@ -153,6 +162,10 @@ class __$$ChefImplCopyWithImpl<$Res>
           ? _value._token
           : token // ignore: cast_nullable_to_non_nullable
               as List<String>,
+      favorites: null == favorites
+          ? _value._favorites
+          : favorites // ignore: cast_nullable_to_non_nullable
+              as List<String>,
     ));
   }
 }
@@ -166,9 +179,11 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
       required this.id,
       required this.chefToken,
       required final List<String> followers,
-      required final List<String> token})
+      required final List<String> token,
+      required final List<String> favorites})
       : _followers = followers,
-        _token = token;
+        _token = token,
+        _favorites = favorites;
 
   factory _$ChefImpl.fromJson(Map<String, dynamic> json) =>
       _$$ChefImplFromJson(json);
@@ -197,9 +212,17 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
     return EqualUnmodifiableListView(_token);
   }
 
+  final List<String> _favorites;
+  @override
+  List<String> get favorites {
+    if (_favorites is EqualUnmodifiableListView) return _favorites;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_favorites);
+  }
+
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'Chef(name: $name, email: $email, id: $id, chefToken: $chefToken, followers: $followers, token: $token)';
+    return 'Chef(name: $name, email: $email, id: $id, chefToken: $chefToken, followers: $followers, token: $token, favorites: $favorites)';
   }
 
   @override
@@ -212,7 +235,8 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
       ..add(DiagnosticsProperty('id', id))
       ..add(DiagnosticsProperty('chefToken', chefToken))
       ..add(DiagnosticsProperty('followers', followers))
-      ..add(DiagnosticsProperty('token', token));
+      ..add(DiagnosticsProperty('token', token))
+      ..add(DiagnosticsProperty('favorites', favorites));
   }
 
   @override
@@ -227,7 +251,9 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
                 other.chefToken == chefToken) &&
             const DeepCollectionEquality()
                 .equals(other._followers, _followers) &&
-            const DeepCollectionEquality().equals(other._token, _token));
+            const DeepCollectionEquality().equals(other._token, _token) &&
+            const DeepCollectionEquality()
+                .equals(other._favorites, _favorites));
   }
 
   @JsonKey(ignore: true)
@@ -239,7 +265,8 @@ class _$ChefImpl with DiagnosticableTreeMixin implements _Chef {
       id,
       chefToken,
       const DeepCollectionEquality().hash(_followers),
-      const DeepCollectionEquality().hash(_token));
+      const DeepCollectionEquality().hash(_token),
+      const DeepCollectionEquality().hash(_favorites));
 
   @JsonKey(ignore: true)
   @override
@@ -262,7 +289,8 @@ abstract class _Chef implements Chef {
       required final String id,
       required final String chefToken,
       required final List<String> followers,
-      required final List<String> token}) = _$ChefImpl;
+      required final List<String> token,
+      required final List<String> favorites}) = _$ChefImpl;
 
   factory _Chef.fromJson(Map<String, dynamic> json) = _$ChefImpl.fromJson;
 
@@ -278,6 +306,8 @@ abstract class _Chef implements Chef {
   List<String> get followers;
   @override
   List<String> get token;
+  @override
+  List<String> get favorites;
   @override
   @JsonKey(ignore: true)
   _$$ChefImplCopyWith<_$ChefImpl> get copyWith =>

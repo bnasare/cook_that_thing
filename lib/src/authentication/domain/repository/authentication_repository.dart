@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/core/chef/domain/entities/chef.dart';
-import 'package:recipe_hub/shared/error/failure.dart';
+import '../../../../core/chef/domain/entities/chef.dart';
+import '../../../../shared/error/failure.dart';
 
 abstract class AuthenticationRepository {
   Future<Either<Failure, Chef>> signUp(

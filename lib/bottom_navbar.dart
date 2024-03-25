@@ -2,13 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/src/favorite/presentation/interface/pages/favorites.dart';
-import 'package:recipe_hub/src/home/presentation/interface/pages/home.dart';
-import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
 
 import 'core/recipes/presentation/interface/pages/create_recipe_method.dart';
 import 'shared/data/firebase_constants.dart';
+import 'shared/presentation/theme/extra_colors.dart';
+import 'src/favorite/presentation/interface/pages/favorites.dart';
+import 'src/home/presentation/interface/pages/home.dart';
+import 'src/profile/presentation/interface/pages/profile.dart';
 
 class NavBar extends StatefulWidget {
   const NavBar({

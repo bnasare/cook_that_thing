@@ -26,6 +26,7 @@ class FollowChefParams extends ObjectParams<Chef> {
           chefToken: value,
           followers: params,
           token: params2,
+          favorites: [],
         ));
 
   List<String> get followers => value.followers;

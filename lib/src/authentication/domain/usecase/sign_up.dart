@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/shared/error/failure.dart';
-import 'package:recipe_hub/shared/usecase/usecase.dart';
-import 'package:recipe_hub/src/authentication/domain/repository/authentication_repository.dart';
+import '../../../../shared/error/failure.dart';
+import '../../../../shared/usecase/usecase.dart';
+import '../repository/authentication_repository.dart';
 
 import '../../../../core/chef/domain/entities/chef.dart';
 

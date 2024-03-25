@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
-import 'package:recipe_hub/shared/widgets/clickable.dart';
-import 'package:recipe_hub/src/category/presentation/interface/pages/category_page.dart';
+
+import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/widgets/clickable.dart';
+import '../pages/category_page.dart';
 
 class CategoryWidget extends StatelessWidget {
   const CategoryWidget(

@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/core/review/domain/entities/review.dart';
-import 'package:recipe_hub/core/review/domain/usecases/create.dart';
-import 'package:recipe_hub/core/review/domain/usecases/list.dart';
-import 'package:recipe_hub/shared/data/firebase_constants.dart';
-import 'package:recipe_hub/shared/error/failure.dart';
+import '../../domain/entities/review.dart';
+import '../../domain/usecases/create.dart';
+import '../../domain/usecases/list.dart';
+import '../../../../shared/data/firebase_constants.dart';
+import '../../../../shared/error/failure.dart';
 
 import '../../../../shared/usecase/usecase.dart';
 

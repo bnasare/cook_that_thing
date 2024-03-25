@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 
 class RatingDisplay extends StatelessWidget {
   const RatingDisplay({super.key, required this.rating, this.itemSize = 13});

@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/core/chef/domain/usecase.dart/follow.dart';
-import 'package:recipe_hub/core/chef/domain/usecase.dart/list.dart';
-import 'package:recipe_hub/core/chef/domain/usecase.dart/retrieve.dart';
-import 'package:recipe_hub/shared/usecase/usecase.dart';
 
 import '../../../../shared/error/failure.dart';
+import '../../../../shared/usecase/usecase.dart';
 import '../../domain/entities/chef.dart';
+import '../../domain/usecase.dart/follow.dart';
+import '../../domain/usecase.dart/list.dart';
+import '../../domain/usecase.dart/retrieve.dart';
 
 class ChefBloc {
   final RetrieveChef retrieveChef;

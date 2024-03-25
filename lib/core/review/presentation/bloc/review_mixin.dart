@@ -3,8 +3,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:recipe_hub/core/review/domain/entities/review.dart';
-import 'package:recipe_hub/shared/data/collection_ids.dart';
+import '../../domain/entities/review.dart';
+import '../../../../shared/data/collection_ids.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../shared/data/firebase_constants.dart';

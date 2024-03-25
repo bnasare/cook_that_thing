@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:recipe_hub/shared/data/collection_ids.dart';
 
+import '../../../../shared/data/collection_ids.dart';
 import '../../domain/entities/chef.dart';
 
 abstract class ChefRemoteDatabase {

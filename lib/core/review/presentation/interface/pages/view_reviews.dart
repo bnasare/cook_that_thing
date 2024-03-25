@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:recipe_hub/core/review/presentation/interface/pages/create_review.dart';
-import 'package:recipe_hub/shared/widgets/empty_state_view.dart';
+import 'create_review.dart';
+import '../../../../../shared/widgets/empty_state_view.dart';
 
 import '../../../../../shared/data/image_assets.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';

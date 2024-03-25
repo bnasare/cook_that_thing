@@ -1,10 +1,10 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
-import 'package:recipe_hub/shared/widgets/clickable.dart';
-import 'package:recipe_hub/src/profile/presentation/interface/pages/profile.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 import '../../../domain/entities/recipe.dart';
 import '../pages/recipe_details.dart';
 import 'like_button.dart';

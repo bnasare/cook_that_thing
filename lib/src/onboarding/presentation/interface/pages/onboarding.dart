@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/shared/data/image_assets.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
-import 'package:recipe_hub/src/authentication/presentation/interface/pages/login.dart';
-import 'package:recipe_hub/src/onboarding/presentation/bloc/onboarding_mixin.dart';
+
+import '../../../../../shared/data/image_assets.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../authentication/presentation/interface/pages/login.dart';
+import '../../bloc/onboarding_mixin.dart';
 
 class Onboarding extends StatefulWidget with OnboardingMixin {
   Onboarding({super.key});

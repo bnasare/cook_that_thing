@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 
 class ReviewTextField extends StatelessWidget {
   const ReviewTextField({

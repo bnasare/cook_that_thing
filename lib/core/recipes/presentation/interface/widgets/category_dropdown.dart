@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconly/iconly.dart';
-import 'package:recipe_hub/shared/utils/validator.dart';
+import '../../../../../shared/utils/validator.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 

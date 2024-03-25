@@ -14,6 +14,8 @@ _$ChefImpl _$$ChefImplFromJson(Map<String, dynamic> json) => _$ChefImpl(
       followers:
           (json['followers'] as List<dynamic>).map((e) => e as String).toList(),
       token: (json['token'] as List<dynamic>).map((e) => e as String).toList(),
+      favorites:
+          (json['favorites'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$$ChefImplToJson(_$ChefImpl instance) =>
@@ -24,4 +26,5 @@ Map<String, dynamic> _$$ChefImplToJson(_$ChefImpl instance) =>
       'chefToken': instance.chefToken,
       'followers': instance.followers,
       'token': instance.token,
+      'favorites': instance.favorites,
     };

@@ -2,9 +2,10 @@ import 'dart:ui';
 
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
-import 'package:recipe_hub/shared/widgets/clickable.dart';
+
+import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/widgets/clickable.dart';
 
 class RecipeDetailAppBar extends StatelessWidget {
   final String imageUrl;

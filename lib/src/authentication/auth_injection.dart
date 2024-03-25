@@ -1,9 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:recipe_hub/src/authentication/data/database/authentication_remote_database.dart';
-import 'package:recipe_hub/src/authentication/domain/repository/authentication_repository.dart';
-import 'package:recipe_hub/src/authentication/domain/usecase/google_sign_in.dart';
-import 'package:recipe_hub/src/authentication/domain/usecase/logout.dart';
-import 'package:recipe_hub/src/authentication/domain/usecase/sign_up.dart';
+import 'data/database/authentication_remote_database.dart';
+import 'domain/repository/authentication_repository.dart';
+import 'domain/usecase/google_sign_in.dart';
+import 'domain/usecase/logout.dart';
+import 'domain/usecase/sign_up.dart';
 
 import 'data/repository_impl/authentication_repository_impl.dart';
 import 'domain/usecase/login.dart';

@@ -2,8 +2,8 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/bottom_navbar.dart';
 
+import '../../../../../bottom_navbar.dart';
 import 'login.dart';
 
 class AuthWrapper extends StatelessWidget {

@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:recipe_hub/core/review/presentation/bloc/review_mixin.dart';
-import 'package:recipe_hub/core/review/presentation/interface/widgets/review_textfield.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/shared/utils/navigation.dart';
-import 'package:recipe_hub/shared/utils/validator.dart';
-import 'package:recipe_hub/shared/widgets/loading_manager.dart';
+import '../../bloc/review_mixin.dart';
+import '../widgets/review_textfield.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/utils/validator.dart';
+import '../../../../../shared/widgets/loading_manager.dart';
 
 import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../recipes/domain/entities/recipe.dart';

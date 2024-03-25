@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:recipe_hub/core/recipes/data/database/recipe_remote_database.dart';
-import 'package:recipe_hub/core/recipes/domain/entities/recipe.dart';
-import 'package:recipe_hub/shared/error/failure.dart';
-import 'package:recipe_hub/shared/platform/network_info.dart';
+import '../database/recipe_remote_database.dart';
+import '../../domain/entities/recipe.dart';
+import '../../../../shared/error/failure.dart';
+import '../../../../shared/platform/network_info.dart';
 
 import '../../../../shared/error/exception.dart';
 import '../../domain/repository/recipe_repository.dart';

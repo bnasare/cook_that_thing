@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/shared/usecase/usecase.dart';
+import '../../../../shared/usecase/usecase.dart';
 
 import '../../../../shared/error/failure.dart';
 import '../entities/recipe.dart';

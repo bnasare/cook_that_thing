@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iconly/iconly.dart';
-import 'package:recipe_hub/shared/data/collection_ids.dart';
-import 'package:recipe_hub/shared/widgets/snackbar.dart';
+import '../../../../../shared/data/collection_ids.dart';
+import '../../../../../shared/widgets/snackbar.dart';
 
 import '../../../../../shared/platform/push_notification.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';

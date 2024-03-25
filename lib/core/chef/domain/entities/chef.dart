@@ -13,6 +13,7 @@ class Chef with _$Chef {
     required String chefToken,
     required List<String> followers,
     required List<String> token,
+    required List<String> favorites,
   }) = _Chef;
 
   factory Chef.fromJson(Map<String, dynamic> json) => _$ChefFromJson(json);
@@ -24,5 +25,6 @@ class Chef with _$Chef {
         chefToken: '',
         followers: [],
         token: [],
+        favorites: [],
       );
 }

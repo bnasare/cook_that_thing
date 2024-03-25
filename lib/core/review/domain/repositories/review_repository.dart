@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/core/review/domain/entities/review.dart';
-import 'package:recipe_hub/shared/error/failure.dart';
+import '../entities/review.dart';
+import '../../../../shared/error/failure.dart';
 
 abstract class ReviewRepository {
   Future<Either<Failure, Review>> createReview(

@@ -6,7 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
+import '../../bloc/recipe_mixin.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 

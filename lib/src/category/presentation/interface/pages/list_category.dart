@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:recipe_hub/shared/data/image_assets.dart';
-import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
-import 'package:recipe_hub/shared/widgets/clickable.dart';
-import 'package:recipe_hub/src/category/presentation/interface/pages/category_page.dart';
+
+import '../../../../../shared/data/image_assets.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../../shared/widgets/clickable.dart';
+import 'category_page.dart';
 
 class CategoryListPage extends StatelessWidget {
   const CategoryListPage({super.key});

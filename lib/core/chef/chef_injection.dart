@@ -1,5 +1,5 @@
 import 'package:get_it/get_it.dart';
-import 'package:recipe_hub/core/chef/domain/usecase.dart/follow.dart';
+import 'domain/usecase.dart/follow.dart';
 
 import 'data/database/chef_remote_database.dart';
 import 'data/repository_impl/chef_repository_impl.dart';

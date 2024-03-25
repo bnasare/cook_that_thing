@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:recipe_hub/shared/data/collection_ids.dart';
 
+import '../../../../shared/data/collection_ids.dart';
 import '../../domain/entities/recipe.dart';
 
 abstract class RecipeRemoteDatabase {
@@ -89,13 +89,21 @@ class RecipeRemoteDatabaseImpl implements RecipeRemoteDatabase {
   Future<Recipe> like(String recipeId, List<String> likers) async {
     final recipeDocRef =
         _firestore.collection(DatabaseCollections.recipes).doc(recipeId);
+    final user = FirebaseAuth.instance.currentUser;
+    final chefDocRef =
+        _firestore.collection(DatabaseCollections.chefs).doc(user!.uid);
 
     if (likers.isNotEmpty) {
       await recipeDocRef.update({'likes': FieldValue.arrayUnion(likers)});
+      await chefDocRef.update({
+        'favorites': FieldValue.arrayUnion([recipeId])
+      });
     } else {
       await recipeDocRef.update({
-        'likes':
-            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser!.uid])
+        'likes': FieldValue.arrayRemove([user.uid])
+      });
+      await chefDocRef.update({
+        'favorites': FieldValue.arrayRemove([recipeId])
       });
     }
 

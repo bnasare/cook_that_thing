@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
-import 'package:recipe_hub/core/review/domain/entities/review.dart';
-import 'package:recipe_hub/core/review/domain/repositories/review_repository.dart';
+import '../entities/review.dart';
+import '../repositories/review_repository.dart';
 
 import '../../../../shared/error/failure.dart';
 import '../../../../shared/usecase/usecase.dart';

@@ -7,9 +7,9 @@ import 'package:duration_picker/duration_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:recipe_hub/core/recipes/presentation/bloc/recipe_mixin.dart';
-import 'package:recipe_hub/shared/widgets/clickable.dart';
-import 'package:recipe_hub/shared/widgets/loading_manager.dart';
+import '../../bloc/recipe_mixin.dart';
+import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/widgets/loading_manager.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../bottom_navbar.dart';

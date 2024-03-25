@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
-import 'package:recipe_hub/core/review/data/database/review_remote_database.dart';
-import 'package:recipe_hub/core/review/data/repositories/review_repository_impl.dart';
-import 'package:recipe_hub/core/review/domain/usecases/create.dart';
+import 'data/database/review_remote_database.dart';
+import 'data/repositories/review_repository_impl.dart';
+import 'domain/usecases/create.dart';
 
 import 'domain/repositories/review_repository.dart';
 import 'domain/usecases/list.dart';

@@ -5,17 +5,17 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:recipe_hub/core/recipes/domain/entities/recipe.dart';
-import 'package:recipe_hub/shared/data/collection_ids.dart';
-import 'package:recipe_hub/shared/data/firebase_constants.dart';
-import 'package:recipe_hub/shared/widgets/snackbar.dart';
 
 import '../../../../injection_container.dart';
+import '../../../../shared/data/collection_ids.dart';
+import '../../../../shared/data/firebase_constants.dart';
 import '../../../../shared/platform/push_notification.dart';
+import '../../../../shared/widgets/snackbar.dart';
 import '../../../chef/domain/entities/chef.dart';
 import '../../../chef/presentation/bloc/chef_bloc.dart';
 import '../../../review/domain/entities/review.dart';
 import '../../../review/presentation/bloc/review_bloc.dart';
+import '../../domain/entities/recipe.dart';
 import 'recipe_bloc.dart';
 
 mixin RecipeMixin {
@@ -343,6 +343,7 @@ mixin RecipeMixin {
           token: (snapshot['token'] as List<dynamic>).cast<String>(),
           chefToken: snapshot['chefToken'],
           followers: (snapshot['followers'] as List<dynamic>).cast<String>(),
+          favorites: (snapshot['favorites'] as List<dynamic>).cast<String>(),
         );
         chefs.add(chef);
       }
@@ -370,6 +371,7 @@ mixin RecipeMixin {
           token: (snapshot['token'] as List<dynamic>).cast<String>(),
           chefToken: snapshot['chefToken'],
           followers: (snapshot['followers'] as List<dynamic>).cast<String>(),
+          favorites: (snapshot['favorites'] as List<dynamic>).cast<String>(),
         );
         chefs.add(chef);
       }

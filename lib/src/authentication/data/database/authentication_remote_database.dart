@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:recipe_hub/shared/data/collection_ids.dart';
-import 'package:recipe_hub/shared/data/firebase_constants.dart';
 
 import '../../../../core/chef/domain/entities/chef.dart';
+import '../../../../shared/data/collection_ids.dart';
+import '../../../../shared/data/firebase_constants.dart';
 
 abstract class AuthenticationRemoteDatabase {
   Future<Chef> signUp(String email, String password, String name);
@@ -32,6 +32,7 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
       chefToken: await FirebaseConsts.messaging.getToken() ?? '',
       followers: [],
       token: [],
+      favorites: [],
     );
 
     final data = chef.toJson();
@@ -63,6 +64,7 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
       chefToken: await FirebaseConsts.messaging.getToken() ?? '',
       followers: [],
       token: [],
+      favorites: [],
     );
 
     return chef;
@@ -94,6 +96,7 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
         chefToken: await FirebaseConsts.messaging.getToken() ?? '',
         followers: [],
         token: [],
+        favorites: [],
       );
 
       final data = chef.toJson();
@@ -111,6 +114,7 @@ class AuthenticationRemoteDatabaseImpl implements AuthenticationRemoteDatabase {
         chefToken: await FirebaseConsts.messaging.getToken() ?? '',
         followers: [],
         token: [],
+        favorites: [],
       );
       return chef;
     }
