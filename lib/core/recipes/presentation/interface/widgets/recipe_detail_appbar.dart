@@ -2,9 +2,6 @@ import 'dart:ui';
 
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:recipe_hub/shared/data/svg_assets.dart';
 import 'package:recipe_hub/shared/presentation/theme/extra_colors.dart';
 import 'package:recipe_hub/shared/utils/navigation.dart';
 import 'package:recipe_hub/shared/widgets/clickable.dart';
@@ -16,8 +13,6 @@ class RecipeDetailAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverAppBar(
-      systemOverlayStyle:
-          const SystemUiOverlayStyle(statusBarBrightness: Brightness.dark),
       expandedHeight: 275.0,
       backgroundColor: ExtraColors.white,
       elevation: 0.0,
@@ -48,7 +43,7 @@ class RecipeDetailAppBar extends StatelessWidget {
             width: 40.0,
             height: 5.0,
             decoration: BoxDecoration(
-              color: ExtraColors.linkLight,
+              color: Theme.of(context).colorScheme.primaryContainer,
               borderRadius: BorderRadius.circular(100.0),
             ),
           ),
@@ -64,15 +59,17 @@ class RecipeDetailAppBar extends StatelessWidget {
             child: BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
               child: Container(
-                height: 45.0,
-                width: 45.0,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withOpacity(0.20),
-                ),
-                child: SvgPicture.asset(SvgAssets.arrowBack),
-              ),
+                  height: 45.0,
+                  width: 45.0,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withOpacity(0.20),
+                  ),
+                  child: const Icon(
+                    Icons.arrow_back_ios_new,
+                    color: ExtraColors.white,
+                  )),
             ),
           ),
         ),

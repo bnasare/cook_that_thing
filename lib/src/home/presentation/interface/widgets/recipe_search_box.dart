@@ -74,7 +74,7 @@ class _CustomSearchBoxState extends State<CustomSearchBox> {
                   borderRadius: BorderRadius.circular(13)),
               hintText: widget.hintText,
               hintStyle: const TextStyle(
-                fontSize: 18,
+                fontSize: 16,
                 color: ExtraColors.darkGrey,
                 fontWeight: FontWeight.w400,
               ),

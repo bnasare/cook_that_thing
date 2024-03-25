@@ -120,8 +120,7 @@ class CreateRecipePage extends HookConsumerWidget with RecipeMixin {
           ),
         );
 
-        NavigationHelper.navigateToAndRemoveUntil(
-            context, const NavBar(initialIndex: 2));
+        NavigationHelper.navigateToAndRemoveUntil(context, const NavBar());
         titleController.clear();
         overviewController.clear();
         ingredientsController.clear();

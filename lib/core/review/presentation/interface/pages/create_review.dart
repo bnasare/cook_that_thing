@@ -76,8 +76,23 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             Recipe recipe = snapshot.data!;
-                            return RecipeInfo(
-                                recipe: recipe, recipeID: recipeID);
+                            return Container(
+                              padding: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: ExtraColors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color:
+                                          ExtraColors.darkGrey.withOpacity(0.4),
+                                      spreadRadius: 2,
+                                      blurRadius: 5,
+                                      offset: const Offset(3, 3),
+                                    )
+                                  ]),
+                              child: RecipeInfo(
+                                  recipe: recipe, recipeID: recipeID),
+                            );
                           } else {
                             return Container();
                           }
