@@ -36,7 +36,8 @@ class HomePage extends HookWidget with RecipeMixin {
     final searchController = useTextEditingController();
     final searchResults = useState<List<Recipe>?>(null);
 
-    final chefStream = useMemoized(() => listChefStreams());
+    final chefStream =
+        useMemoized(() => listChefStreams(), [searchController.text]);
     final popularRecipesStream =
         useMemoized(() => fetchAllRecipesSortedByAverageRatingStream(context));
     final newRecipesStreamm = useMemoized(() => fetchAllRecipes(context));
@@ -161,7 +162,8 @@ class HomePage extends HookWidget with RecipeMixin {
                                   );
                                 },
                               ))
-                        : searchController.text.isEmpty
+                        : searchController.text.isEmpty ||
+                                searchResults.value == null
                             ? Expanded(
                                 child: ListView(
                                   physics: const BouncingScrollPhysics(),
@@ -182,7 +184,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                     const CategoryTab(),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 15, left: 20, right: 20),
+                                          top: 5, left: 20, right: 20),
                                       child: Header(
                                         leading: 'Featured Chefs',
                                         trailing: localizations.seeMore,
@@ -320,7 +322,7 @@ class HomePage extends HookWidget with RecipeMixin {
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.only(
-                                          top: 10, left: 20, right: 20),
+                                          top: 8, left: 20, right: 20),
                                       child: Header(
                                         leading: 'New Recipes',
                                         trailing: localizations.seeMore,

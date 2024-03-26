@@ -57,7 +57,8 @@ class RecipeInfo extends HookWidget with RecipeMixin {
                   RecipeInfoItem(
                     textSize: 17,
                     iconSize: 20,
-                    width: 2.5,
+                    width: 1,
+                    wordSpacing: -3,
                     textColor: ExtraColors.grey,
                     iconColor: ExtraColors.darkGrey,
                     icon: Icons.av_timer_outlined,

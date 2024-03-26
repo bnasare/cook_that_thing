@@ -144,7 +144,8 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                                       );
                                     },
                                   )
-                            : searchController.text.isEmpty
+                            : searchController.text.isEmpty ||
+                                    searchResults.value == null
                                 ? StreamBuilder<List<Recipe>>(
                                     stream: fetchAllRecipesByCategory(
                                         context, category),

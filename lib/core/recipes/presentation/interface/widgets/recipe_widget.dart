@@ -134,6 +134,9 @@ class RecipeWidget extends StatelessWidget {
                                     iconColor: ExtraColors.grey,
                                     icon: Icons.av_timer_outlined,
                                     text: recipe.duration,
+                                    wordSpacing: -3,
+                                    textSize: 17,
+                                    iconSize: 20,
                                   ),
                                   const Text(
                                     '● ',
@@ -146,7 +149,7 @@ class RecipeWidget extends StatelessWidget {
                                       color: ExtraColors.grey,
                                       wordSpacing: -2.2,
                                       letterSpacing: 0,
-                                      fontSize: 16,
+                                      fontSize: 17,
                                     ),
                                   ),
                                   const Text(

@@ -28,7 +28,6 @@ class CustomSearchBox extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _CustomSearchBoxState createState() => _CustomSearchBoxState();
 }
 
@@ -75,6 +74,19 @@ class _CustomSearchBoxState extends State<CustomSearchBox> {
                 color: Theme.of(context).primaryColor,
                 size: 25,
               ),
+              suffixIcon: widget.controller.text.isNotEmpty
+                  ? GestureDetector(
+                      onTap: () {
+                        widget.controller.clear();
+                        widget.handleSearch('');
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      child: const Icon(
+                        IconlyBold.close_square,
+                        color: ExtraColors.grey,
+                      ),
+                    )
+                  : null,
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide.none,
                   borderRadius: BorderRadius.circular(13)),
@@ -87,19 +99,6 @@ class _CustomSearchBoxState extends State<CustomSearchBox> {
             ),
           ),
         ),
-        // const SizedBox(width: 10),
-        // Container(
-        // height: 43,
-        // width: 43,
-        // decoration: BoxDecoration(
-        // color: Theme.of(context).colorScheme.primary,
-        // borderRadius: BorderRadius.circular(10),
-        // ),
-        // child: Icon(
-        // IconlyLight.filter,
-        // color: Theme.of(context).colorScheme.onPrimary,
-        // ),
-        // ),
       ],
     );
   }

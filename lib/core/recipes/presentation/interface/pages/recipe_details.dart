@@ -3,15 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/svg.dart';
-import '../../bloc/recipe_mixin.dart';
-import '../../../../review/presentation/interface/pages/view_reviews.dart';
+
 import '../../../../../shared/data/svg_assets.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../src/profile/presentation/interface/pages/profile.dart';
-
-import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../../../review/presentation/interface/pages/view_reviews.dart';
 import '../../../domain/entities/recipe.dart';
+import '../../bloc/recipe_mixin.dart';
 import '../widgets/ingredient_item.dart';
 import '../widgets/recipe_detail_appbar.dart';
 
@@ -80,7 +80,8 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyLarge!
-                                .copyWith(color: ExtraColors.grey),
+                                .copyWith(
+                                    color: ExtraColors.grey, fontSize: 17),
                             child: Row(
                               children: [
                                 Text(recipe.category),
@@ -105,7 +106,8 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                   ),
                                 ),
                                 const SizedBox(width: 8.0),
-                                Text(recipe.duration),
+                                Text(recipe.duration,
+                                    style: const TextStyle(wordSpacing: -3)),
                               ],
                             ),
                           ),
@@ -148,7 +150,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                         style: Theme.of(context)
                                             .textTheme
                                             .titleMedium
-                                            ?.copyWith(fontSize: 17),
+                                            ?.copyWith(fontSize: 18),
                                       ),
                                     ),
                                   ],
@@ -175,7 +177,9 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium
-                                        ?.copyWith(color: ExtraColors.grey),
+                                        ?.copyWith(
+                                            color: ExtraColors.grey,
+                                            fontSize: 18),
                                   ),
                                 ],
                               ),
@@ -190,7 +194,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
-                                ?.copyWith(fontSize: 18),
+                                ?.copyWith(fontSize: 19),
                           ),
                           const SizedBox(height: 8.0),
                           Text(
@@ -200,7 +204,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                 .textTheme
                                 .bodyMedium!
                                 .copyWith(
-                                    color: ExtraColors.grey, fontSize: 16),
+                                    color: ExtraColors.grey, fontSize: 17),
                           ),
                           const SizedBox(height: 16.0),
                           const Divider(
@@ -211,7 +215,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
-                                ?.copyWith(fontSize: 18),
+                                ?.copyWith(fontSize: 19),
                           ),
                           const SizedBox(height: 16.0),
                           ListView.builder(
@@ -231,7 +235,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
-                                ?.copyWith(fontSize: 18),
+                                ?.copyWith(fontSize: 19),
                           ),
                           const SizedBox(height: 16.0),
                           ListView.builder(
@@ -251,7 +255,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                         width: 24.0,
                                         alignment: Alignment.center,
                                         margin:
-                                            const EdgeInsets.only(right: 16.0),
+                                            const EdgeInsets.only(right: 10.0),
                                         decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: ExtraColors.darkBlue,
@@ -274,7 +278,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                               .bodyMedium!
                                               .copyWith(
                                                   color: ExtraColors.grey,
-                                                  fontSize: 16),
+                                                  fontSize: 17),
                                         ),
                                       )
                                     ],

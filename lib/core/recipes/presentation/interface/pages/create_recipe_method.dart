@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../../../bottom_navbar.dart';
-import 'manual_recipe_creation.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/snackbar.dart';
+import 'manual_recipe_creation.dart';
 
 enum AddRecipeOption { importWeb, voiceInput, recipeScanner, manualEntry }
 
@@ -34,7 +33,7 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
         // ignore: deprecated_member_use
         return WillPopScope(
           onWillPop: () async {
-            NavigationHelper.navigateToReplacement(context, const NavBar());
+            NavigationHelper.navigateBack(context);
             return true;
           },
           child: AddRecipeScreen(),
@@ -52,7 +51,7 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
         title: const Text('Choose Recipe Creation Method'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
         child: Column(
           children: [
             ListTile(

@@ -12,6 +12,7 @@ class RecipeInfoItem extends StatelessWidget {
   final double? textSize;
   final double? iconSize;
   final double? width;
+  final double? wordSpacing;
 
   const RecipeInfoItem({
     this.icon,
@@ -21,6 +22,7 @@ class RecipeInfoItem extends StatelessWidget {
     this.textSize = 16,
     this.iconSize = 16,
     this.width = 1,
+    this.wordSpacing = -1,
     this.textColor,
   });
 
@@ -44,7 +46,7 @@ class RecipeInfoItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: TextStyle(
-                wordSpacing: -1,
+                wordSpacing: wordSpacing,
                 color: textColor ?? ExtraColors.white,
                 fontSize: textSize,
               ),
