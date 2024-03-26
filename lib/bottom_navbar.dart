@@ -66,8 +66,9 @@ class _NavBarState extends State<NavBar> {
   late PersistentTabController controller;
 
   @override
-  _NavBarState({int initialIndex = 0}) {
-    controller = PersistentTabController(initialIndex: initialIndex);
+  void initState() {
+    super.initState();
+    controller = PersistentTabController(initialIndex: 0);
   }
 
   @override

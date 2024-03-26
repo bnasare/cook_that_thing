@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/widgets.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../shared/data/collection_ids.dart';
@@ -76,30 +77,6 @@ mixin ChefMixin {
     );
   }
 
-  Stream<List<Recipe>> list({
-    required BuildContext context,
-    required List<String> documentIDs,
-  }) async* {
-    var controller = StreamController<List<Recipe>>();
-
-    try {
-      for (String id in documentIDs) {
-        final result = await recipeBloc.getRecipes(id);
-        List<Recipe> recipes = result.fold(
-          (l) => <Recipe>[],
-          (r) => r,
-        );
-        controller.add(recipes);
-      }
-      controller.close();
-    } catch (error) {
-      controller.addError(error);
-      controller.close();
-    }
-
-    yield* controller.stream;
-  }
-
   Stream<List<Recipe>> fetchAllRecipesByChefID(
       BuildContext context, String chefID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -122,7 +99,7 @@ mixin ChefMixin {
     }
   }
 
-  Stream<List<Recipe>> fetchFavorites(BuildContext context) {
+  Stream<List<Recipe>> fetchFavoritess(BuildContext context) {
     final user = FirebaseConsts.currentUser;
 
     if (user == null) {
@@ -164,6 +141,50 @@ mixin ChefMixin {
     );
 
     return controller.stream;
+  }
+
+  Stream<List<Recipe>> fetchFavorites(BuildContext context) {
+    final user = FirebaseConsts.currentUser;
+
+    if (user == null) {
+      return Stream.value([]);
+    }
+
+    BehaviorSubject<List<Recipe>> subject = BehaviorSubject<List<Recipe>>();
+
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String chefCollectionPath = DatabaseCollections.chefs;
+
+    firestore.collection(chefCollectionPath).doc(user.uid).snapshots().listen(
+      (chefDocSnapshot) {
+        if (chefDocSnapshot.exists) {
+          List<dynamic> favorites = chefDocSnapshot.data()?['favorites'] ?? [];
+          List<String> favoriteIds = List<String>.from(favorites);
+
+          if (favoriteIds.isNotEmpty) {
+            firestore
+                .collection(DatabaseCollections.recipes)
+                .where(FieldPath.documentId, whereIn: favoriteIds)
+                .snapshots()
+                .listen((recipeSnapshot) {
+              List<Recipe> favoriteRecipes = recipeSnapshot.docs
+                  .map<Recipe>((doc) => Recipe.fromJson(doc.data()))
+                  .toList();
+              subject.add(favoriteRecipes);
+            });
+          } else {
+            // If there are no favorites, emit an empty list
+            subject.add([]);
+          }
+        } else {
+          // If the chef document doesn't exist, emit an empty list
+          subject.add([]);
+        }
+      },
+      onError: subject.addError,
+    );
+
+    return subject.stream;
   }
 
   Stream<int> retrieveRecipeLength(

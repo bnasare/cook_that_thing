@@ -44,8 +44,8 @@ class RecipeInfoItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               maxLines: 1,
               style: TextStyle(
+                wordSpacing: -1,
                 color: textColor ?? ExtraColors.white,
-                letterSpacing: 0,
                 fontSize: textSize,
               ),
             ),

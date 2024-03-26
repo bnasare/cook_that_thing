@@ -2,11 +2,11 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../domain/entities/recipe.dart';
 import '../../bloc/recipe_mixin.dart';
 import 'like_button.dart';
-
-import '../../../../../shared/presentation/theme/extra_colors.dart';
 import 'recipe_info_item.dart';
 
 class RecipeInfo extends HookWidget with RecipeMixin {
@@ -71,7 +71,7 @@ class RecipeInfo extends HookWidget with RecipeMixin {
                       width: 2.5,
                       textColor: ExtraColors.grey,
                       iconColor: ExtraColors.darkGrey,
-                      icon: CupertinoIcons.person_alt_circle_fill,
+                      icon: CupertinoIcons.person_alt_circle,
                       text: recipe.chef,
                     ),
                   ),

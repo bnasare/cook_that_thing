@@ -55,6 +55,8 @@ dependencies:
   google_sign_in: ^6.2.1
   colorful_safe_area: ^1.0.0
   timeago: ^3.6.1
+  event_bus: ^2.0.0
+  rxdart: ^0.27.7
 
 
 dev_dependencies:

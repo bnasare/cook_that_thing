@@ -54,178 +54,189 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
       return subscription.cancel;
     }, []);
 
-    return Scaffold(
-      appBar: AppBar(title: Text(category)),
-      body: StreamBuilder(
-          stream: fetchAllRecipesByCategory(context, category),
-          builder: (context, snapshot) {
-            final List<Recipe>? categoryRecipes = snapshot.data;
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        appBar: AppBar(title: Text(category)),
+        body: StreamBuilder(
+            stream: fetchAllRecipesByCategory(context, category),
+            builder: (context, snapshot) {
+              final List<Recipe>? categoryRecipes = snapshot.data;
 
-            return Column(
-              children: [
-                ListTile(
-                  contentPadding: const EdgeInsets.only(left: 20),
-                  title: Text(
-                    searchController.text.isNotEmpty
-                        ? '${searchResults.value?.length ?? 0} ${searchResults.value != null && searchResults.value!.length == 1 ? localizations.recipeFoundSingular : localizations.recipeFoundPlural}'
-                        : '${totalRecipes.value != null ? '${totalRecipes.value}' : '0'} ${totalRecipes.value == 1 ? localizations.recipeInTotalSingular : localizations.recipeInTotalPlural} ',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: ExtraColors.grey,
-                      fontSize: 17,
+              return Column(
+                children: [
+                  ListTile(
+                    contentPadding: const EdgeInsets.only(left: 20),
+                    title: Text(
+                      searchController.text.isNotEmpty
+                          ? '${searchResults.value?.length ?? 0} ${searchResults.value != null && searchResults.value!.length == 1 ? localizations.recipeFoundSingular : localizations.recipeFoundPlural}'
+                          : '${totalRecipes.value != null ? '${totalRecipes.value}' : '0'} ${totalRecipes.value == 1 ? localizations.recipeInTotalSingular : localizations.recipeInTotalPlural} ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w600,
+                        color: ExtraColors.grey,
+                        fontSize: 17,
+                      ),
+                    ),
+                    subtitle: const Text(
+                      'Enjoy your favorite recipes',
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                        color: ExtraColors.darkGrey,
+                      ),
                     ),
                   ),
-                  subtitle: const Text(
-                    'Enjoy your favorite recipes',
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w400,
-                      color: ExtraColors.darkGrey,
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20, bottom: 10),
+                    child: CustomSearchBox(
+                        handleSearch: handleSearch,
+                        controller: searchController,
+                        label: 'Search',
+                        hintText: 'Search recipe by title or chef',
+                        enabled:
+                            categoryRecipes == null || categoryRecipes.isEmpty
+                                ? false
+                                : true,
+                        readOnly:
+                            categoryRecipes == null || categoryRecipes.isEmpty),
                   ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 20.0, right: 20, bottom: 10),
-                  child: CustomSearchBox(
-                      handleSearch: handleSearch,
-                      controller: searchController,
-                      label: 'Search',
-                      hintText: 'Search recipe by title or chef',
-                      readOnly:
-                          categoryRecipes == null || categoryRecipes.isEmpty),
-                ),
-                Expanded(
-                  child: ListView(
-                    padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
-                    shrinkWrap: true,
-                    children: [
-                      searchResults.value != null &&
-                              searchController.text.isNotEmpty
-                          ? searchResults.value!.isEmpty
-                              ? const Padding(
-                                  padding: EdgeInsets.only(top: 50),
-                                  child: ErrorViewWidget(),
-                                )
-                              : ListView.separated(
-                                  separatorBuilder: (context, index) =>
-                                      const SizedBox(height: 20),
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: searchResults.value!.length,
-                                  itemBuilder: (context, index) {
-                                    Recipe recipe = searchResults.value![index];
-                                    return Container(
-                                      padding: const EdgeInsets.all(10),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          color: ExtraColors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: ExtraColors.darkGrey
-                                                  .withOpacity(0.4),
-                                              spreadRadius: 2,
-                                              blurRadius: 5,
-                                              offset: const Offset(3, 3),
-                                            )
-                                          ]),
-                                      child: RecipeInfo(
-                                        recipe: recipe,
-                                        recipeID: recipe.id,
-                                      ),
-                                    );
-                                  },
-                                )
-                          : searchController.text.isEmpty
-                              ? StreamBuilder<List<Recipe>>(
-                                  stream: fetchAllRecipesByCategory(
-                                      context, category),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasError) {
-                                      return const Padding(
-                                        padding: EdgeInsets.only(top: 80.0),
-                                        child: ErrorViewWidget(),
+                  Expanded(
+                    child: ListView(
+                      padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
+                      shrinkWrap: true,
+                      children: [
+                        searchResults.value != null &&
+                                searchController.text.isNotEmpty
+                            ? searchResults.value!.isEmpty
+                                ? const Padding(
+                                    padding: EdgeInsets.only(top: 50),
+                                    child: ErrorViewWidget(),
+                                  )
+                                : ListView.separated(
+                                    separatorBuilder: (context, index) =>
+                                        const SizedBox(height: 20),
+                                    physics: const BouncingScrollPhysics(),
+                                    shrinkWrap: true,
+                                    itemCount: searchResults.value!.length,
+                                    itemBuilder: (context, index) {
+                                      Recipe recipe =
+                                          searchResults.value![index];
+                                      return Container(
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            color: ExtraColors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: ExtraColors.darkGrey
+                                                    .withOpacity(0.4),
+                                                spreadRadius: 2,
+                                                blurRadius: 5,
+                                                offset: const Offset(3, 3),
+                                              )
+                                            ]),
+                                        child: RecipeInfo(
+                                          recipe: recipe,
+                                          recipeID: recipe.id,
+                                        ),
                                       );
-                                    } else if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return ListView.separated(
-                                        separatorBuilder: (context, index) =>
-                                            const SizedBox(height: 20),
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        padding:
-                                            const EdgeInsets.only(bottom: 20),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return const LoadingTextView(
-                                              height: 130,
-                                              width: double.infinity);
-                                        },
-                                        itemCount: snapshot.data?.length ?? 5,
-                                      );
-                                    } else if (snapshot.hasData &&
-                                        snapshot.data!.isEmpty) {
-                                      return const Padding(
-                                        padding: EdgeInsets.only(top: 80.0),
-                                        child: ErrorViewWidget(),
-                                      );
-                                    } else if (snapshot.hasData) {
-                                      // If there's data, build a list of RecipeInfo widgets
-                                      return ListView.separated(
-                                        separatorBuilder: (context, index) =>
-                                            const SizedBox(height: 20),
-                                        shrinkWrap: true,
-                                        itemCount: snapshot.data!.length,
-                                        itemBuilder: (context, index) {
-                                          Recipe recipe = snapshot.data![index];
-                                          return Clickable(
-                                            onClick: () =>
-                                                NavigationHelper.navigateTo(
-                                                    context,
-                                                    RecipeDetailsPage(
-                                                        recipeID: recipe.id)),
-                                            child: Container(
-                                              padding: const EdgeInsets.all(8),
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  color: ExtraColors.white,
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: ExtraColors
-                                                          .darkGrey
-                                                          .withOpacity(0.4),
-                                                      spreadRadius: 2,
-                                                      blurRadius: 5,
-                                                      offset:
-                                                          const Offset(3, 3),
-                                                    )
-                                                  ]),
-                                              child: RecipeInfo(
-                                                recipe: recipe,
-                                                recipeID: recipe.id,
+                                    },
+                                  )
+                            : searchController.text.isEmpty
+                                ? StreamBuilder<List<Recipe>>(
+                                    stream: fetchAllRecipesByCategory(
+                                        context, category),
+                                    builder: (context, snapshot) {
+                                      if (snapshot.hasError) {
+                                        return const Padding(
+                                          padding: EdgeInsets.only(top: 80.0),
+                                          child: ErrorViewWidget(),
+                                        );
+                                      } else if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return ListView.separated(
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(height: 20),
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          padding:
+                                              const EdgeInsets.only(bottom: 20),
+                                          itemBuilder: (BuildContext context,
+                                              int index) {
+                                            return const LoadingTextView(
+                                                height: 130,
+                                                width: double.infinity);
+                                          },
+                                          itemCount: snapshot.data?.length ?? 5,
+                                        );
+                                      } else if (snapshot.hasData &&
+                                          snapshot.data!.isEmpty) {
+                                        return const Padding(
+                                          padding: EdgeInsets.only(top: 80.0),
+                                          child: ErrorViewWidget(),
+                                        );
+                                      } else if (snapshot.hasData) {
+                                        // If there's data, build a list of RecipeInfo widgets
+                                        return ListView.separated(
+                                          separatorBuilder: (context, index) =>
+                                              const SizedBox(height: 20),
+                                          shrinkWrap: true,
+                                          itemCount: snapshot.data!.length,
+                                          itemBuilder: (context, index) {
+                                            Recipe recipe =
+                                                snapshot.data![index];
+                                            return Clickable(
+                                              onClick: () =>
+                                                  NavigationHelper.navigateTo(
+                                                      context,
+                                                      RecipeDetailsPage(
+                                                          recipeID: recipe.id)),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(8),
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    color: ExtraColors.white,
+                                                    boxShadow: [
+                                                      BoxShadow(
+                                                        color: ExtraColors
+                                                            .darkGrey
+                                                            .withOpacity(0.4),
+                                                        spreadRadius: 2,
+                                                        blurRadius: 5,
+                                                        offset:
+                                                            const Offset(3, 3),
+                                                      )
+                                                    ]),
+                                                child: RecipeInfo(
+                                                  recipe: recipe,
+                                                  recipeID: recipe.id,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      return const Padding(
-                                        padding: EdgeInsets.only(top: 80.0),
-                                        child: ErrorViewWidget(),
-                                      );
-                                    }
-                                  },
-                                )
-                              : const ErrorViewWidget(),
-                    ],
+                                            );
+                                          },
+                                        );
+                                      } else {
+                                        return const Padding(
+                                          padding: EdgeInsets.only(top: 80.0),
+                                          child: ErrorViewWidget(),
+                                        );
+                                      }
+                                    },
+                                  )
+                                : const ErrorViewWidget(),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            );
-          }),
+                ],
+              );
+            }),
+      ),
     );
   }
 }
