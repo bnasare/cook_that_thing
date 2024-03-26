@@ -153,36 +153,34 @@ mixin ChefMixin {
     BehaviorSubject<List<Recipe>> subject = BehaviorSubject<List<Recipe>>();
 
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String chefCollectionPath = DatabaseCollections.chefs;
+    String favoriteRecipesCollectionPath = DatabaseCollections.favoriteRecipes;
 
-    firestore.collection(chefCollectionPath).doc(user.uid).snapshots().listen(
-      (chefDocSnapshot) {
-        if (chefDocSnapshot.exists) {
-          List<dynamic> favorites = chefDocSnapshot.data()?['favorites'] ?? [];
-          List<String> favoriteIds = List<String>.from(favorites);
+    firestore
+        .collection(favoriteRecipesCollectionPath)
+        .where('userId', isEqualTo: user.uid)
+        .orderBy('timestamp', descending: true)
+        .snapshots()
+        .listen((favoriteRecipeSnapshot) {
+      List<String> favoriteIds = favoriteRecipeSnapshot.docs
+          .map<String>((doc) => doc['recipeId'] as String)
+          .toList();
 
-          if (favoriteIds.isNotEmpty) {
-            firestore
-                .collection(DatabaseCollections.recipes)
-                .where(FieldPath.documentId, whereIn: favoriteIds)
-                .snapshots()
-                .listen((recipeSnapshot) {
-              List<Recipe> favoriteRecipes = recipeSnapshot.docs
-                  .map<Recipe>((doc) => Recipe.fromJson(doc.data()))
-                  .toList();
-              subject.add(favoriteRecipes);
-            });
-          } else {
-            // If there are no favorites, emit an empty list
-            subject.add([]);
-          }
-        } else {
-          // If the chef document doesn't exist, emit an empty list
-          subject.add([]);
-        }
-      },
-      onError: subject.addError,
-    );
+      if (favoriteIds.isNotEmpty) {
+        firestore
+            .collection(DatabaseCollections.recipes)
+            .where(FieldPath.documentId, whereIn: favoriteIds)
+            .snapshots()
+            .listen((recipeSnapshot) {
+          List<Recipe> favoriteRecipes = recipeSnapshot.docs
+              .map<Recipe>((doc) => Recipe.fromJson(doc.data()))
+              .toList();
+          subject.add(favoriteRecipes);
+        });
+      } else {
+        // If there are no favorites, emit an empty list
+        subject.add([]);
+      }
+    }, onError: subject.addError);
 
     return subject.stream;
   }
