@@ -110,7 +110,7 @@ class FavoritesPage extends HookWidget with ChefMixin {
                                 searchController.text.isNotEmpty
                             ? searchResults.value!.isEmpty
                                 ? const Padding(
-                                    padding: EdgeInsets.only(top: 50),
+                                    padding: EdgeInsets.only(top: 80),
                                     child: ErrorViewWidget(),
                                   )
                                 : ListView.separated(

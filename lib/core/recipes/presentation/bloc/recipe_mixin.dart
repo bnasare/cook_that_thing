@@ -1,10 +1,12 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:rxdart/rxdart.dart';
 
 import '../../../../injection_container.dart';
 import '../../../../shared/data/collection_ids.dart';
@@ -104,7 +106,34 @@ mixin RecipeMixin {
     }
   }
 
-  Stream<List<Recipe>> fetchAllRecipes(BuildContext context) async* {
+  Stream<List<Recipe>> fetchAllRecipes(BuildContext context) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String collectionPath = DatabaseCollections.recipes;
+
+    BehaviorSubject<List<Recipe>> subject = BehaviorSubject<List<Recipe>>();
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
+        .collection(collectionPath)
+        .orderBy("createdAt", descending: true)
+        .snapshots();
+
+    querySnapshotStream.listen((QuerySnapshot querySnapshot) async {
+      List<Recipe> allRecipes = [];
+
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        List<Recipe> recipes =
+            await getRecipes(context: context, documentID: documentId).first;
+        allRecipes.addAll(recipes);
+      }
+
+      subject.add(allRecipes);
+    }, onError: subject.addError);
+
+    return subject.stream;
+  }
+
+  Stream<List<Recipe>> fetchAllRecipess(BuildContext context) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.recipes;
 
@@ -151,62 +180,67 @@ mixin RecipeMixin {
     }
   }
 
-  Stream<List<Recipe>> fetchAllRecipesByPopular(BuildContext context) async* {
-    FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String collectionPath = DatabaseCollections.recipes;
-    Stream<QuerySnapshot> querySnapshotStream = firestore
-        .collection(collectionPath)
-        .orderBy(FieldPath.documentId, descending: true)
-        .snapshots();
+  // Stream<List<Recipe>> fetchAllRecipesByPopular(BuildContext context) async* {
+  //   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //   String collectionPath = DatabaseCollections.recipes;
+  //   Stream<QuerySnapshot> querySnapshotStream = firestore
+  //       .collection(collectionPath)
+  //       .orderBy(FieldPath.documentId, descending: true)
+  //       .snapshots();
 
-    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
-      List<Recipe> allRecipes = [];
+  //   await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+  //     List<Recipe> allRecipes = [];
 
-      List<Future<List<Recipe>>> recipeFutures =
-          querySnapshot.docs.map((snapshot) {
-        String documentId = snapshot.id;
-        return getRecipes(context: context, documentID: documentId).first;
-      }).toList();
+  //     List<Future<List<Recipe>>> recipeFutures =
+  //         querySnapshot.docs.map((snapshot) {
+  //       String documentId = snapshot.id;
+  //       return getRecipes(context: context, documentID: documentId).first;
+  //     }).toList();
 
-      List<List<Recipe>> recipesLists = await Future.wait(recipeFutures);
+  //     List<List<Recipe>> recipesLists = await Future.wait(recipeFutures);
 
-      allRecipes = recipesLists.expand((recipes) => recipes).toList();
+  //     allRecipes = recipesLists.expand((recipes) => recipes).toList();
 
-      allRecipes.sort((a, b) => b.likes.length.compareTo(a.likes.length));
+  //     allRecipes.sort((a, b) => b.likes.length.compareTo(a.likes.length));
 
-      yield allRecipes;
-    }
-  }
+  //     yield allRecipes;
+  //   }
+  // }
 
   Stream<List<Recipe>> fetchAllRecipesSortedByAverageRatingStream(
-      BuildContext context) async* {
+      BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String recipesCollectionPath = DatabaseCollections.recipes;
 
-    QuerySnapshot recipeSnapshot =
-        await firestore.collection(recipesCollectionPath).get();
-    List<Recipe> recipes = recipeSnapshot.docs.map((doc) {
-      return Recipe.fromJson(doc.data() as Map<String, dynamic>);
-    }).toList();
+    BehaviorSubject<List<Recipe>> subject = BehaviorSubject<List<Recipe>>();
 
-    Map<String, double> averageRatings = {};
+    firestore.collection(recipesCollectionPath).snapshots().listen(
+        (QuerySnapshot recipeSnapshot) async {
+      List<Recipe> recipes = recipeSnapshot.docs.map((doc) {
+        return Recipe.fromJson(doc.data() as Map<String, dynamic>);
+      }).toList();
 
-    List<Future<void>> ratingFutures = [];
+      Map<String, double> averageRatings = {};
 
-    for (Recipe recipe in recipes) {
-      ratingFutures.add(
-        getAverageReviewsRating(recipe.id, context).then((rating) {
-          averageRatings[recipe.id] = rating;
-        }),
-      );
-    }
+      List<Future<void>> ratingFutures = [];
 
-    await Future.wait(ratingFutures);
+      for (Recipe recipe in recipes) {
+        ratingFutures.add(
+          getAverageReviewsRating(recipe.id, context).then((rating) {
+            averageRatings[recipe.id] = rating;
+          }),
+        );
+      }
 
-    recipes
-        .sort((a, b) => averageRatings[b.id]!.compareTo(averageRatings[a.id]!));
+      await Future.wait(ratingFutures);
 
-    yield recipes;
+      recipes.sort(
+          (a, b) => averageRatings[b.id]!.compareTo(averageRatings[a.id]!));
+
+      subject.add(List.from(recipes));
+    }, onError: subject.addError);
+
+    return subject.stream;
   }
 
   Stream<List<Review>> getReviews({
@@ -326,14 +360,21 @@ mixin RecipeMixin {
     );
   }
 
-  Stream<List<Chef>> listChefStreams() async* {
+  Stream<List<Chef>> listChefStreams() {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.chefs;
+
+    BehaviorSubject<List<Chef>> subject = BehaviorSubject<List<Chef>>();
+
+    StreamSubscription<QuerySnapshot> subscription;
+
     Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .orderBy(FieldPath.documentId, descending: true)
         .snapshots();
-    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+
+    subscription =
+        querySnapshotStream.listen((QuerySnapshot querySnapshot) async {
       List<Chef> chefs = [];
       for (DocumentSnapshot snapshot in querySnapshot.docs) {
         Chef chef = Chef(
@@ -347,8 +388,19 @@ mixin RecipeMixin {
         );
         chefs.add(chef);
       }
-      yield chefs;
-    }
+      subject.add(List.from(chefs));
+    }, onError: (error) {
+      subject.addError(error);
+    });
+
+    Stream<List<Chef>> stream = subject.stream;
+
+    stream.listen(null, onDone: () {
+      subject.close();
+      subscription.cancel();
+    });
+
+    return stream;
   }
 
   Stream<List<Chef>> listChefStream(String currentUserID) async* {

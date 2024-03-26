@@ -36,11 +36,18 @@ class HomePage extends HookWidget with RecipeMixin {
     final searchController = useTextEditingController();
     final searchResults = useState<List<Recipe>?>(null);
 
-    final Stream<List<Chef>> chefStream = listChefStreams();
-    final Stream<List<Recipe>> popularRecipesStream =
-        fetchAllRecipesSortedByAverageRatingStream(context);
-    final Stream<List<Recipe>> newRecipesStream = fetchAllRecipes(context);
-    final Stream<List<Recipe>> newRecipesStreamm = fetchAllRecipes(context);
+    final chefStream = useMemoized(() => listChefStreams());
+    final popularRecipesStream =
+        useMemoized(() => fetchAllRecipesSortedByAverageRatingStream(context));
+    final newRecipesStreamm = useMemoized(() => fetchAllRecipes(context));
+    final newRecipesStream = useMemoized(() => fetchAllRecipess(context));
+
+    useEffect(() {
+      final chefStream = listChefStreams();
+      return () {
+        chefStream.listen(null).cancel();
+      };
+    }, []);
 
     void handleSearch(String query) async {
       if (query.isEmpty) {
@@ -119,7 +126,7 @@ class HomePage extends HookWidget with RecipeMixin {
                             searchController.text.isNotEmpty
                         ? searchResults.value!.isEmpty
                             ? const Padding(
-                                padding: EdgeInsets.only(top: 50.0),
+                                padding: EdgeInsets.only(top: 80.0),
                                 child: ErrorViewWidget(),
                               )
                             : Expanded(

@@ -96,7 +96,7 @@ class AllChefsPage extends HookWidget with RecipeMixin {
                                 searchController.text.isNotEmpty
                             ? searchResults.value!.isEmpty
                                 ? const Padding(
-                                    padding: EdgeInsets.only(top: 50),
+                                    padding: EdgeInsets.only(top: 80),
                                     child: ErrorViewWidget(),
                                   )
                                 : ChefWidget(chefs: searchResults.value!)
