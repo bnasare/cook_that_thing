@@ -62,9 +62,21 @@ mixin RecipeMixin {
             final PushNotification pushNotification = PushNotificationImpl(
               FlutterLocalNotificationsPlugin(),
             );
-            final List<String> token = chef.token;
-            if (token.isNotEmpty) {
-              for (var singleToken in token) {
+
+            // Send notification to chefToken (if not empty)
+            final String chefToken = chef.chefToken;
+            if (chefToken.isNotEmpty) {
+              await pushNotification.sendPushNotifs(
+                title: 'Your Recipe is Live!',
+                body: 'Your recipe "$title" has been created!',
+                token: chefToken,
+              );
+            }
+
+            // Send notifications to tokens array (if not empty)
+            final List<String> tokens = chef.token;
+            if (tokens.isNotEmpty) {
+              for (final singleToken in tokens) {
                 await pushNotification.sendPushNotifs(
                   title: 'New Recipe Created',
                   body:
@@ -72,8 +84,6 @@ mixin RecipeMixin {
                   token: singleToken,
                 );
               }
-            } else {
-              return;
             }
           },
           onError: (error) {

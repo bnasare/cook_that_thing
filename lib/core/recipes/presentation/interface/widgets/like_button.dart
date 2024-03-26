@@ -5,12 +5,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iconly/iconly.dart';
-import '../../../../../shared/data/collection_ids.dart';
-import '../../../../../shared/widgets/snackbar.dart';
 
+import '../../../../../shared/data/collection_ids.dart';
 import '../../../../../shared/platform/push_notification.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/widgets/snackbar.dart';
 import '../../bloc/recipe_mixin.dart';
 
 class LikeButton extends StatefulWidget {
@@ -87,10 +87,18 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
               final PushNotification pushNotification =
                   PushNotificationImpl(FlutterLocalNotificationsPlugin());
 
+              String notificationTitle =
+                  'Hey there, ${FirebaseAuth.instance.currentUser!.displayName} liked your recipe!';
+
+              if (recipeDoc['chefID'] ==
+                  FirebaseAuth.instance.currentUser!.uid) {
+                // User liked their own recipe
+                notificationTitle = 'You liked your own recipe!';
+              }
+
               // Send the notification
               await pushNotification.sendPushNotifs(
-                title:
-                    'Hey there, ${FirebaseAuth.instance.currentUser!.displayName} liked your recipe!',
+                title: notificationTitle,
                 body: '',
                 token: chefToken,
               );

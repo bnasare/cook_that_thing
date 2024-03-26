@@ -1,16 +1,17 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import '../../domain/entities/review.dart';
-import '../../../../shared/data/collection_ids.dart';
 
 import '../../../../injection_container.dart';
+import '../../../../shared/data/collection_ids.dart';
 import '../../../../shared/data/firebase_constants.dart';
 import '../../../../shared/platform/push_notification.dart';
 import '../../../recipes/domain/entities/recipe.dart';
 import '../../../recipes/presentation/bloc/recipe_bloc.dart';
+import '../../domain/entities/review.dart';
 import 'review_bloc.dart';
 
 mixin ReviewMixin {
@@ -41,9 +42,19 @@ mixin ReviewMixin {
           final PushNotification pushNotification =
               PushNotificationImpl(FlutterLocalNotificationsPlugin());
 
+          String notificationTitle = 'New Review!';
+          String notificationBody =
+              '${FirebaseConsts.currentUser!.displayName} left a review!';
+
+          if (recipeDoc['chefID'] == FirebaseAuth.instance.currentUser!.uid) {
+            // User reviewed their own recipe
+            notificationTitle = 'You reviewed your own recipe!';
+            notificationBody = 'Check out your review.';
+          }
+
           await pushNotification.sendPushNotifs(
-            title: 'New Review!',
-            body: '${FirebaseConsts.currentUser!.displayName} left a review!',
+            title: notificationTitle,
+            body: notificationBody,
             token: chefToken,
           );
         }

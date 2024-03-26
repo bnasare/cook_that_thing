@@ -69,7 +69,7 @@ class RecipeDetailAppBar extends StatelessWidget {
                   ),
                   child: const Icon(
                     Icons.arrow_back_ios_new,
-                    color: ExtraColors.white,
+                    color: ExtraColors.black,
                   )),
             ),
           ),

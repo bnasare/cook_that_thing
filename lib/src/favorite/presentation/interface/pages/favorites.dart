@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:iconly/iconly.dart';
 
 import '../../../../../core/chef/presentation/bloc/chef_mixin.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
@@ -13,6 +14,7 @@ import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
+import '../../../../../shared/widgets/snackbar.dart';
 import '../../../../home/presentation/interface/widgets/recipe_search_box.dart';
 
 class FavoritesPage extends HookWidget with ChefMixin {
@@ -66,7 +68,7 @@ class FavoritesPage extends HookWidget with ChefMixin {
               return Column(
                 children: [
                   ListTile(
-                    contentPadding: const EdgeInsets.only(left: 20),
+                    contentPadding: const EdgeInsets.only(left: 20, right: 20),
                     title: Text(
                       searchController.text.isNotEmpty
                           ? '${searchResults.value?.length ?? 0} ${searchResults.value != null && searchResults.value!.length == 1 ? localizations.recipeFoundSingular : localizations.recipeFoundPlural}'
@@ -83,6 +85,65 @@ class FavoritesPage extends HookWidget with ChefMixin {
                         fontSize: 15,
                         fontWeight: FontWeight.w400,
                         color: ExtraColors.darkGrey,
+                      ),
+                    ),
+                    trailing: Clickable(
+                      onClick: () {
+                        if (favoriteRecipes != null &&
+                            favoriteRecipes.isNotEmpty) {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                elevation: 0,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))),
+                                shadowColor: ExtraColors.white,
+                                title: const Text('Clear All Favorites'),
+                                content: const Text(
+                                    'Are you sure you want to clear all favorite recipes?',
+                                    style: TextStyle(fontSize: 18)),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Cancel',
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .error,
+                                            fontSize: 18)),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      clearFavoriteRecipes();
+                                      SnackBarHelper.showSuccessSnackBar(
+                                          context,
+                                          'All favorite recipes cleared');
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text('Clear',
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .error,
+                                            fontSize: 18)),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        } else {
+                          SnackBarHelper.showErrorSnackBar(
+                              context, 'Nothing to delete');
+                        }
+                      },
+                      child: Icon(
+                        IconlyLight.delete,
+                        color: Theme.of(context).colorScheme.error,
+                        size: 30,
                       ),
                     ),
                   ),

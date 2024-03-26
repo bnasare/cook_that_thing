@@ -65,7 +65,7 @@ class SnackBarHelper {
             overflow: TextOverflow.ellipsis,
             fontWeight: FontWeight.w200,
             color: ExtraColors.white,
-            fontSize: 12,
+            fontSize: 15,
           ),
         ),
         persistent: persist,

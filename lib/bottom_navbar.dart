@@ -1,7 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:persistent_bottom_nav_bar_v2/persistent-tab-view.dart';
+import 'package:iconly/iconly.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 
 import 'core/recipes/presentation/interface/pages/create_recipe_method.dart';
 import 'shared/data/firebase_constants.dart';
@@ -36,26 +36,29 @@ class _NavBarState extends State<NavBar> {
 
     return [
       PersistentBottomNavBarItem(
-        textStyle: Theme.of(context).textTheme.bodySmall,
-        icon: const Icon(Icons.home_filled),
+        textStyle: Theme.of(context).textTheme.labelLarge,
+        icon: const Icon(IconlyLight.home),
         title: localizations.home,
         activeColorPrimary: Theme.of(context).colorScheme.primary,
         inactiveColorPrimary: ExtraColors.darkGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.favorite),
+        textStyle: Theme.of(context).textTheme.labelLarge,
+        icon: const Icon(IconlyLight.heart),
         title: 'Favorites',
         activeColorPrimary: Theme.of(context).colorScheme.primary,
         inactiveColorPrimary: ExtraColors.darkGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.event_busy),
+        textStyle: Theme.of(context).textTheme.labelLarge,
+        icon: const Icon(IconlyLight.activity),
         title: localizations.cook,
         activeColorPrimary: Theme.of(context).colorScheme.primary,
         inactiveColorPrimary: ExtraColors.darkGrey,
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(CupertinoIcons.profile_circled),
+        textStyle: Theme.of(context).textTheme.labelLarge,
+        icon: const Icon(IconlyLight.profile),
         title: localizations.profile,
         activeColorPrimary: Theme.of(context).colorScheme.primary,
         inactiveColorPrimary: ExtraColors.darkGrey,
@@ -79,8 +82,11 @@ class _NavBarState extends State<NavBar> {
           height: 0,
           color: ExtraColors.grey,
         ),
-        Expanded(
+        Flexible(
           child: PersistentTabView(
+            navBarHeight: 65,
+            padding:
+                const NavBarPadding.only(left: 0, right: 0, bottom: 0, top: 0),
             context,
             screens: _buildScreens(),
             items: _navBarsItems(),
@@ -89,27 +95,20 @@ class _NavBarState extends State<NavBar> {
             popAllScreensOnTapOfSelectedTab: true,
             popActionScreens: PopActionScreensType.all,
             itemAnimationProperties: const ItemAnimationProperties(
-              duration: Duration(milliseconds: 900),
+              duration: Duration(milliseconds: 700),
               curve: Curves.ease,
             ),
             screenTransitionAnimation: const ScreenTransitionAnimation(
               animateTabTransition: true,
               curve: Curves.ease,
-              duration: Duration(milliseconds: 900),
+              duration: Duration(milliseconds: 700),
             ),
-            navBarStyle: NavBarStyle.style3,
+            navBarStyle: NavBarStyle.style9,
             handleAndroidBackButtonPress: true,
             resizeToAvoidBottomInset: false,
             decoration: const NavBarDecoration(
               border: Border(top: BorderSide(color: ExtraColors.lightGrey)),
             ),
-            onWillPop: (context) async {
-              if (controller.index == 0) {
-                return true;
-              }
-              controller.jumpToTab(0);
-              return false;
-            },
           ),
         ),
       ],

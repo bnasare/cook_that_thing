@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../../core/chef/domain/entities/chef.dart';
 import '../../../../../core/chef/presentation/interface/pages/all_chefs.dart';
+import '../../../../../core/chef/presentation/interface/widgets/chef_list_widget.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
 import '../../../../../core/recipes/presentation/bloc/recipe_mixin.dart';
 import '../../../../../core/recipes/presentation/interface/pages/all_recipes.dart';
@@ -23,7 +23,6 @@ import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
 import '../../../../category/presentation/interface/pages/list_category.dart';
 import '../../../../category/presentation/interface/widgets/category_tab.dart';
-import '../../../../profile/presentation/interface/pages/profile.dart';
 import '../widgets/header.dart';
 import '../widgets/recipe_search_box.dart';
 
@@ -36,19 +35,16 @@ class HomePage extends HookWidget with RecipeMixin {
     final searchController = useTextEditingController();
     final searchResults = useState<List<Recipe>?>(null);
 
-    final chefStream =
-        useMemoized(() => listChefStreams(), [searchController.text]);
+    final chefStream = useMemoized(() => listChefStreams(), []);
     final popularRecipesStream =
         useMemoized(() => fetchAllRecipesSortedByAverageRatingStream(context));
     final newRecipesStreamm = useMemoized(() => fetchAllRecipes(context));
     final newRecipesStream = useMemoized(() => fetchAllRecipess(context));
 
     useEffect(() {
-      final chefStream = listChefStreams();
-      return () {
-        chefStream.listen(null).cancel();
-      };
-    }, []);
+      final subscription = chefStream.listen(null);
+      return subscription.cancel;
+    }, [chefStream]);
 
     void handleSearch(String query) async {
       if (query.isEmpty) {
@@ -91,19 +87,22 @@ class HomePage extends HookWidget with RecipeMixin {
                           ListTile(
                             horizontalTitleGap: 5,
                             contentPadding: const EdgeInsets.all(0),
-                            leading: const Icon(
-                                CupertinoIcons.person_alt_circle,
-                                size: 50),
+                            leading: const Padding(
+                              padding: EdgeInsets.only(top: 2.0),
+                              child: Icon(CupertinoIcons.person_alt_circle,
+                                  size: 60),
+                            ),
                             title: Text(
                               'Hello ${FirebaseConsts.currentUser!.displayName}!',
                               style: const TextStyle(
+                                  fontSize: 17,
                                   overflow: TextOverflow.ellipsis,
                                   color: ExtraColors.white),
                             ),
                             subtitle: Text(
                               'Check out our amazing recipes',
                               style: TextStyle(
-                                  height: -2.39,
+                                  fontSize: 15,
                                   overflow: TextOverflow.ellipsis,
                                   color: ExtraColors.white.withOpacity(0.7)),
                             ),
@@ -201,75 +200,20 @@ class HomePage extends HookWidget with RecipeMixin {
                                       child: StreamBuilder<List<Chef>>(
                                         stream: chefStream,
                                         builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
+                                          if (snapshot.hasError) {
+                                            return const ErrorViewWidget();
+                                          } else if (snapshot.connectionState ==
                                               ConnectionState.waiting) {
-                                            return SpinKitFadingCircle(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                            );
-                                          } else if (snapshot.hasError) {
-                                            return Text(
-                                                'Error: ${snapshot.error}');
+                                            return ChefListWidget(
+                                                chefs: snapshot.data ?? []);
+                                          } else if (snapshot.hasData &&
+                                              snapshot.data!.isEmpty) {
+                                            return const ErrorViewWidget();
+                                          } else if (snapshot.hasData) {
+                                            return ChefListWidget(
+                                                chefs: snapshot.data!);
                                           } else {
-                                            return SizedBox(
-                                              height: 110,
-                                              child: ListView.builder(
-                                                physics:
-                                                    const NeverScrollableScrollPhysics(),
-                                                scrollDirection:
-                                                    Axis.horizontal,
-                                                itemCount:
-                                                    snapshot.data!.length > 4
-                                                        ? 4
-                                                        : snapshot.data!.length,
-                                                itemBuilder: (context, index) {
-                                                  String chefName = snapshot
-                                                      .data![index].name;
-                                                  return SizedBox(
-                                                    width:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width *
-                                                            0.23,
-                                                    child: Clickable(
-                                                      onClick: () => NavigationHelper
-                                                          .navigateTo(
-                                                              context,
-                                                              ProfilePage(
-                                                                  chefID: snapshot
-                                                                      .data![
-                                                                          index]
-                                                                      .id)),
-                                                      child: Column(
-                                                        children: [
-                                                          const Icon(
-                                                              CupertinoIcons
-                                                                  .person_alt_circle,
-                                                              color: ExtraColors
-                                                                  .darkGrey,
-                                                              size: 80),
-                                                          Text(
-                                                            chefName,
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            style: const TextStyle(
-                                                                fontSize: 17,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w500,
-                                                                overflow:
-                                                                    TextOverflow
-                                                                        .ellipsis),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  );
-                                                },
-                                              ),
-                                            );
+                                            return const ErrorViewWidget();
                                           }
                                         },
                                       ),
