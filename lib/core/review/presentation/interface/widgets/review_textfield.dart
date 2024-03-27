@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 
 class ReviewTextField extends StatelessWidget {
@@ -31,7 +32,7 @@ class ReviewTextField extends StatelessWidget {
             EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
         hintText: 'Add a detailed review of this recipe',
         hintStyle: TextStyle(
-            fontSize: 14,
+            fontSize: 16,
             color: ExtraColors.darkGrey,
             fontWeight: FontWeight.w500),
         filled: true,

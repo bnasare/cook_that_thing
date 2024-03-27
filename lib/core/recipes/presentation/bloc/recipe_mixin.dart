@@ -217,26 +217,71 @@ mixin RecipeMixin {
   //   }
   // }
 
+  // Stream<List<Recipe>> fetchAllRecipesSortedByAverageRatingStream(
+  //     BuildContext context) {
+  //   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  //   String recipesCollectionPath = DatabaseCollections.recipes;
+
+  //   BehaviorSubject<List<Recipe>> subject = BehaviorSubject<List<Recipe>>();
+
+  //   firestore.collection(recipesCollectionPath).snapshots().listen(
+  //       (QuerySnapshot recipeSnapshot) async {
+  //     List<Recipe> recipes = recipeSnapshot.docs.map((doc) {
+  //       return Recipe.fromJson(doc.data() as Map<String, dynamic>);
+  //     }).toList();
+
+  //     Map<String, double> averageRatings = {};
+
+  //     List<Future<void>> ratingFutures = [];
+
+  //     for (Recipe recipe in recipes) {
+  //       ratingFutures.add(
+  //         getAverageReviewsRating(recipe.id, context).then((rating) {
+  //           averageRatings[recipe.id] = rating;
+  //         }),
+  //       );
+  //     }
+
+  //     await Future.wait(ratingFutures);
+
+  //     recipes.sort(
+  //         (a, b) => averageRatings[b.id]!.compareTo(averageRatings[a.id]!));
+
+  //     subject.add(List.from(recipes));
+  //   }, onError: subject.addError);
+
+  //   return subject.stream;
+  // }
+
   Stream<List<Recipe>> fetchAllRecipesSortedByAverageRatingStream(
       BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String recipesCollectionPath = DatabaseCollections.recipes;
+    String collectionPath = DatabaseCollections.recipes;
 
     BehaviorSubject<List<Recipe>> subject = BehaviorSubject<List<Recipe>>();
 
-    firestore.collection(recipesCollectionPath).snapshots().listen(
-        (QuerySnapshot recipeSnapshot) async {
-      List<Recipe> recipes = recipeSnapshot.docs.map((doc) {
-        return Recipe.fromJson(doc.data() as Map<String, dynamic>);
-      }).toList();
+    Stream<QuerySnapshot> querySnapshotStream =
+        firestore.collection(collectionPath).snapshots();
+
+    querySnapshotStream.listen((QuerySnapshot querySnapshot) async {
+      List<Recipe> allRecipes = [];
+
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        List<Recipe> recipes =
+            await getRecipes(context: context, documentID: documentId).first;
+        allRecipes.addAll(recipes);
+      }
 
       Map<String, double> averageRatings = {};
 
       List<Future<void>> ratingFutures = [];
 
-      for (Recipe recipe in recipes) {
+      for (Recipe recipe in allRecipes) {
         ratingFutures.add(
-          getAverageReviewsRating(recipe.id, context).then((rating) {
+          getAverageReviewsRatingStreamm(recipe.id, context)
+              .first
+              .then((rating) {
             averageRatings[recipe.id] = rating;
           }),
         );
@@ -244,13 +289,30 @@ mixin RecipeMixin {
 
       await Future.wait(ratingFutures);
 
-      recipes.sort(
-          (a, b) => averageRatings[b.id]!.compareTo(averageRatings[a.id]!));
+      allRecipes.sort(
+        (a, b) => averageRatings[b.id]!.compareTo(averageRatings[a.id]!),
+      );
 
-      subject.add(List.from(recipes));
+      subject.add(allRecipes);
     }, onError: subject.addError);
 
     return subject.stream;
+  }
+
+  Stream<double> getAverageReviewsRatingStreamm(
+    String recipeId,
+    BuildContext context,
+  ) async* {
+    double sum = 0;
+    int count = 0;
+
+    await for (var reviews in fetchReviewsByRecipeID(context, recipeId)) {
+      for (var review in reviews) {
+        sum += review.rating;
+        count++;
+        yield count != 0 ? sum / count : 0;
+      }
+    }
   }
 
   Stream<List<Review>> getReviews({
@@ -270,22 +332,25 @@ mixin RecipeMixin {
       BuildContext context, String recipeID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.reviews;
-    QuerySnapshot querySnapshot = await firestore
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .where('recipeID', isEqualTo: recipeID)
-        .get();
+        .snapshots();
 
-    List allReviews = [];
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List allReviews = [];
 
-    for (DocumentSnapshot snapshot in querySnapshot.docs) {
-      String documentId = snapshot.id;
-      await for (List reviews
-          in getReviews(context: context, documentID: documentId)) {
-        allReviews.addAll(reviews);
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        await for (List reviews
+            in getReviews(context: context, documentID: documentId)) {
+          allReviews.addAll(reviews);
+        }
       }
-    }
 
-    yield allReviews;
+      yield allReviews;
+    }
   }
 
   Future<void> like(
@@ -324,17 +389,20 @@ mixin RecipeMixin {
     }
   }
 
-  Future<double> getAverageReviewsRating(
-      String recipeId, BuildContext context) async {
+  Stream<double> getAverageReviewsRatingStream(
+    String recipeId,
+    BuildContext context,
+  ) async* {
     double sum = 0;
     int count = 0;
+
     await for (var reviews in fetchReviewsByRecipeID(context, recipeId)) {
       for (var review in reviews) {
         sum += review.rating;
         count++;
+        yield count != 0 ? sum / count : 0;
       }
     }
-    return count != 0 ? sum / count : 0;
   }
 
   Future<Chef> retrieve(

@@ -81,8 +81,8 @@ class RecipeInfo extends HookWidget with RecipeMixin {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  FutureBuilder(
-                    future: getAverageReviewsRating(recipe.id, context),
+                  StreamBuilder(
+                    stream: getAverageReviewsRatingStreamm(recipe.id, context),
                     builder: (context, snapshot) {
                       return Material(
                         color: ExtraColors.yellow,

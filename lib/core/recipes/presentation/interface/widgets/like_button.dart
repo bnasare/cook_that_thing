@@ -54,7 +54,6 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
   Widget build(BuildContext context) {
     return Clickable(
       onClick: () async {
-        // Invert the liked state as soon as the button is pressed
         bool newIsLiked = !_isLiked;
         setState(() {
           _isLiked = newIsLiked;
@@ -67,21 +66,35 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
               .get();
 
           List<dynamic> likes = recipeDoc['likes'] ?? [];
+          bool isLiked = likes.contains(FirebaseAuth.instance.currentUser!.uid);
+          bool newIsLiked = !isLiked;
+
           List<String> newLikers = List<String>.from(likes);
 
           if (newIsLiked) {
-            // If the recipe is now liked, add the user's UID to the list of likers
             newLikers.add(FirebaseAuth.instance.currentUser!.uid);
-          } else {
-            // Otherwise, remove the user's UID from the list of likers
-            newLikers.remove(FirebaseAuth.instance.currentUser!.uid);
-          }
 
-          // Update the recipe's likes in the database
-          await like(
-              recipeId: widget.recipeID, likers: newLikers, context: context);
+            await FirebaseFirestore.instance
+                .collection(DatabaseCollections.chefs)
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .update({
+              'favorites': FieldValue.arrayUnion([widget.recipeID]),
+            });
 
-          if (newIsLiked) {
+            final favoriteRecipeDocRef = FirebaseFirestore.instance
+                .collection(DatabaseCollections.favoriteRecipes)
+                .doc(
+                    '${FirebaseAuth.instance.currentUser!.uid}_${widget.recipeID}');
+
+            // Get the current timestamp
+            final timestamp = DateTime.now().millisecondsSinceEpoch;
+
+            await favoriteRecipeDocRef.set({
+              'recipeId': widget.recipeID,
+              'userId': FirebaseAuth.instance.currentUser!.uid,
+              'timestamp': DateTime.fromMillisecondsSinceEpoch(timestamp),
+            });
+
             String chefToken = recipeDoc['chefToken'] ?? '';
             if (chefToken.isNotEmpty) {
               final PushNotification pushNotification =
@@ -103,7 +116,40 @@ class _LikeButtonState extends State<LikeButton> with RecipeMixin {
                 token: chefToken,
               );
             }
+          } else {
+            newLikers.remove(FirebaseAuth.instance.currentUser!.uid);
+
+            // Remove from favoriteRecipes collection
+            await FirebaseFirestore.instance
+                .collection(DatabaseCollections.favoriteRecipes)
+                .doc(
+                    '${FirebaseAuth.instance.currentUser!.uid}_${widget.recipeID}')
+                .delete();
+
+            // Update favorites array in chef document
+            await FirebaseFirestore.instance
+                .collection(DatabaseCollections.chefs)
+                .doc(FirebaseAuth.instance.currentUser!.uid)
+                .update({
+              'favorites': FieldValue.arrayRemove([widget.recipeID]),
+            });
+
+            await FirebaseFirestore.instance
+                .collection(DatabaseCollections.recipes)
+                .doc(widget.recipeID)
+                .update({
+              'likes': FieldValue.arrayRemove(
+                  [FirebaseAuth.instance.currentUser!.uid]),
+            });
           }
+
+          await like(
+            recipeId: widget.recipeID,
+            likers: newLikers,
+            context: context,
+          );
+
+          // Additional logic for sending notifications if needed
         } catch (e) {
           setState(() {
             _isLiked = !_isLiked;

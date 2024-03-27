@@ -37,7 +37,8 @@ class HomePage extends HookWidget with RecipeMixin {
 
     final chefStream = useMemoized(() => listChefStreams(), []);
     final popularRecipesStream =
-        useMemoized(() => fetchAllRecipesSortedByAverageRatingStream(context));
+        useMemoized(() => fetchAllRecipesSortedByAverageRatingStream(context))
+            .asBroadcastStream();
     final newRecipesStreamm = useMemoized(() => fetchAllRecipes(context));
     final newRecipesStream = useMemoized(() => fetchAllRecipess(context));
 

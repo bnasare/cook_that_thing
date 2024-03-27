@@ -7,16 +7,16 @@ import 'package:duration_picker/duration_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../bloc/recipe_mixin.dart';
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../shared/widgets/loading_manager.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../bottom_navbar.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/fullscreen_dialog.dart';
+import '../../../../../shared/widgets/loading_manager.dart';
 import '../../../../../shared/widgets/warning_modal.dart';
+import '../../bloc/recipe_mixin.dart';
 import '../widgets/build_dialog_item.dart';
 import '../widgets/list_ingredients.dart';
 import '../widgets/list_instructions.dart';
@@ -188,6 +188,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 subtitle: const Text(
                     "This name will be displayed when looking at the recipe."),
                 content: TextField(
+                  textInputAction: TextInputAction.next,
                   controller: titleController,
                   decoration:
                       const InputDecoration(hintText: "Title", filled: true),
@@ -256,6 +257,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 content: TextField(
                   maxLines: null,
                   controller: overviewController,
+                  textInputAction: TextInputAction.next,
                   decoration: const InputDecoration(
                       hintText: "Description", filled: true),
                 ),

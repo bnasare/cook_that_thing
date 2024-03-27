@@ -89,39 +89,14 @@ class RecipeRemoteDatabaseImpl implements RecipeRemoteDatabase {
   Future<Recipe> like(String recipeId, List<String> likers) async {
     final recipeDocRef =
         _firestore.collection(DatabaseCollections.recipes).doc(recipeId);
-    final user = FirebaseAuth.instance.currentUser;
-    final chefDocRef =
-        _firestore.collection(DatabaseCollections.chefs).doc(user!.uid);
-
-    final favoriteRecipeDocRef = _firestore
-        .collection(DatabaseCollections.favoriteRecipes)
-        .doc('${user.uid}_$recipeId');
-
-    // Get the current timestamp
-    final timestamp = DateTime.now().millisecondsSinceEpoch;
 
     if (likers.isNotEmpty) {
       await recipeDocRef.update({'likes': FieldValue.arrayUnion(likers)});
-      await chefDocRef.update({
-        'favorites': FieldValue.arrayUnion([recipeId])
-      });
-
-      // Add the favorite recipe document with timestamp
-      await favoriteRecipeDocRef.set({
-        'recipeId': recipeId,
-        'userId': user.uid,
-        'timestamp': DateTime.fromMillisecondsSinceEpoch(timestamp),
-      });
     } else {
       await recipeDocRef.update({
-        'likes': FieldValue.arrayRemove([user.uid])
+        'likes':
+            FieldValue.arrayRemove([FirebaseAuth.instance.currentUser!.uid])
       });
-      await chefDocRef.update({
-        'favorites': FieldValue.arrayRemove([recipeId])
-      });
-
-      // Delete the favorite recipe document
-      await favoriteRecipeDocRef.delete();
     }
 
     return Recipe.fromJson((await recipeDocRef.get()).data() ?? {});

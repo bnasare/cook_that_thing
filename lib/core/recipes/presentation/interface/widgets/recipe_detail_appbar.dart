@@ -22,6 +22,7 @@ class RecipeDetailAppBar extends StatelessWidget {
       flexibleSpace: FlexibleSpaceBar(
         background: FancyShimmerImage(
           imageUrl: imageUrl,
+          boxFit: BoxFit.fill,
         ),
         stretchModes: const [
           StretchMode.blurBackground,
@@ -69,7 +70,7 @@ class RecipeDetailAppBar extends StatelessWidget {
                   ),
                   child: const Icon(
                     Icons.arrow_back_ios_new,
-                    color: ExtraColors.black,
+                    color: ExtraColors.grey,
                   )),
             ),
           ),

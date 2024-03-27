@@ -75,6 +75,7 @@ class RecipeWidget extends StatelessWidget {
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Stack(
                     children: [
@@ -170,7 +171,7 @@ class RecipeWidget extends StatelessWidget {
                                             color: ExtraColors.grey,
                                             wordSpacing: -2.2,
                                             letterSpacing: 0,
-                                            fontSize: 16,
+                                            fontSize: 17,
                                           )),
                                     ),
                                   ),

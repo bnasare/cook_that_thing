@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
@@ -20,7 +22,8 @@ class ReviewButton extends HookWidget with RecipeMixin {
           reviewsNotifier.value = reviews.length;
         },
         onError: (error) {
-          reviewsNotifier.value = null;
+          log('Error fetching reviews: $error');
+          reviewsNotifier.value = 0;
         },
       );
       return subscription.cancel;
@@ -37,8 +40,8 @@ class ReviewButton extends HookWidget with RecipeMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              FutureBuilder(
-                  future: getAverageReviewsRating(recipeID, context),
+              StreamBuilder(
+                  stream: getAverageReviewsRatingStream(recipeID, context),
                   builder: (context, snapshot) {
                     return RecipeInfoItem(
                         icon: Icons.grade,

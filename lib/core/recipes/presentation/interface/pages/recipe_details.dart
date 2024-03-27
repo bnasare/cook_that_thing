@@ -248,14 +248,15 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                   padding: const EdgeInsets.only(bottom: 16.0),
                                   child: Row(
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
                                         height: 24.0,
                                         width: 24.0,
                                         alignment: Alignment.center,
                                         margin:
-                                            const EdgeInsets.only(right: 10.0),
+                                            const EdgeInsets.only(right: 18.0),
                                         decoration: const BoxDecoration(
                                           shape: BoxShape.circle,
                                           color: ExtraColors.darkBlue,
@@ -270,7 +271,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                                                   fontWeight: FontWeight.w700),
                                         ),
                                       ),
-                                      Flexible(
+                                      Expanded(
                                         child: Text(
                                           recipe.instructions[index],
                                           style: Theme.of(context)
@@ -294,6 +295,9 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
             }
           }),
       floatingActionButton: FloatingActionButton.extended(
+          extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
           onPressed: () {
             Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
@@ -310,7 +314,7 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
               ),
             );
           },
-          label: const Text('View Reviews')),
+          label: const Text('View Reviews', style: TextStyle(fontSize: 16))),
     );
   }
 }

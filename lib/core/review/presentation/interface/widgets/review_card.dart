@@ -71,7 +71,7 @@ class ReviewCard extends StatelessWidget {
               review,
               style: const TextStyle(
                 height: 1.4,
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w400,
                 color: ExtraColors.darkGrey,
               ),

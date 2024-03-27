@@ -136,7 +136,6 @@ class FullscreenDialog extends HookWidget {
                     fontSize: 16,
                     color: ExtraColors.grey,
                   ),
-                  textAlign: TextAlign.justify,
                 ),
               ),
             const Spacer(),

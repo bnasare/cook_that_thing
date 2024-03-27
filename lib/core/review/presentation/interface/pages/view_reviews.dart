@@ -64,81 +64,98 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                     );
                   },
                 )
-              : Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 5),
-                      Text(
-                        '$averageReviews',
-                        style: Theme.of(context)
-                            .textTheme
-                            .displayLarge
-                            ?.copyWith(fontWeight: FontWeight.w100),
+              : Column(
+                  children: [
+                    const SizedBox(height: 5),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(13, 10, 13, 13),
+                      decoration: BoxDecoration(
+                          color: ExtraColors.white,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: ExtraColors.darkGrey.withOpacity(0.4),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: const Offset(3, 3),
+                            )
+                          ]),
+                      child: Column(
+                        children: [
+                          Text(
+                            '$averageReviews',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayLarge
+                                ?.copyWith(fontWeight: FontWeight.w100),
+                          ),
+                          const SizedBox(height: 1),
+                          RatingDisplay(rating: averageReviews, itemSize: 40),
+                          const SizedBox(height: 8),
+                          Text(
+                            '(${reviews.length} ${reviews.length == 1 ? 'Review' : 'Reviews'})',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge
+                                ?.copyWith(
+                                    fontWeight: FontWeight.normal,
+                                    color: ExtraColors.darkGrey),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 3),
-                      RatingDisplay(rating: averageReviews, itemSize: 40),
-                      const SizedBox(height: 10),
-                      Text(
-                        '(${reviews.length} ${reviews.length == 1 ? 'Review' : 'Reviews'})',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.normal,
-                            color: ExtraColors.darkGrey),
+                    ),
+                    const SizedBox(height: 18),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child:
+                          Divider(color: ExtraColors.lightGrey, thickness: 2),
+                    ),
+                    Flexible(
+                      flex: 40,
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        scrollDirection: Axis.vertical,
+                        itemCount: reviews.length,
+                        separatorBuilder: (context, index) => const Divider(
+                            color: ExtraColors.lightGrey, thickness: 2),
+                        itemBuilder: (context, index) {
+                          return ReviewCard(
+                            name: reviews[index].name,
+                            rating: reviews[index].rating,
+                            time: reviews[index].time,
+                            review: reviews[index].review,
+                          );
+                        },
                       ),
-                      const SizedBox(height: 10),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20),
-                        child:
-                            Divider(color: ExtraColors.lightGrey, thickness: 2),
-                      ),
-                      Expanded(
-                        child: ListView.separated(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          scrollDirection: Axis.vertical,
-                          itemCount: reviews.length,
-                          separatorBuilder: (context, index) => const Divider(
-                              color: ExtraColors.lightGrey, thickness: 2),
-                          itemBuilder: (context, index) {
-                            return ReviewCard(
-                              name: reviews[index].name,
-                              rating: reviews[index].rating,
-                              time: reviews[index].time,
-                              review: reviews[index].review,
-                            );
-                          },
-                        ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context, rootNavigator: true).push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) {
-                                    // ignore: deprecated_member_use
-                                    return WillPopScope(
-                                      onWillPop: () async {
-                                        Navigator.pop(context);
-                                        return true;
-                                      },
-                                      child:
-                                          CreateReviewPage(recipeID: recipeID),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
-                            child: const Text(
-                              'Write a Review',
-                              style: TextStyle(fontSize: 18),
-                            )),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 );
         },
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ElevatedButton(
+            onPressed: () {
+              Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    // ignore: deprecated_member_use
+                    return WillPopScope(
+                      onWillPop: () async {
+                        Navigator.pop(context);
+                        return true;
+                      },
+                      child: CreateReviewPage(recipeID: recipeID),
+                    );
+                  },
+                ),
+              );
+            },
+            child: const Text(
+              'Write a Review',
+              style: TextStyle(fontSize: 18),
+            )),
       ),
     );
   }

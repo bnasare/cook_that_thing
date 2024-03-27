@@ -40,7 +40,6 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
           recipeID: recipeID,
           rating: double.parse(sliderValue.value.toStringAsFixed(1)),
         );
-        await Future.delayed(const Duration(seconds: 2));
         isLoading.value = false;
         describeExperienceController.clear();
         NavigationHelper.navigateBack(context);
@@ -52,14 +51,7 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
       child: Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text(
-            'Leave Review',
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: 17,
-              color: ExtraColors.black,
-            ),
-          ),
+          title: const Text('Leave Review'),
         ),
         body: SingleChildScrollView(
           child: Form(
@@ -142,7 +134,7 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
                       const SizedBox(height: 20),
                       const Text('Add detailed review',
                           style: TextStyle(
-                              color: ExtraColors.black, fontSize: 15)),
+                              color: ExtraColors.black, fontSize: 18)),
                       const SizedBox(height: 7),
                       Padding(
                         padding: const EdgeInsets.only(top: 0, bottom: 20),
