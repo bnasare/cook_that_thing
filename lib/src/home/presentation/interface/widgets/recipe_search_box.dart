@@ -81,9 +81,9 @@ class _CustomSearchBoxState extends State<CustomSearchBox> {
                         widget.handleSearch('');
                         FocusManager.instance.primaryFocus?.unfocus();
                       },
-                      child: const Icon(
+                      child: Icon(
                         IconlyBold.close_square,
-                        color: ExtraColors.grey,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     )
                   : null,

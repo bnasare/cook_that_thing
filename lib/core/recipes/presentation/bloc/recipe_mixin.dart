@@ -413,17 +413,26 @@ mixin RecipeMixin {
     return stream;
   }
 
-  Stream<List<Chef>> listChefStream(String currentUserID) async* {
+  Stream<List<Chef>> listChefStream(String currentUserID) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.chefs;
 
+    // Create a BehaviorSubject to emit and listen to changes in the list of chefs
+    BehaviorSubject<List<Chef>> chefSubject = BehaviorSubject<List<Chef>>();
+
+    // Create a StreamSubscription to listen to changes in the list of chefs
+    // ignore: unused_local_variable
+    StreamSubscription<QuerySnapshot> querySnapshotSubscription;
+
+    // Define the query snapshot stream
     Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .where(FieldPath.documentId, isNotEqualTo: currentUserID)
         .orderBy(FieldPath.documentId, descending: true)
         .snapshots();
 
-    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+    // Listen to changes in the Firestore query snapshot
+    querySnapshotSubscription = querySnapshotStream.listen((querySnapshot) {
       List<Chef> chefs = [];
       for (DocumentSnapshot snapshot in querySnapshot.docs) {
         Chef chef = Chef(
@@ -437,7 +446,14 @@ mixin RecipeMixin {
         );
         chefs.add(chef);
       }
-      yield chefs;
-    }
+      // Emit the list of chefs to the BehaviorSubject
+      chefSubject.add(chefs);
+    }, onError: (error) {
+      // Handle errors by emitting an error event to the BehaviorSubject
+      chefSubject.addError(error);
+    });
+
+    // Return the stream from the BehaviorSubject
+    return chefSubject.stream;
   }
 }
