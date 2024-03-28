@@ -111,7 +111,6 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                           Divider(color: ExtraColors.lightGrey, thickness: 2),
                     ),
                     Flexible(
-                      flex: 40,
                       child: ListView.separated(
                         shrinkWrap: true,
                         padding: const EdgeInsets.symmetric(horizontal: 20),
