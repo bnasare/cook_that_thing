@@ -102,6 +102,33 @@ mixin ReviewMixin {
     }
   }
 
+  Stream<List<Review>> fetchReviewsByChefID(
+      BuildContext context, String recipeID) async* {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String collectionPath = DatabaseCollections.reviews;
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
+        .collection(collectionPath)
+        .where('chefID', isEqualTo: recipeID)
+        .orderBy('time', descending: true)
+        .snapshots();
+
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List<Review> allReviews = [];
+      List<Future<List<Review>>> reviewFutures = [];
+
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        reviewFutures.add(getReviews(context: context, documentID: documentId));
+      }
+
+      List<List<Review>> reviewsLists = await Future.wait(reviewFutures);
+      allReviews = reviewsLists.expand((reviews) => reviews).toList();
+
+      yield allReviews;
+    }
+  }
+
   Stream<Recipe> getRecipe({
     required BuildContext context,
     required String documentID,
@@ -123,6 +150,19 @@ mixin ReviewMixin {
     double sum = 0;
     int count = 0;
     await for (var reviews in fetchReviewsByRecipeID(context, recipeId)) {
+      for (var review in reviews) {
+        sum += review.rating;
+        count++;
+      }
+    }
+    return count != 0 ? sum / count : 0;
+  }
+
+  Future<double> getAverageReviewsRatingForChef(
+      String chefId, BuildContext context) async {
+    double sum = 0;
+    int count = 0;
+    await for (var reviews in fetchReviewsByChefID(context, chefId)) {
       for (var review in reviews) {
         sum += review.rating;
         count++;

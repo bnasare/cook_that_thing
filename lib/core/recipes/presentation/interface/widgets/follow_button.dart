@@ -6,9 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import '../../bloc/recipe_mixin.dart';
 
+import '../../../../../shared/data/collection_ids.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
+import '../../bloc/recipe_mixin.dart';
 
 class FollowButton extends StatefulWidget with RecipeMixin {
   final String chefID;
@@ -34,7 +35,7 @@ class _FollowButtonState extends State<FollowButton> {
 
   Future<void> _updateFollowStatus() async {
     Stream<DocumentSnapshot> chefDocStream = FirebaseFirestore.instance
-        .collection('chefs')
+        .collection(DatabaseCollections.chefs)
         .doc(widget.chefID)
         .snapshots();
 
@@ -53,7 +54,7 @@ class _FollowButtonState extends State<FollowButton> {
 
   @override
   void dispose() {
-    _chefDocSubscription?.cancel(); // Cancel the subscription
+    _chefDocSubscription?.cancel();
     super.dispose();
   }
 

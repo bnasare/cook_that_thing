@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 import 'dart:developer';
 
@@ -13,6 +15,8 @@ import '../../../../src/authentication/presentation/bloc/auth_bloc.dart';
 import '../../../../src/authentication/presentation/interface/pages/wrapper.dart';
 import '../../../recipes/domain/entities/recipe.dart';
 import '../../../recipes/presentation/bloc/recipe_bloc.dart';
+import '../../../review/domain/entities/review.dart';
+import '../../../review/presentation/bloc/review_bloc.dart';
 import '../../domain/entities/chef.dart';
 import 'chef_bloc.dart';
 
@@ -20,6 +24,7 @@ mixin ChefMixin {
   final bloc = sl<ChefBloc>();
   final authBloc = sl<AuthBloc>();
   final recipeBloc = sl<RecipeBloc>();
+  final reviewBloc = sl<ReviewBloc>();
 
   Stream<Chef> retrieve(
       {required BuildContext context, required String chefId}) async* {
@@ -213,7 +218,7 @@ mixin ChefMixin {
   Future<void> clearFavoriteRecipes() async {
     try {
       final user = FirebaseConsts.currentUser;
-      if (user == null) return; // Early return if user is not logged in
+      if (user == null) return;
 
       final chefDocRef =
           FirebaseFirestore.instance.collection('chefs').doc(user.uid);
@@ -275,6 +280,64 @@ mixin ChefMixin {
     } catch (error) {
       // Log or handle the error accordingly
       log('Error clearing favorites: $error');
+    }
+  }
+
+  Stream<List<Review>> getReviews({
+    required BuildContext context,
+    required String documentID,
+  }) async* {
+    final result = await reviewBloc.getReviews(documentID);
+    yield result.fold(
+      (l) {
+        return <Review>[];
+      },
+      (r) => r,
+    );
+  }
+
+  Stream fetchReviewsByChefID(BuildContext context, String chefID) async* {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String collectionPath = DatabaseCollections.reviews;
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
+        .collection(collectionPath)
+        .where('chefID', isEqualTo: chefID)
+        .snapshots();
+
+    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+      List allReviews = [];
+
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        await for (List reviews
+            in getReviews(context: context, documentID: documentId)) {
+          allReviews.addAll(reviews);
+        }
+      }
+
+      yield allReviews;
+    }
+  }
+
+  Stream<double> getAverageChefReviewsRatingStream(
+    String chefId,
+    BuildContext context,
+  ) async* {
+    double sum = 0;
+    int count = 0;
+    List<double> ratings = [];
+
+    await for (var reviews in fetchReviewsByChefID(context, chefId)) {
+      for (var review in reviews) {
+        sum += review.rating;
+        count++;
+        ratings.add(sum / count);
+      }
+    }
+
+    for (double rating in ratings) {
+      yield rating;
     }
   }
 }

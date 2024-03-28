@@ -74,7 +74,7 @@ class WarningModal extends StatelessWidget {
                 content,
                 style: TextStyle(
                   color: Colors.grey.shade800,
-                  fontSize: 12,
+                  fontSize: 15,
                   height: 1,
                 ),
                 textAlign: TextAlign.center,

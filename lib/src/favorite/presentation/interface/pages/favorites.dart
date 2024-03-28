@@ -14,6 +14,7 @@ import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
 import '../../../../../shared/widgets/snackbar.dart';
+import '../../../../../shared/widgets/warning_modal.dart';
 
 class FavoritesPage extends HookWidget with ChefMixin {
   FavoritesPage({super.key});
@@ -55,44 +56,15 @@ class FavoritesPage extends HookWidget with ChefMixin {
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {
-                        return AlertDialog(
-                          elevation: 0,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
-                          shadowColor: ExtraColors.white,
-                          title: const Text('Clear All Favorites'),
-                          content: const Text(
-                            'Are you sure you want to clear all favorite recipes?',
-                            style: TextStyle(fontSize: 18),
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                'Cancel',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.error,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                clearFavoriteRecipes();
-                                Navigator.of(context).pop();
-                              },
-                              child: Text(
-                                'Clear',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.error,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                          ],
+                        return WarningModal(
+                          title: "Clear All Favorites",
+                          content:
+                              "Are you sure you want to clear all favorite recipes?",
+                          primaryButtonLabel: "YES",
+                          primaryAction: () {
+                            clearFavoriteRecipes();
+                            Navigator.pop(context);
+                          },
                         );
                       },
                     );

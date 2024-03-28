@@ -1,22 +1,19 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:iconly/iconly.dart';
+
 import '../../../../../core/chef/presentation/bloc/chef_mixin.dart';
 import '../../../../../core/recipes/presentation/interface/widgets/follow_button.dart';
-import '../../../../../core/recipes/presentation/interface/widgets/recipe_info_item.dart';
-import '../../../../../core/recipes/presentation/interface/widgets/recipe_widget.dart';
+import '../../../../../core/review/domain/entities/review.dart';
+import '../../../../../core/review/presentation/interface/widgets/review_card.dart';
 import '../../../../../shared/data/firebase_constants.dart';
-import '../../../../../shared/data/svg_assets.dart';
-import '../../../../authentication/presentation/interface/pages/login.dart';
-
-import '../../../../../core/recipes/domain/entities/recipe.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/error_view.dart';
-import '../../../../../shared/widgets/shimmer.dart';
+import '../../../../../shared/widgets/loading_manager.dart';
+import '../../../../../shared/widgets/warning_modal.dart';
+import '../../../../authentication/presentation/interface/pages/login.dart';
+import '../widgets/gallery_tab.dart';
+import '../widgets/recipes_tab.dart';
 
 class ProfilePage extends HookWidget with ChefMixin {
   final String chefID;
@@ -25,207 +22,207 @@ class ProfilePage extends HookWidget with ChefMixin {
 
   @override
   Widget build(BuildContext context) {
+    final isLoading = useState(false);
     final currentUserID = FirebaseConsts.currentUser!.uid;
     final isCurrentUser = chefID == currentUserID;
 
+    Future<void> signoutUser() async {
+      isLoading.value = true;
+      logoutUser(context: context);
+      isLoading.value = false;
+      Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (BuildContext context) {
+            return LoginPage();
+          },
+        ),
+        (_) => false,
+      );
+    }
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Column(
+      resizeToAvoidBottomInset: false,
+      body: LoadingManager(
+          isLoading: isLoading.value,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
               children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    Container(
-                      height: 300,
-                      width: double.infinity,
-                      color: ExtraColors.lightGrey,
-                    ),
-                    Positioned(
-                        child: Center(
-                            child:
-                                SvgPicture.asset(SvgAssets.book, height: 300))),
-                  ],
+                const SizedBox(height: 100.0),
+                const Center(
+                    child: Icon(CupertinoIcons.person_alt_circle,
+                        size: 80, color: ExtraColors.darkGrey)),
+                const SizedBox(height: 25.0),
+                StreamBuilder(
+                  stream: retrieveChefStream(
+                      context: context,
+                      chefId: isCurrentUser ? currentUserID : chefID),
+                  builder: (context, snapshot) {
+                    return Center(
+                      child: Text(
+                        snapshot.data?.name ?? 'User name',
+                        style: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.w600),
+                      ),
+                    );
+                  },
                 ),
-                const SizedBox(height: 85),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Column(
-                    children: [
-                      Text('Chef\'s Recipes',
-                          style: Theme.of(context)
-                              .textTheme
-                              .titleLarge!
-                              .copyWith(fontSize: 20)),
-                      StreamBuilder<List<Recipe>>(
-                        stream: fetchAllRecipesByChefID(context, chefID),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<Recipe>> snapshot) {
-                          if (snapshot.hasError) {
-                            return const ErrorViewWidget();
-                          } else if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Padding(
-                              padding: EdgeInsets.only(top: 20.0),
-                              child: LoadingTextView(
-                                  height: 230, width: double.infinity),
-                            );
-                          } else if (snapshot.hasData &&
-                              snapshot.data!.isEmpty) {
-                            return const ErrorViewWidget();
-                          } else if (snapshot.hasData) {
-                            return RecipeWidget(
-                                sizedBoxHeight: 20,
-                                recipes: snapshot.data!,
-                                height: null,
-                                axis: Axis.vertical);
-                          } else {
-                            return const ErrorViewWidget();
-                          }
+                const SizedBox(height: 5),
+                isCurrentUser
+                    ? FilledButton(
+                        style: FilledButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8)),
+                          minimumSize: const Size(75, 35),
+                        ),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return WarningModal(
+                                title: "Sign Out",
+                                content: "Are you sure you want to sign out?",
+                                primaryButtonLabel: "YES",
+                                primaryAction: () async {
+                                  await signoutUser();
+                                },
+                              );
+                            },
+                          );
                         },
-                      )
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            Positioned(
-              top: MediaQuery.of(context).size.height * 0.26,
-              right: 0,
-              left: 0,
-              height: 130,
-              child: Container(
-                margin: const EdgeInsets.symmetric(horizontal: 30),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                        color: ExtraColors.black.withOpacity(0.5),
-                        offset: const Offset(0, 2),
-                        blurRadius: 6.0),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                        child: const Text('Logout'))
+                    : FollowButton(chefID: chefID),
+                const SizedBox(height: 25.0),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const SizedBox(height: 11),
                     StreamBuilder(
-                        stream: retrieveChefStream(
+                        stream: retrieveRecipeLength(
+                            context, isCurrentUser ? currentUserID : chefID),
+                        builder: (context, snapshot) {
+                          final recipesCount = snapshot.data ?? 0;
+                          return Column(children: [
+                            Text(recipesCount.toString(),
+                                style: const TextStyle(fontSize: 18)),
+                            Text(recipesCount == 1 ? 'Recipe' : 'Recipes'),
+                          ]);
+                        }),
+                    StreamBuilder(
+                        stream: retrieveFollowersCount(
                             context: context,
                             chefId: isCurrentUser ? currentUserID : chefID),
                         builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const LoadingTextView(
-                              height: 30,
-                              width: 75,
-                            );
-                          }
-                          if (!snapshot.hasData) {
-                            return const SizedBox.shrink();
-                          }
-                          final chef = snapshot.data;
-                          return SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.7,
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      chef!.name,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 23,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  isCurrentUser
-                                      ? FilledButton.icon(
-                                          style: FilledButton.styleFrom(
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(8)),
-                                            minimumSize: const Size(75, 35),
-                                          ),
-                                          onPressed: () {
-                                            logoutUser(context: context);
-                                            Navigator.of(context,
-                                                    rootNavigator: true)
-                                                .pushAndRemoveUntil(
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) {
-                                                  return LoginPage();
-                                                },
-                                              ),
-                                              (_) => false,
-                                            );
-                                          },
-                                          icon: const Icon(IconlyLight.logout,
-                                              size: 18),
-                                          label: const Text('Logout'))
-                                      : SizedBox(
-                                          width: 115,
-                                          child: FollowButton(chefID: chefID)),
-                                ],
-                              ),
-                            ),
-                          );
+                          final followersCount = snapshot.data ?? 0;
+                          return Column(children: [
+                            Text(followersCount.toString(),
+                                style: const TextStyle(fontSize: 18)),
+                            Text(
+                                followersCount == 1 ? 'Follower' : 'Followers'),
+                          ]);
                         }),
-                    Divider(color: ExtraColors.darkGrey.withOpacity(0.3)),
-                    const SizedBox(height: 11),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        StreamBuilder(
-                            stream: retrieveFollowersCount(
-                                context: context,
-                                chefId: isCurrentUser ? currentUserID : chefID),
-                            builder: (context, snapshot) {
-                              final followersCount = snapshot.data ?? 0;
-                              return RecipeInfoItem(
-                                icon: CupertinoIcons.person_add_solid,
-                                text: '$followersCount',
-                                iconSize: 20,
-                                width: 4,
-                                textSize: 20,
-                                iconColor: ExtraColors.grey,
-                                textColor: ExtraColors.black,
-                              );
-                            }),
-                        StreamBuilder<int>(
-                          stream: retrieveRecipeLength(
-                              context, isCurrentUser ? currentUserID : chefID),
-                          builder: (context, snapshot) {
-                            final count = snapshot.data ?? 0;
-                            return RecipeInfoItem(
-                              icon: Icons.restaurant_rounded,
-                              text: '$count',
-                              textSize: 20,
-                              iconSize: 20,
-                              width: 4,
-                              iconColor: ExtraColors.grey,
-                              textColor: ExtraColors.black,
-                            );
-                          },
-                        ),
-                      ],
-                    )
+                    StreamBuilder<double>(
+                        stream: getAverageChefReviewsRatingStream(
+                            isCurrentUser ? currentUserID : chefID, context),
+                        builder: (context, snapshot) {
+                          final chefRating = snapshot.data ?? 0;
+                          String ratingText = '';
+                          if (chefRating >= 4.5) {
+                            ratingText = 'Excellent Chef';
+                          } else if (chefRating >= 3.5) {
+                            ratingText = 'Great Chef';
+                          } else if (chefRating >= 2.5) {
+                            ratingText = 'Good Chef';
+                          } else if (chefRating >= 1.5) {
+                            ratingText = 'Okay Chef';
+                          } else {
+                            ratingText = 'Needs Improvement!';
+                          }
+                          return Column(
+                            children: [
+                              Text('$chefRating',
+                                  style: const TextStyle(fontSize: 18)),
+                              FittedBox(child: Text(ratingText)),
+                            ],
+                          );
+                        })
                   ],
                 ),
-              ),
+                const SizedBox(height: 40.0),
+                Expanded(
+                  child: DefaultTabController(
+                    length: 3,
+                    child: Column(
+                      children: [
+                        TabBar(
+                          dividerHeight: 1,
+                          dividerColor: ExtraColors.darkGrey,
+                          overlayColor:
+                              MaterialStateProperty.all(Colors.transparent),
+                          labelStyle: const TextStyle(
+                              fontSize: 18, fontWeight: FontWeight.w600),
+                          unselectedLabelColor: ExtraColors.grey,
+                          tabs: const [
+                            Tab(text: 'Recipes'),
+                            Tab(text: 'Gallery'),
+                            Tab(text: 'Reviews'),
+                          ],
+                        ),
+                        Expanded(
+                          child: TabBarView(
+                            children: [
+                              RecipesTab(
+                                  chefID:
+                                      isCurrentUser ? currentUserID : chefID),
+                              GalleryTab(
+                                  chefID:
+                                      isCurrentUser ? currentUserID : chefID),
+                              StreamBuilder(
+                                  stream: fetchReviewsByChefID(context, chefID),
+                                  builder: (context, snapshot) {
+                                    List<Review> reviews = snapshot.data;
+                                    if (snapshot.hasError) {
+                                      return const ErrorViewWidget();
+                                    } else if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const SizedBox.shrink();
+                                    } else if (snapshot.hasData &&
+                                        snapshot.data!.isEmpty) {
+                                      return const ErrorViewWidget();
+                                    } else if (snapshot.hasData) {
+                                      return ListView.separated(
+                                        shrinkWrap: true,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        scrollDirection: Axis.vertical,
+                                        itemCount: reviews.length,
+                                        separatorBuilder: (context, index) =>
+                                            const Divider(
+                                                color: ExtraColors.lightGrey,
+                                                thickness: 2),
+                                        itemBuilder: (context, index) {
+                                          return ReviewCard(
+                                            name: reviews[index].name,
+                                            rating: reviews[index].rating,
+                                            time: reviews[index].time,
+                                            review: reviews[index].review,
+                                          );
+                                        },
+                                      );
+                                    } else {
+                                      return const ErrorViewWidget();
+                                    }
+                                  }),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
             ),
-          ],
-        ),
-      ),
+          )),
     );
   }
 }
