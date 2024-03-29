@@ -17,119 +17,110 @@ class RecipesTab extends HookWidget with ChefMixin {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      addAutomaticKeepAlives: true,
-      padding: const EdgeInsets.only(top: 0, bottom: 0),
-      shrinkWrap: true,
-      children: [
-        StreamBuilder<List<Recipe>>(
-          stream: stream,
-          builder:
-              (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
-            if (snapshot.hasError) {
-              return const ErrorViewWidget();
-            } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Padding(
-                padding: EdgeInsets.only(top: 100.0),
-                child: Center(child: CircularProgressIndicator()),
-              );
-            } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-              return const ErrorViewWidget();
-            } else if (snapshot.hasData) {
-              return Clickable(
-                onClick: () => Navigator.of(context, rootNavigator: true).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return RecipeDetailsPage(recipeID: snapshot.data![0].id);
-                    },
-                  ),
+    return StreamBuilder<List<Recipe>>(
+      stream: stream,
+      builder: (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
+        if (snapshot.hasError) {
+          return const ErrorViewWidget();
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Padding(
+            padding: EdgeInsets.only(top: 100.0),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasData && snapshot.data!.isEmpty) {
+          return const ErrorViewWidget();
+        } else if (snapshot.hasData) {
+          return Clickable(
+            onClick: () => Navigator.of(context, rootNavigator: true).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) {
+                  return RecipeDetailsPage(recipeID: snapshot.data![0].id);
+                },
+              ),
+            ),
+            child: GridView.builder(
+                shrinkWrap: true,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 20,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 0.87,
                 ),
-                child: GridView.builder(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 20),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 15,
-                      crossAxisSpacing: 10,
-                      childAspectRatio: 0.87,
-                    ),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      final recipe = snapshot.data![index];
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: ExtraColors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: ExtraColors.darkGrey.withOpacity(0.5),
-                              spreadRadius: 1,
-                              blurRadius: 5,
-                              offset: const Offset(3, 3),
-                            ),
-                          ],
+                itemCount: snapshot.data!.length,
+                itemBuilder: (BuildContext context, int index) {
+                  final recipe = snapshot.data![index];
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: ExtraColors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      boxShadow: [
+                        BoxShadow(
+                          color: ExtraColors.darkGrey.withOpacity(0.5),
+                          spreadRadius: 1,
+                          blurRadius: 5,
+                          offset: const Offset(3, 3),
                         ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: FancyShimmerImage(
-                                width: double.infinity,
-                                height: 150,
-                                imageUrl: recipe.image,
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: FancyShimmerImage(
+                            width: double.infinity,
+                            height: 150,
+                            imageUrl: recipe.image,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                recipe.title,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(5.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    recipe.title,
-                                    overflow: TextOverflow.ellipsis,
+                                    recipe.category,
                                     style: const TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w600,
+                                      fontSize: 15,
+                                      color: ExtraColors.grey,
                                     ),
                                   ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        recipe.category,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          color: ExtraColors.grey,
-                                        ),
-                                      ),
-                                      Text(
-                                        recipe.duration,
-                                        style: const TextStyle(
-                                          fontSize: 15,
-                                          color: ExtraColors.grey,
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    recipe.duration,
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                      color: ExtraColors.grey,
+                                    ),
                                   ),
                                 ],
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                      );
-                    }),
-              );
-            } else {
-              return const ErrorViewWidget();
-            }
-          },
-        )
-      ],
+                      ],
+                    ),
+                  );
+                }),
+          );
+        } else {
+          return const ErrorViewWidget();
+        }
+      },
     );
   }
 }

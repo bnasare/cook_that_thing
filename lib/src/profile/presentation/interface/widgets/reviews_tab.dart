@@ -30,7 +30,8 @@ class ReviewTab extends HookWidget with ChefMixin {
           return const ErrorViewWidget();
         } else if (snapshot.hasData) {
           return ListView.separated(
-            padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+            padding:
+                const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             itemCount: reviews!.length,

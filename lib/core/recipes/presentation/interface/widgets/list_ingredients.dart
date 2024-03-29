@@ -32,7 +32,7 @@ class _ListIngredientsState extends State<ListIngredients> {
           controller: widget.ingredientsController,
           decoration: InputDecoration(
             filled: true,
-            hintText: 'Add an ingredient',
+            hintText: 'Tap the checkmark to submit each item',
             suffixIcon: Visibility(
               visible: showCheckIcon,
               child: IconButton(

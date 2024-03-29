@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 import '../../../domain/entities/chef.dart';
@@ -27,9 +27,12 @@ class ChefListWidget extends StatelessWidget {
           return SizedBox(
             width: MediaQuery.of(context).size.width * 0.23,
             child: Clickable(
-              onClick: () => NavigationHelper.navigateTo(
-                context,
-                ProfilePage(chefID: chefs[index].id),
+              onClick: () => Navigator.of(context, rootNavigator: true).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return ProfilePage(chefID: chefs[index].id);
+                  },
+                ),
               ),
               child: Column(
                 children: [
@@ -38,13 +41,16 @@ class ChefListWidget extends StatelessWidget {
                     color: ExtraColors.darkGrey,
                     size: 80,
                   ),
-                  Text(
-                    chefName,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Text(
+                      chefName,
                       overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w500,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                 ],

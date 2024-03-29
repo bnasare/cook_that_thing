@@ -37,9 +37,7 @@ class ProfilePage extends HookWidget with ChefMixin {
         fetchReviewsByChefID(context, isCurrentUser ? currentUserID : chefID));
 
     Future<void> signoutUser() async {
-      isLoading.value = true;
       logoutUser(context: context);
-      isLoading.value = false;
       Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
         MaterialPageRoute(
           builder: (BuildContext context) {

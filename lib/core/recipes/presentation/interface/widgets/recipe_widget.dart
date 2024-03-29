@@ -2,7 +2,6 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 import '../../../domain/entities/recipe.dart';
@@ -53,10 +52,11 @@ class RecipeWidget extends StatelessWidget {
           Recipe recipe = recipes[index];
           return Clickable(
             onClick: () {
-              Navigator.push(
-                context,
+              Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
-                  builder: (context) => RecipeDetailsPage(recipeID: recipe.id),
+                  builder: (BuildContext context) {
+                    return RecipeDetailsPage(recipeID: recipe.id);
+                  },
                 ),
               );
             },
@@ -160,11 +160,16 @@ class RecipeWidget extends StatelessWidget {
                                   ),
                                   Flexible(
                                     child: Clickable(
-                                      onClick: () =>
-                                          NavigationHelper.navigateTo(
-                                              context,
-                                              ProfilePage(
-                                                  chefID: recipe.chefID)),
+                                      onClick: () => Navigator.of(context,
+                                              rootNavigator: true)
+                                          .push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) {
+                                            return ProfilePage(
+                                                chefID: recipe.chefID);
+                                          },
+                                        ),
+                                      ),
                                       child: Text('by  ${recipe.chef}',
                                           overflow: TextOverflow.ellipsis,
                                           style: const TextStyle(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../../bottom_navbar.dart';
 
+import '../../../../bottom_navbar.dart';
 import '../../../../injection_container.dart';
 import '../../../../shared/utils/navigation.dart';
 import '../../../../shared/widgets/snackbar.dart';
@@ -23,7 +23,7 @@ mixin AuthMixin {
     return result.fold(
       (l) => SnackBarHelper.showErrorSnackBar(context, l.message),
       (r) {
-        NavigationHelper.navigateTo(context, LoginPage());
+        NavigationHelper.navigateToReplacement(context, LoginPage());
       },
     );
   }

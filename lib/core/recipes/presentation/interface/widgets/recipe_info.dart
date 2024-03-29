@@ -64,7 +64,6 @@ class RecipeInfo extends HookWidget with RecipeMixin {
                     icon: Icons.av_timer_outlined,
                     text: recipe.duration,
                   ),
-                  const SizedBox(width: 3),
                   Flexible(
                     child: RecipeInfoItem(
                       textSize: 17,

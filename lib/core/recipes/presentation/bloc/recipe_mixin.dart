@@ -282,12 +282,18 @@ mixin RecipeMixin {
           getAverageReviewsRatingStreamm(recipe.id, context)
               .first
               .then((rating) {
-            averageRatings[recipe.id] = rating;
+            // Only include recipes with non-zero ratings
+            if (rating != 0) {
+              averageRatings[recipe.id] = rating;
+            }
           }),
         );
       }
 
       await Future.wait(ratingFutures);
+
+      // Remove recipes with a rating of 0 from the list
+      allRecipes.retainWhere((recipe) => averageRatings.containsKey(recipe.id));
 
       allRecipes.sort(
         (a, b) => averageRatings[b.id]!.compareTo(averageRatings[a.id]!),

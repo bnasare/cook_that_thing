@@ -47,7 +47,7 @@ class CategoryWidget extends StatelessWidget {
                 category,
                 style: const TextStyle(
                   color: ExtraColors.white,
-                  fontSize: 15,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
               ),

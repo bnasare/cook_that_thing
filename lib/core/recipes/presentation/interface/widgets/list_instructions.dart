@@ -31,7 +31,7 @@ class _ListInstructionsState extends State<ListInstructions> {
           maxLines: null,
           controller: widget.instructionsController,
           decoration: InputDecoration(
-            hintText: 'Add an instruction',
+            hintText: 'Tap the checkmark to submit each item',
             filled: true,
             suffixIcon: Visibility(
               visible: showCheckIcon,

@@ -369,7 +369,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               Step(
                 title: const Text("List the ingredients"),
                 subtitle: const Text(
-                  "Enter all the ingredients required for your recipe one by one.",
+                  "Enter each ingredient. Tap the checkmark to submit an ingredient.",
                   overflow: TextOverflow.fade,
                 ),
                 content: ListIngredients(
@@ -380,7 +380,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
               Step(
                 title: const Text("How do you make it?"),
                 subtitle: const Text(
-                  "Enter all the steps required for your recipe one by one.",
+                  "Enter each step. Tap the checkmark to submit a step.",
                   overflow: TextOverflow.fade,
                 ),
                 content: ListInstructions(

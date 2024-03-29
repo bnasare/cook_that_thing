@@ -52,7 +52,7 @@ class AllChefsPage extends HookWidget with RecipeMixin {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
           resizeToAvoidBottomInset: false,
-          appBar: AppBar(title: const Text('Other Chefs')),
+          appBar: AppBar(title: const Text('Chefs')),
           body: Column(
             children: [
               ListTile(

@@ -26,10 +26,11 @@ class ChefWidget extends HookWidget with ChefMixin {
             contentPadding: const EdgeInsets.all(0),
             horizontalTitleGap: 5,
             onTap: () {
-              Navigator.push(
-                context,
+              Navigator.of(context, rootNavigator: true).push(
                 MaterialPageRoute(
-                  builder: (context) => ProfilePage(chefID: chef.id),
+                  builder: (BuildContext context) {
+                    return ProfilePage(chefID: chef.id);
+                  },
                 ),
               );
             },

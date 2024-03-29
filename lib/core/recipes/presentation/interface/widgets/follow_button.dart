@@ -6,8 +6,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../../../../shared/data/collection_ids.dart';
+import '../../../../../shared/platform/push_notification.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../bloc/recipe_mixin.dart';
 
@@ -70,6 +72,29 @@ class _FollowButtonState extends State<FollowButton> {
           await unfollow();
         } else {
           await follow();
+          DocumentSnapshot chefDoc = await FirebaseFirestore.instance
+              .collection(DatabaseCollections.chefs)
+              .doc(widget.chefID)
+              .get();
+
+          String chefToken = chefDoc['chefToken'] ?? '';
+          if (chefToken.isEmpty) {
+            return;
+          }
+
+          if (chefDoc['chefID'] == FirebaseAuth.instance.currentUser?.uid) {
+            return;
+          }
+
+          final PushNotification pushNotification =
+              PushNotificationImpl(FlutterLocalNotificationsPlugin());
+
+          await pushNotification.sendPushNotifs(
+            title:
+                'Hey there, ${FirebaseAuth.instance.currentUser?.displayName} is following you!',
+            body: '',
+            token: chefToken,
+          );
         }
         await _updateFollowStatus();
       },

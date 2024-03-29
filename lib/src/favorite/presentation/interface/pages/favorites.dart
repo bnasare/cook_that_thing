@@ -9,7 +9,6 @@ import '../../../../../core/recipes/domain/entities/recipe.dart';
 import '../../../../../core/recipes/presentation/interface/pages/recipe_details.dart';
 import '../../../../../core/recipes/presentation/interface/widgets/recipe_info.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
@@ -127,9 +126,16 @@ class FavoritesPage extends HookWidget with ChefMixin {
                             itemBuilder: (context, index) {
                               Recipe recipe = snapshot.data![index];
                               return Clickable(
-                                onClick: () => NavigationHelper.navigateTo(
-                                    context,
-                                    RecipeDetailsPage(recipeID: recipe.id)),
+                                onClick: () =>
+                                    Navigator.of(context, rootNavigator: true)
+                                        .push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) {
+                                      return RecipeDetailsPage(
+                                          recipeID: recipe.id);
+                                    },
+                                  ),
+                                ),
                                 child: Container(
                                   padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(

@@ -17,7 +17,6 @@ import '../../../../../core/recipes/presentation/interface/widgets/recipe_info.d
 import '../../../../../core/recipes/presentation/interface/widgets/recipe_widget.dart';
 import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/shimmer.dart';
@@ -343,14 +342,20 @@ class HomePage extends HookWidget with RecipeMixin {
                                                         : snapshot.data!.length,
                                                 itemBuilder: (context, index) {
                                                   return Clickable(
-                                                    onClick: () => NavigationHelper
-                                                        .navigateTo(
+                                                    onClick: () => Navigator.of(
                                                             context,
-                                                            RecipeDetailsPage(
-                                                                recipeID: snapshot
-                                                                    .data![
-                                                                        index]
-                                                                    .id)),
+                                                            rootNavigator: true)
+                                                        .push(
+                                                      MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                            context) {
+                                                          return RecipeDetailsPage(
+                                                              recipeID: snapshot
+                                                                  .data![index]
+                                                                  .id);
+                                                        },
+                                                      ),
+                                                    ),
                                                     child: Container(
                                                       margin:
                                                           const EdgeInsets.only(

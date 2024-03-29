@@ -65,7 +65,8 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
                   RecipeDetailAppBar(imageUrl: recipe.image),
                   SliverToBoxAdapter(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      padding: const EdgeInsets.only(
+                          left: 24.0, right: 24, bottom: 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -292,10 +293,9 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
               );
             }
           }),
-      floatingActionButton: FloatingActionButton.extended(
-          extendedPadding: const EdgeInsets.symmetric(horizontal: 10),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: ElevatedButton(
           onPressed: () {
             Navigator.of(context, rootNavigator: true).push(
               MaterialPageRoute(
@@ -312,7 +312,10 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
               ),
             );
           },
-          label: const Text('View Reviews', style: TextStyle(fontSize: 16))),
+          child:
+              const Text('View Recipe Reviews', style: TextStyle(fontSize: 18)),
+        ),
+      ),
     );
   }
 }
