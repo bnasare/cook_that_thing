@@ -11,6 +11,7 @@ import '../../../../../shared/widgets/warning_modal.dart';
 import '../../../../authentication/presentation/interface/pages/login.dart';
 import '../widgets/gallery_tab.dart';
 import '../widgets/recipes_tab.dart';
+import '../widgets/reviews_tab.dart';
 
 class ProfilePage extends HookWidget with ChefMixin {
   final String chefID;
@@ -31,6 +32,9 @@ class ProfilePage extends HookWidget with ChefMixin {
 
     final chefRecipes = useMemoized(() => fetchAllRecipesByChefID(
         context, isCurrentUser ? currentUserID : chefID));
+
+    final reviewStream = useMemoized(() =>
+        fetchReviewsByChefID(context, isCurrentUser ? currentUserID : chefID));
 
     Future<void> signoutUser() async {
       isLoading.value = true;
@@ -179,6 +183,8 @@ class ProfilePage extends HookWidget with ChefMixin {
                     child: Column(
                       children: [
                         TabBar(
+                          labelPadding:
+                              const EdgeInsets.symmetric(horizontal: 1.0),
                           padding: const EdgeInsets.symmetric(horizontal: 20),
                           indicatorWeight: 1,
                           dividerHeight: 1.5,
@@ -191,7 +197,7 @@ class ProfilePage extends HookWidget with ChefMixin {
                           tabs: const [
                             Tab(text: 'Recipes'),
                             Tab(text: 'Gallery'),
-                            Tab(text: 'Reviews'),
+                            Tab(text: 'Feedback'),
                           ],
                         ),
                         Expanded(
@@ -199,7 +205,7 @@ class ProfilePage extends HookWidget with ChefMixin {
                             children: [
                               RecipesTab(chefRecipes, chefID: chefID),
                               GalleryTab(chefRecipes, chefID: chefID),
-                              const Center(child: Text('data')),
+                              ReviewTab(reviewStream, chefID: chefID),
                             ],
                           ),
                         )

@@ -46,7 +46,7 @@ class ReviewCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       letterSpacing: -0.5,
-                      fontSize: 19,
+                      fontSize: 18,
                       fontWeight: FontWeight.w500,
                       color: ExtraColors.black,
                     ),
@@ -55,7 +55,7 @@ class ReviewCard extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                formattedDate, // Updated to use the relative time string
+                formattedDate,
                 style: const TextStyle(
                   letterSpacing: -0.5,
                   color: ExtraColors.darkGrey,
@@ -71,7 +71,7 @@ class ReviewCard extends StatelessWidget {
               review,
               style: const TextStyle(
                 height: 1.4,
-                fontSize: 18,
+                fontSize: 16.5,
                 fontWeight: FontWeight.w400,
                 color: ExtraColors.darkGrey,
               ),

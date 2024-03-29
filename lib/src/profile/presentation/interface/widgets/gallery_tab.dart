@@ -7,6 +7,7 @@ import 'package:photo_view/photo_view_gallery.dart';
 
 import '../../../../../core/chef/presentation/bloc/chef_mixin.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/clickable.dart';
 import '../../../../../shared/widgets/error_view.dart';
 
@@ -72,7 +73,7 @@ class GalleryTab extends HookWidget with ChefMixin {
                             borderRadius: BorderRadius.circular(10),
                             child: FancyShimmerImage(
                               width: double.infinity,
-                              height: 210,
+                              height: 180,
                               imageUrl: recipe.image,
                             ),
                           ),
@@ -104,12 +105,12 @@ class GalleryView extends StatelessWidget {
       builder: (context, index) {
         return PhotoViewGalleryPageOptions(
           imageProvider: CachedNetworkImageProvider(recipes[index].image),
-          minScale: PhotoViewComputedScale.contained * 0.8,
-          maxScale: PhotoViewComputedScale.covered * 2,
+          minScale: PhotoViewComputedScale.contained,
+          maxScale: PhotoViewComputedScale.covered,
         );
       },
       backgroundDecoration: const BoxDecoration(
-        color: Colors.black,
+        color: ExtraColors.black,
       ),
       pageController: PageController(initialPage: initialIndex),
     );

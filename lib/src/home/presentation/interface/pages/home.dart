@@ -176,8 +176,15 @@ class HomePage extends HookWidget with RecipeMixin {
                                         leading: 'Categories',
                                         trailing: localizations.seeMore,
                                         onClick: () {
-                                          NavigationHelper.navigateTo(context,
-                                              const CategoryListPage());
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .push(
+                                            MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                                return const CategoryListPage();
+                                              },
+                                            ),
+                                          );
                                         },
                                       ),
                                     ),
@@ -189,8 +196,15 @@ class HomePage extends HookWidget with RecipeMixin {
                                         leading: 'Featured Chefs',
                                         trailing: localizations.seeMore,
                                         onClick: () {
-                                          NavigationHelper.navigateTo(
-                                              context, AllChefsPage());
+                                          Navigator.of(context,
+                                                  rootNavigator: true)
+                                              .push(
+                                            MaterialPageRoute(
+                                              builder: (BuildContext context) {
+                                                return AllChefsPage();
+                                              },
+                                            ),
+                                          );
                                         },
                                       ),
                                     ),
@@ -269,12 +283,18 @@ class HomePage extends HookWidget with RecipeMixin {
                                       padding: const EdgeInsets.only(
                                           top: 8, left: 20, right: 20),
                                       child: Header(
-                                        leading: 'New Recipes',
-                                        trailing: localizations.seeMore,
-                                        onClick: () =>
-                                            NavigationHelper.navigateTo(
-                                                context, AllRecipesPage()),
-                                      ),
+                                          leading: 'New Recipes',
+                                          trailing: localizations.seeMore,
+                                          onClick: () => Navigator.of(context,
+                                                      rootNavigator: true)
+                                                  .push(
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AllRecipesPage();
+                                                  },
+                                                ),
+                                              )),
                                     ),
                                     StreamBuilder<List<Recipe>>(
                                         stream: newRecipesStreamm,

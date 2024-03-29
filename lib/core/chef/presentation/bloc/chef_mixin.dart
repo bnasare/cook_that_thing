@@ -150,6 +150,38 @@ mixin ChefMixin {
 
     // If user is not authenticated, return an empty stream
     if (user == null) {
+      BehaviorSubject<List<Review>> fetchReviewsByChefID(
+          BuildContext context, String chefID) {
+        FirebaseFirestore firestore = FirebaseFirestore.instance;
+        String collectionPath = 'reviews';
+
+        Stream<QuerySnapshot> querySnapshotStream = firestore
+            .collection(collectionPath)
+            .where('chefID', isEqualTo: chefID)
+            .orderBy('time', descending: true)
+            .snapshots();
+
+        BehaviorSubject<List<Review>> subject = BehaviorSubject<List<Review>>();
+
+        querySnapshotStream.listen((QuerySnapshot querySnapshot) async {
+          List<Review> allReviews = [];
+          List<Future<List<Review>>> reviewFutures = [];
+
+          for (DocumentSnapshot snapshot in querySnapshot.docs) {
+            String documentId = snapshot.id;
+            reviewFutures
+                .add(getReviewss(context: context, documentID: documentId));
+          }
+
+          List<List<Review>> reviewsLists = await Future.wait(reviewFutures);
+          allReviews = reviewsLists.expand((reviews) => reviews).toList();
+
+          subject.add(allReviews);
+        }, onError: subject.addError);
+
+        return subject;
+      }
+
       return Stream.value([]);
     }
 
@@ -313,14 +345,14 @@ mixin ChefMixin {
     );
   }
 
-  Stream<List<Review>> fetchReviewsByChefID(
-      BuildContext context, String chefID) async* {
+  Stream<List<Review>> fetchReviewsByRecipeID(
+      BuildContext context, String recipeID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.reviews;
 
     Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
-        .where('chefID', isEqualTo: chefID)
+        .where('recipeID', isEqualTo: recipeID)
         .orderBy('time', descending: true)
         .snapshots();
 
@@ -339,6 +371,36 @@ mixin ChefMixin {
 
       yield allReviews;
     }
+  }
+
+  BehaviorSubject<List<Review>> fetchReviewsByChefID(
+      BuildContext context, String chefID) {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    String collectionPath = 'recipes';
+
+    Stream<QuerySnapshot> querySnapshotStream = firestore
+        .collection(collectionPath)
+        .where('chefID', isEqualTo: chefID)
+        .snapshots();
+
+    BehaviorSubject<List<Review>> subject = BehaviorSubject<List<Review>>();
+
+    querySnapshotStream.listen((QuerySnapshot querySnapshot) async {
+      List<Review> allReviews = [];
+      List<Future<List<Review>>> reviewFutures = [];
+
+      for (DocumentSnapshot snapshot in querySnapshot.docs) {
+        String documentId = snapshot.id;
+        reviewFutures.add(fetchReviewsByRecipeID(context, documentId).first);
+      }
+
+      List<List<Review>> reviewsLists = await Future.wait(reviewFutures);
+      allReviews = reviewsLists.expand((reviews) => reviews).toList();
+
+      subject.add(allReviews);
+    }, onError: subject.addError);
+
+    return subject;
   }
 
   Stream<double> getAverageChefReviewsRatingStream(
