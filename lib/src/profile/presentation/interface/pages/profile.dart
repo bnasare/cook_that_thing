@@ -139,15 +139,15 @@ class ProfilePage extends HookWidget with ChefMixin {
                         final chefRating = snapshot.data ?? 0;
                         String rankText = '';
                         if (chefRating >= 4.5) {
-                          rankText = 'Top';
+                          rankText = 'Legend';
                         } else if (chefRating >= 3.5) {
-                          rankText = 'High';
+                          rankText = 'Elite';
                         } else if (chefRating >= 2.5) {
-                          rankText = 'Good';
+                          rankText = 'Skilled';
                         } else if (chefRating >= 1.5) {
-                          rankText = 'Fair';
+                          rankText = 'Novice';
                         } else {
-                          rankText = 'Low';
+                          rankText = 'Rookie';
                         }
                         return Column(
                           children: [

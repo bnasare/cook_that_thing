@@ -296,35 +296,42 @@ mixin ChefMixin {
     );
   }
 
-  Stream<List<Review>> fetchReviewsByChefID(
-    BuildContext context,
-    String chefID,
-  ) async* {
-    if (chefID.isEmpty) {
-      yield <Review>[];
-      return;
-    }
+  Future<List<Review>> getReviewss({
+    required BuildContext context,
+    required String documentID,
+  }) async {
+    final result = await reviewBloc.getReviews(documentID);
+    return result.fold(
+      (l) {
+        return <Review>[];
+      },
+      (r) => r,
+    );
+  }
 
+  Stream<List<Review>> fetchReviewsByChefID(
+      BuildContext context, String chefID) async* {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String collectionPath = DatabaseCollections.recipes;
+    String collectionPath = DatabaseCollections.reviews;
 
     Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
         .where('chefID', isEqualTo: chefID)
+        .orderBy('time', descending: true)
         .snapshots();
 
     await for (QuerySnapshot querySnapshot in querySnapshotStream) {
       List<Review> allReviews = [];
+      List<Future<List<Review>>> reviewFutures = [];
 
       for (DocumentSnapshot snapshot in querySnapshot.docs) {
-        String recipeID = snapshot.id;
-        await for (List<Review> reviews
-            in getReviews(context: context, documentID: recipeID)) {
-          allReviews.addAll(reviews);
-        }
+        String documentId = snapshot.id;
+        reviewFutures
+            .add(getReviewss(context: context, documentID: documentId));
       }
 
-      allReviews.sort((a, b) => b.time.compareTo(a.time));
+      List<List<Review>> reviewsLists = await Future.wait(reviewFutures);
+      allReviews = reviewsLists.expand((reviews) => reviews).toList();
 
       yield allReviews;
     }
