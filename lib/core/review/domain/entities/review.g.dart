@@ -13,6 +13,7 @@ _$ReviewImpl _$$ReviewImplFromJson(Map<String, dynamic> json) => _$ReviewImpl(
       recipeID: json['recipeID'] as String,
       rating: (json['rating'] as num).toDouble(),
       chefToken: json['chefToken'] as String,
+      chefID: json['chefID'] as String,
     );
 
 Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
@@ -23,4 +24,5 @@ Map<String, dynamic> _$$ReviewImplToJson(_$ReviewImpl instance) =>
       'recipeID': instance.recipeID,
       'rating': instance.rating,
       'chefToken': instance.chefToken,
+      'chefID': instance.chefID,
     };

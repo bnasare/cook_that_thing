@@ -25,9 +25,10 @@ mixin ReviewMixin {
     required DateTime time,
     required String recipeID,
     required double rating,
+    required String chefID,
   }) async {
     final result =
-        await bloc.createAReview(name, review, time, recipeID, rating);
+        await bloc.createAReview(name, review, time, recipeID, rating, chefID);
     return result.fold(
       (l) => l,
       (r) async {

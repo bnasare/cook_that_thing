@@ -1,9 +1,9 @@
 import 'package:dartz/dartz.dart';
-import '../repositories/review_repository.dart';
 
 import '../../../../shared/error/failure.dart';
 import '../../../../shared/usecase/usecase.dart';
 import '../entities/review.dart';
+import '../repositories/review_repository.dart';
 
 class CreateReview implements UseCase<Review, ReviewParams> {
   final ReviewRepository repository;
@@ -19,6 +19,7 @@ class CreateReview implements UseCase<Review, ReviewParams> {
       params.recipeID,
       params.rating,
       params.chefToken,
+      params.chefID,
     );
   }
 }
@@ -31,6 +32,7 @@ class ReviewParams extends ObjectParams<Review> {
     required String recipeID,
     required double rating,
     required String chefToken,
+    required String chefID,
   }) : super(
           Review(
             name: name,
@@ -39,6 +41,7 @@ class ReviewParams extends ObjectParams<Review> {
             recipeID: recipeID,
             rating: rating,
             chefToken: chefToken,
+            chefID: chefID,
           ),
         );
 
@@ -48,4 +51,5 @@ class ReviewParams extends ObjectParams<Review> {
   String get recipeID => value.recipeID;
   double get rating => value.rating;
   String get chefToken => value.chefToken;
+  String get chefID => value.chefID;
 }

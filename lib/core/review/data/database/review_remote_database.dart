@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../../../../shared/data/collection_ids.dart';
 
+import '../../../../shared/data/collection_ids.dart';
 import '../../domain/entities/review.dart';
 
 abstract class ReviewRemoteDatabase {
@@ -11,6 +11,7 @@ abstract class ReviewRemoteDatabase {
     String recipeID,
     double rating,
     String chefToken,
+    String chefID,
   );
 
   Future<List<Review>> list(List<String> documentIDs);
@@ -27,6 +28,7 @@ class ReviewRemoteDatabaseImpl implements ReviewRemoteDatabase {
     String recipeID,
     double rating,
     String chefToken,
+    String chefID,
   ) async {
     final Review revieww = Review(
       name: name,
@@ -35,6 +37,7 @@ class ReviewRemoteDatabaseImpl implements ReviewRemoteDatabase {
       recipeID: recipeID,
       rating: rating,
       chefToken: chefToken,
+      chefID: chefID,
     );
     final data = revieww.toJson();
     await _firestore.collection(DatabaseCollections.reviews).add(data);

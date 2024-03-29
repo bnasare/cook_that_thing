@@ -10,6 +10,7 @@ import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/loading_manager.dart';
+import '../../../../../shared/widgets/shimmer.dart';
 import '../../../../../shared/widgets/warning_modal.dart';
 import '../../../../authentication/presentation/interface/pages/login.dart';
 import '../widgets/gallery_tab.dart';
@@ -122,30 +123,31 @@ class ProfilePage extends HookWidget with ChefMixin {
                           ]);
                         }),
                     StreamBuilder<double>(
-                        stream: getAverageChefReviewsRatingStream(
-                            isCurrentUser ? currentUserID : chefID, context),
-                        builder: (context, snapshot) {
-                          final chefRating = snapshot.data ?? 0;
-                          String ratingText = '';
-                          if (chefRating >= 4.5) {
-                            ratingText = 'Excellent Chef';
-                          } else if (chefRating >= 3.5) {
-                            ratingText = 'Great Chef';
-                          } else if (chefRating >= 2.5) {
-                            ratingText = 'Good Chef';
-                          } else if (chefRating >= 1.5) {
-                            ratingText = 'Okay Chef';
-                          } else {
-                            ratingText = 'Needs Improvement!';
-                          }
-                          return Column(
-                            children: [
-                              Text('$chefRating',
-                                  style: const TextStyle(fontSize: 18)),
-                              FittedBox(child: Text(ratingText)),
-                            ],
-                          );
-                        })
+                      stream: getAverageChefReviewsRatingStream(
+                          isCurrentUser ? currentUserID : chefID, context),
+                      builder: (context, snapshot) {
+                        final chefRating = snapshot.data ?? 0;
+                        String rankText = '';
+                        if (chefRating >= 4.5) {
+                          rankText = 'Top';
+                        } else if (chefRating >= 3.5) {
+                          rankText = 'High';
+                        } else if (chefRating >= 2.5) {
+                          rankText = 'Good';
+                        } else if (chefRating >= 1.5) {
+                          rankText = 'Fair';
+                        } else {
+                          rankText = 'Low';
+                        }
+                        return Column(
+                          children: [
+                            Text(rankText,
+                                style: const TextStyle(fontSize: 18)),
+                            const FittedBox(child: Text('Rank')),
+                          ],
+                        );
+                      },
+                    )
                   ],
                 ),
                 const SizedBox(height: 40.0),
@@ -165,7 +167,7 @@ class ProfilePage extends HookWidget with ChefMixin {
                           tabs: const [
                             Tab(text: 'Recipes'),
                             Tab(text: 'Gallery'),
-                            Tab(text: 'Reviews'),
+                            Tab(text: 'Recipe Reviews'),
                           ],
                         ),
                         Expanded(
@@ -185,7 +187,22 @@ class ProfilePage extends HookWidget with ChefMixin {
                                       return const ErrorViewWidget();
                                     } else if (snapshot.connectionState ==
                                         ConnectionState.waiting) {
-                                      return const SizedBox.shrink();
+                                      return ListView.separated(
+                                        separatorBuilder: (context, index) =>
+                                            const SizedBox(height: 20),
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        padding:
+                                            const EdgeInsets.only(bottom: 20),
+                                        itemBuilder:
+                                            (BuildContext context, int index) {
+                                          return const LoadingTextView(
+                                              height: 130,
+                                              width: double.infinity);
+                                        },
+                                        itemCount: snapshot.data?.length ?? 5,
+                                      );
                                     } else if (snapshot.hasData &&
                                         snapshot.data!.isEmpty) {
                                       return const ErrorViewWidget();

@@ -26,6 +26,7 @@ mixin _$Review {
   String get recipeID => throw _privateConstructorUsedError;
   double get rating => throw _privateConstructorUsedError;
   String get chefToken => throw _privateConstructorUsedError;
+  String get chefID => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +44,8 @@ abstract class $ReviewCopyWith<$Res> {
       DateTime time,
       String recipeID,
       double rating,
-      String chefToken});
+      String chefToken,
+      String chefID});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
     Object? recipeID = null,
     Object? rating = null,
     Object? chefToken = null,
+    Object? chefID = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -91,6 +94,10 @@ class _$ReviewCopyWithImpl<$Res, $Val extends Review>
           ? _value.chefToken
           : chefToken // ignore: cast_nullable_to_non_nullable
               as String,
+      chefID: null == chefID
+          ? _value.chefID
+          : chefID // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -108,7 +115,8 @@ abstract class _$$ReviewImplCopyWith<$Res> implements $ReviewCopyWith<$Res> {
       DateTime time,
       String recipeID,
       double rating,
-      String chefToken});
+      String chefToken,
+      String chefID});
 }
 
 /// @nodoc
@@ -128,6 +136,7 @@ class __$$ReviewImplCopyWithImpl<$Res>
     Object? recipeID = null,
     Object? rating = null,
     Object? chefToken = null,
+    Object? chefID = null,
   }) {
     return _then(_$ReviewImpl(
       name: null == name
@@ -154,6 +163,10 @@ class __$$ReviewImplCopyWithImpl<$Res>
           ? _value.chefToken
           : chefToken // ignore: cast_nullable_to_non_nullable
               as String,
+      chefID: null == chefID
+          ? _value.chefID
+          : chefID // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -167,7 +180,8 @@ class _$ReviewImpl implements _Review {
       required this.time,
       required this.recipeID,
       required this.rating,
-      required this.chefToken});
+      required this.chefToken,
+      required this.chefID});
 
   factory _$ReviewImpl.fromJson(Map<String, dynamic> json) =>
       _$$ReviewImplFromJson(json);
@@ -184,10 +198,12 @@ class _$ReviewImpl implements _Review {
   final double rating;
   @override
   final String chefToken;
+  @override
+  final String chefID;
 
   @override
   String toString() {
-    return 'Review(name: $name, review: $review, time: $time, recipeID: $recipeID, rating: $rating, chefToken: $chefToken)';
+    return 'Review(name: $name, review: $review, time: $time, recipeID: $recipeID, rating: $rating, chefToken: $chefToken, chefID: $chefID)';
   }
 
   @override
@@ -202,13 +218,14 @@ class _$ReviewImpl implements _Review {
                 other.recipeID == recipeID) &&
             (identical(other.rating, rating) || other.rating == rating) &&
             (identical(other.chefToken, chefToken) ||
-                other.chefToken == chefToken));
+                other.chefToken == chefToken) &&
+            (identical(other.chefID, chefID) || other.chefID == chefID));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, name, review, time, recipeID, rating, chefToken);
+  int get hashCode => Object.hash(
+      runtimeType, name, review, time, recipeID, rating, chefToken, chefID);
 
   @JsonKey(ignore: true)
   @override
@@ -231,7 +248,8 @@ abstract class _Review implements Review {
       required final DateTime time,
       required final String recipeID,
       required final double rating,
-      required final String chefToken}) = _$ReviewImpl;
+      required final String chefToken,
+      required final String chefID}) = _$ReviewImpl;
 
   factory _Review.fromJson(Map<String, dynamic> json) = _$ReviewImpl.fromJson;
 
@@ -247,6 +265,8 @@ abstract class _Review implements Review {
   double get rating;
   @override
   String get chefToken;
+  @override
+  String get chefID;
   @override
   @JsonKey(ignore: true)
   _$$ReviewImplCopyWith<_$ReviewImpl> get copyWith =>

@@ -103,7 +103,7 @@ class FavoritesPage extends HookWidget with ChefMixin {
                                 const SizedBox(height: 20),
                             physics: const NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
-                            padding: const EdgeInsets.only(bottom: 20),
+                            padding: const EdgeInsets.only(bottom: 20, top: 20),
                             itemBuilder: (BuildContext context, int index) {
                               return const LoadingTextView(
                                   height: 130, width: double.infinity);

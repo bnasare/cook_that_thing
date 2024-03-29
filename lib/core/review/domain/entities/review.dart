@@ -12,6 +12,7 @@ class Review with _$Review {
     required String recipeID,
     required double rating,
     required String chefToken,
+    required String chefID,
   }) = _Review;
 
   factory Review.fromJson(Map<String, dynamic> json) => _$ReviewFromJson(json);
@@ -23,5 +24,6 @@ class Review with _$Review {
         recipeID: '',
         rating: 0.0,
         chefToken: '',
+        chefID: '',
       );
 }

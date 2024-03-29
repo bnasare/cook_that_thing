@@ -39,6 +39,7 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
           time: DateTime.now(),
           recipeID: recipeID,
           rating: double.parse(sliderValue.value.toStringAsFixed(1)),
+          chefID: FirebaseConsts.currentUser!.uid,
         );
         isLoading.value = false;
         describeExperienceController.clear();

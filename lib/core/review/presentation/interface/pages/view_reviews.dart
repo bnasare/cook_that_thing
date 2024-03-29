@@ -17,6 +17,9 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
 
   @override
   Widget build(BuildContext context) {
+    final recipeStream =
+        useMemoized(() => fetchReviewsByRecipeID(context, recipeID));
+
     useEffect(() {
       fetchReviewsByRecipeID(context, recipeID);
       return null;
@@ -26,7 +29,7 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
         title: const Text('Reviews'),
       ),
       body: StreamBuilder(
-        stream: fetchReviewsByRecipeID(context, recipeID),
+        stream: recipeStream,
         builder: (BuildContext context, AsyncSnapshot<List<Review>> snapshot) {
           List<Review>? reviews = snapshot.data;
           if (snapshot.connectionState == ConnectionState.waiting) {
