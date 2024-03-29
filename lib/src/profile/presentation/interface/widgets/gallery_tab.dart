@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import '../../../../../core/chef/presentation/bloc/chef_mixin.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
 import '../../../../../shared/widgets/error_view.dart';
+import '../../../../../shared/widgets/shimmer.dart';
 
 class GalleryTab extends HookWidget with ChefMixin {
   final String chefID;
@@ -13,31 +14,43 @@ class GalleryTab extends HookWidget with ChefMixin {
 
   @override
   Widget build(BuildContext context) {
-    final fetchAllRecipes =
-        useMemoized(() => fetchAllRecipesByChefID(context, chefID));
-
     return ListView(
       shrinkWrap: true,
+      padding: const EdgeInsets.only(top: 0),
       children: [
         StreamBuilder(
-          stream: fetchAllRecipes,
+          stream: fetchAllRecipesByChefID(context, chefID),
           builder:
               (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
             if (snapshot.hasError) {
               return const ErrorViewWidget();
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return const SizedBox.shrink();
+              return GridView.builder(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 15,
+                    crossAxisSpacing: 10,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    return const LoadingTextView(height: 150);
+                  });
             } else if (snapshot.hasData && snapshot.data!.isEmpty) {
               return const ErrorViewWidget();
             } else if (snapshot.hasData) {
               final recipes = snapshot.data!;
-              return GridView.count(
-                mainAxisSpacing: 15,
-                crossAxisSpacing: 15,
-                crossAxisCount: 2,
+              return GridView.builder(
                 shrinkWrap: true,
-                children: [
-                  Column(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 10,
+                ),
+                itemCount: recipes.length,
+                itemBuilder: (context, index) {
+                  final recipe = recipes[index];
+                  return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -45,13 +58,13 @@ class GalleryTab extends HookWidget with ChefMixin {
                         borderRadius: BorderRadius.circular(10),
                         child: FancyShimmerImage(
                           width: double.infinity,
-                          height: 200,
-                          imageUrl: recipes.first.image,
+                          height: 150,
+                          imageUrl: recipe.image,
                         ),
                       ),
                     ],
-                  )
-                ],
+                  );
+                },
               );
             } else {
               return const ErrorViewWidget();

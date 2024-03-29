@@ -3,12 +3,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import '../../bloc/chef_mixin.dart';
-import '../../../../recipes/presentation/interface/widgets/follow_button.dart';
-import '../../../../../shared/presentation/theme/extra_colors.dart';
 
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../src/profile/presentation/interface/pages/profile.dart';
+import '../../../../recipes/presentation/interface/widgets/follow_button.dart';
 import '../../../domain/entities/chef.dart';
+import '../../bloc/chef_mixin.dart';
 
 class ChefWidget extends HookWidget with ChefMixin {
   final List<Chef> chefs;
@@ -35,7 +35,7 @@ class ChefWidget extends HookWidget with ChefMixin {
             },
             leading: const Icon(
               CupertinoIcons.person_alt_circle,
-              size: 50,
+              size: 60,
               color: ExtraColors.darkGrey,
             ),
             title: Text(chef.name,
@@ -45,14 +45,14 @@ class ChefWidget extends HookWidget with ChefMixin {
                     ),
                 overflow: TextOverflow.ellipsis),
             subtitle: Text(chef.email,
-                style: const TextStyle(
-                  height: -2.39,
-                  overflow: TextOverflow.ellipsis,
-                )),
-            trailing: SizedBox(
-              width: 115,
-              height: 40,
-              child: FollowButton(chefID: chef.id),
+                overflow: TextOverflow.ellipsis, style: const TextStyle()),
+            trailing: Padding(
+              padding: const EdgeInsets.only(left: 15.0),
+              child: SizedBox(
+                width: 115,
+                height: 40,
+                child: FollowButton(chefID: chef.id),
+              ),
             ));
       },
       separatorBuilder: (context, index) =>

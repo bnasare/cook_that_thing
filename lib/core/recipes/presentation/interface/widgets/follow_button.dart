@@ -13,10 +13,14 @@ import '../../bloc/recipe_mixin.dart';
 
 class FollowButton extends StatefulWidget with RecipeMixin {
   final String chefID;
+  final double height;
+  final double width;
 
   FollowButton({
     super.key,
     required this.chefID,
+    this.height = 75,
+    this.width = 35,
   });
 
   @override
@@ -71,14 +75,15 @@ class _FollowButtonState extends State<FollowButton> {
       },
       style: FilledButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        minimumSize: const Size(75, 35),
+        fixedSize: Size(widget.height, widget.width),
       ),
       child: Center(
         child: Text(
           _isCurrentlyFollowing ? 'Unfollow' : 'Follow',
           style: const TextStyle(
-            fontSize: 15,
+            fontSize: 16,
             color: ExtraColors.white,
+            fontWeight: FontWeight.w600,
           ),
         ),
       ),

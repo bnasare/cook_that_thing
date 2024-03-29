@@ -4,17 +4,11 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../../../core/chef/presentation/bloc/chef_mixin.dart';
 import '../../../../../core/recipes/presentation/interface/widgets/follow_button.dart';
-import '../../../../../core/review/domain/entities/review.dart';
-import '../../../../../core/review/presentation/interface/widgets/review_card.dart';
 import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../shared/widgets/loading_manager.dart';
-import '../../../../../shared/widgets/shimmer.dart';
 import '../../../../../shared/widgets/warning_modal.dart';
 import '../../../../authentication/presentation/interface/pages/login.dart';
-import '../widgets/gallery_tab.dart';
-import '../widgets/recipes_tab.dart';
 
 class ProfilePage extends HookWidget with ChefMixin {
   final String chefID;
@@ -26,6 +20,12 @@ class ProfilePage extends HookWidget with ChefMixin {
     final isLoading = useState(false);
     final currentUserID = FirebaseConsts.currentUser!.uid;
     final isCurrentUser = chefID == currentUserID;
+
+    final chefStream = useMemoized(() => retrieveChefStream(
+        context: context, chefId: isCurrentUser ? currentUserID : chefID));
+
+    final recipeLength = useMemoized(() =>
+        retrieveRecipeLength(context, isCurrentUser ? currentUserID : chefID));
 
     Future<void> signoutUser() async {
       isLoading.value = true;
@@ -46,35 +46,32 @@ class ProfilePage extends HookWidget with ChefMixin {
       body: LoadingManager(
           isLoading: isLoading.value,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
             child: Column(
               children: [
-                const SizedBox(height: 100.0),
+                const SizedBox(height: 50.0),
                 const Center(
                     child: Icon(CupertinoIcons.person_alt_circle,
-                        size: 80, color: ExtraColors.darkGrey)),
-                const SizedBox(height: 25.0),
+                        size: 130, color: ExtraColors.darkGrey)),
                 StreamBuilder(
-                  stream: retrieveChefStream(
-                      context: context,
-                      chefId: isCurrentUser ? currentUserID : chefID),
+                  stream: chefStream,
                   builder: (context, snapshot) {
                     return Center(
                       child: Text(
-                        snapshot.data?.name ?? 'User name',
+                        snapshot.data?.name ?? 'Username',
                         style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.w600),
+                            fontSize: 22, fontWeight: FontWeight.w600),
                       ),
                     );
                   },
                 ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 7),
                 isCurrentUser
                     ? FilledButton(
                         style: FilledButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(8)),
-                          minimumSize: const Size(75, 35),
+                          minimumSize: const Size(80, 40),
                         ),
                         onPressed: () {
                           showDialog(
@@ -91,22 +88,29 @@ class ProfilePage extends HookWidget with ChefMixin {
                             },
                           );
                         },
-                        child: const Text('Logout'))
-                    : FollowButton(chefID: chefID),
-                const SizedBox(height: 25.0),
+                        child: const Text('Logout',
+                            style: TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600)))
+                    : FollowButton(chefID: chefID, height: 116, width: 40),
+                const SizedBox(height: 15.0),
                 Row(
-                  mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     StreamBuilder(
-                        stream: retrieveRecipeLength(
-                            context, isCurrentUser ? currentUserID : chefID),
+                        stream: recipeLength,
                         builder: (context, snapshot) {
                           final recipesCount = snapshot.data ?? 0;
                           return Column(children: [
                             Text(recipesCount.toString(),
-                                style: const TextStyle(fontSize: 18)),
-                            Text(recipesCount == 1 ? 'Recipe' : 'Recipes'),
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: ExtraColors.grey)),
+                            Text(recipesCount == 1 ? 'Recipe' : 'Recipes',
+                                style: const TextStyle(
+                                    color: ExtraColors.darkGrey,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
                           ]);
                         }),
                     StreamBuilder(
@@ -117,14 +121,20 @@ class ProfilePage extends HookWidget with ChefMixin {
                           final followersCount = snapshot.data ?? 0;
                           return Column(children: [
                             Text(followersCount.toString(),
-                                style: const TextStyle(fontSize: 18)),
-                            Text(
-                                followersCount == 1 ? 'Follower' : 'Followers'),
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: ExtraColors.grey)),
+                            Text(followersCount == 1 ? 'Follower' : 'Followers',
+                                style: const TextStyle(
+                                    color: ExtraColors.darkGrey,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
                           ]);
                         }),
                     StreamBuilder<double>(
-                      stream: getAverageChefReviewsRatingStream(
-                          isCurrentUser ? currentUserID : chefID, context),
+                      stream:
+                          getAverageChefReviewsRatingStream(chefID, context),
                       builder: (context, snapshot) {
                         final chefRating = snapshot.data ?? 0;
                         String rankText = '';
@@ -142,23 +152,32 @@ class ProfilePage extends HookWidget with ChefMixin {
                         return Column(
                           children: [
                             Text(rankText,
-                                style: const TextStyle(fontSize: 18)),
-                            const FittedBox(child: Text('Rank')),
+                                style: const TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600,
+                                    color: ExtraColors.grey)),
+                            const Text('Rank',
+                                style: TextStyle(
+                                    color: ExtraColors.darkGrey,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600)),
                           ],
                         );
                       },
                     )
                   ],
                 ),
-                const SizedBox(height: 40.0),
+                const SizedBox(height: 20.0),
                 Expanded(
                   child: DefaultTabController(
                     length: 3,
                     child: Column(
                       children: [
                         TabBar(
-                          dividerHeight: 1,
-                          dividerColor: ExtraColors.darkGrey,
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          indicatorWeight: 1,
+                          dividerHeight: 1.5,
+                          dividerColor: ExtraColors.lightGrey,
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent),
                           labelStyle: const TextStyle(
@@ -167,69 +186,18 @@ class ProfilePage extends HookWidget with ChefMixin {
                           tabs: const [
                             Tab(text: 'Recipes'),
                             Tab(text: 'Gallery'),
-                            Tab(text: 'Recipe Reviews'),
+                            Tab(text: 'Reviews'),
                           ],
                         ),
-                        Expanded(
+                        const Expanded(
                           child: TabBarView(
                             children: [
-                              RecipesTab(
-                                  chefID:
-                                      isCurrentUser ? currentUserID : chefID),
-                              GalleryTab(
-                                  chefID:
-                                      isCurrentUser ? currentUserID : chefID),
-                              StreamBuilder(
-                                  stream: fetchReviewsByChefID(context, chefID),
-                                  builder: (context, snapshot) {
-                                    List<Review> reviews = snapshot.data;
-                                    if (snapshot.hasError) {
-                                      return const ErrorViewWidget();
-                                    } else if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return ListView.separated(
-                                        separatorBuilder: (context, index) =>
-                                            const SizedBox(height: 20),
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        padding:
-                                            const EdgeInsets.only(bottom: 20),
-                                        itemBuilder:
-                                            (BuildContext context, int index) {
-                                          return const LoadingTextView(
-                                              height: 130,
-                                              width: double.infinity);
-                                        },
-                                        itemCount: snapshot.data?.length ?? 5,
-                                      );
-                                    } else if (snapshot.hasData &&
-                                        snapshot.data!.isEmpty) {
-                                      return const ErrorViewWidget();
-                                    } else if (snapshot.hasData) {
-                                      return ListView.separated(
-                                        shrinkWrap: true,
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 20),
-                                        scrollDirection: Axis.vertical,
-                                        itemCount: reviews.length,
-                                        separatorBuilder: (context, index) =>
-                                            const Divider(
-                                                color: ExtraColors.lightGrey,
-                                                thickness: 2),
-                                        itemBuilder: (context, index) {
-                                          return ReviewCard(
-                                            name: reviews[index].name,
-                                            rating: reviews[index].rating,
-                                            time: reviews[index].time,
-                                            review: reviews[index].review,
-                                          );
-                                        },
-                                      );
-                                    } else {
-                                      return const ErrorViewWidget();
-                                    }
-                                  }),
+                              // RecipesTab(chefID: chefID),
+                              // GalleryTab(chefID: chefID),
+                              // ReviewTab(chefID: chefID),
+                              Center(child: Text('Hello')),
+                              Center(child: Text('data')),
+                              Center(child: Text('data')),
                             ],
                           ),
                         )

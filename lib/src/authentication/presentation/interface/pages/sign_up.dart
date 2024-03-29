@@ -63,7 +63,6 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: LoadingManager(
         isLoading: isLoading,
         child: SingleChildScrollView(
@@ -222,7 +221,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30))),
+                          borderRadius: BorderRadius.circular(15))),
                 ),
                 child: Text(
                   'Sign Up',

@@ -296,9 +296,17 @@ mixin ChefMixin {
     );
   }
 
-  Stream fetchReviewsByChefID(BuildContext context, String chefID) async* {
+  Stream<List<Review>> fetchReviewsByChefID(
+    BuildContext context,
+    String chefID,
+  ) async* {
+    if (chefID.isEmpty) {
+      yield <Review>[];
+      return;
+    }
+
     FirebaseFirestore firestore = FirebaseFirestore.instance;
-    String collectionPath = DatabaseCollections.reviews;
+    String collectionPath = DatabaseCollections.recipes;
 
     Stream<QuerySnapshot> querySnapshotStream = firestore
         .collection(collectionPath)
@@ -306,15 +314,17 @@ mixin ChefMixin {
         .snapshots();
 
     await for (QuerySnapshot querySnapshot in querySnapshotStream) {
-      List allReviews = [];
+      List<Review> allReviews = [];
 
       for (DocumentSnapshot snapshot in querySnapshot.docs) {
-        String documentId = snapshot.id;
-        await for (List reviews
-            in getReviews(context: context, documentID: documentId)) {
+        String recipeID = snapshot.id;
+        await for (List<Review> reviews
+            in getReviews(context: context, documentID: recipeID)) {
           allReviews.addAll(reviews);
         }
       }
+
+      allReviews.sort((a, b) => b.time.compareTo(a.time));
 
       yield allReviews;
     }
@@ -326,18 +336,13 @@ mixin ChefMixin {
   ) async* {
     double sum = 0;
     int count = 0;
-    List<double> ratings = [];
 
     await for (var reviews in fetchReviewsByChefID(context, chefId)) {
       for (var review in reviews) {
         sum += review.rating;
         count++;
-        ratings.add(sum / count);
       }
-    }
-
-    for (double rating in ratings) {
-      yield rating;
+      yield count != 0 ? sum / count : 0;
     }
   }
 }

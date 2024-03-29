@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/clickable.dart';
 
@@ -19,22 +20,40 @@ class ListInstructions extends StatefulWidget {
 }
 
 class _ListInstructionsState extends State<ListInstructions> {
+  bool showCheckIcon = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextField(
-          controller: widget.instructionsController,
-          decoration: const InputDecoration(
-            hintText: 'Add an instruction',
-            filled: true,
-          ),
           textInputAction: TextInputAction.done,
           maxLines: null,
-          onSubmitted: (String value) {
+          controller: widget.instructionsController,
+          decoration: InputDecoration(
+            hintText: 'Add an instruction',
+            filled: true,
+            suffixIcon: Visibility(
+              visible: showCheckIcon,
+              child: IconButton(
+                icon: const Icon(CupertinoIcons.check_mark_circled_solid,
+                    color: ExtraColors.successLight),
+                onPressed: () {
+                  final value = widget.instructionsController.text.trim();
+                  if (value.isNotEmpty) {
+                    setState(() {
+                      widget.submittedInstructions.add(value);
+                      widget.instructionsController.clear();
+                      showCheckIcon = false;
+                    });
+                  }
+                },
+              ),
+            ),
+          ),
+          onChanged: (value) {
             setState(() {
-              widget.submittedInstructions.add(value);
-              widget.instructionsController.clear();
+              showCheckIcon = value.isNotEmpty;
             });
           },
         ),

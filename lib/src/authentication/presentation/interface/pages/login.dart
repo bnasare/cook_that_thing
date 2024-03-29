@@ -1,14 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../../shared/data/image_assets.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/utils/validator.dart';
 import '../../../../../shared/widgets/loading_manager.dart';
-import '../../../../../shared/widgets/snackbar.dart';
 import '../../bloc/auth_mixin.dart';
-import '../widgets/social_auth_button.dart';
 import 'sign_up.dart';
 
 class LoginPage extends StatefulWidget with AuthMixin {
@@ -57,7 +54,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: LoadingManager(
         isLoading: isLoading,
         child: SingleChildScrollView(
@@ -163,13 +159,13 @@ class _LoginPageState extends State<LoginPage> {
                 },
                 style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0))),
+                        borderRadius: BorderRadius.circular(15.0))),
                 child: const Text('Sign In',
                     style:
                         TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
               ),
               const SizedBox(
-                height: 15,
+                height: 10,
               ),
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 20),
@@ -202,41 +198,58 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               const SizedBox(
-                height: 18,
+                height: 10,
               ),
-              Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Flexible(
-                        fit: FlexFit.loose,
-                        child: SocialAuthButton(
-                          onPressed: () async {
-                            setState(() {
-                              isLoading = true;
-                            });
-                            await widget.googleSignIn(context: context);
-                            setState(() {
-                              isLoading = false;
-                            });
-                          },
-                          buttonText: 'Google',
-                          imagePath: ImageAssets.google,
-                        )),
-                    const SizedBox(width: 18),
-                    Flexible(
-                        fit: FlexFit.loose,
-                        child: SocialAuthButton(
-                            onPressed: () {
-                              SnackBarHelper.showInfoSnackBar(
-                                  context, 'Coming Soon');
-                            },
-                            imagePath: ImageAssets.apple,
-                            buttonText: 'Apple',
-                            space: 3,
-                            imageHeight: 40,
-                            imageWidth: 40))
-                  ]),
+              ElevatedButton(
+                onPressed: () async {
+                  setState(() {
+                    isLoading = true;
+                  });
+                  await widget.googleSignIn(context: context);
+                  setState(() {
+                    isLoading = false;
+                  });
+                },
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15.0))),
+                child: const Text('Google',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w600, fontSize: 18)),
+              ),
+              // Row(
+              //     mainAxisSize: MainAxisSize.min,
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     children: <Widget>[
+              //       Flexible(
+              //           fit: FlexFit.loose,
+              //           child: SocialAuthButton(
+              //             onPressed: () async {
+              //               setState(() {
+              //                 isLoading = true;
+              //               });
+              //               await widget.googleSignIn(context: context);
+              //               setState(() {
+              //                 isLoading = false;
+              //               });
+              //             },
+              //             buttonText: 'Google',
+              //             imagePath: ImageAssets.google,
+              //           )),
+              //       const SizedBox(width: 18),
+              //       Flexible(
+              //           fit: FlexFit.loose,
+              //           child: SocialAuthButton(
+              //               onPressed: () {
+              //                 SnackBarHelper.showInfoSnackBar(
+              //                     context, 'Coming Soon');
+              //               },
+              //               imagePath: ImageAssets.apple,
+              //               buttonText: 'Apple',
+              //               space: 3,
+              //               imageHeight: 40,
+              //               imageWidth: 40))
+              //     ]),
               const SizedBox(height: 38),
               RichText(
                 text: TextSpan(

@@ -188,7 +188,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 subtitle: const Text(
                     "This name will be displayed when looking at the recipe."),
                 content: TextField(
-                  textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.done,
                   controller: titleController,
                   decoration:
                       const InputDecoration(hintText: "Title", filled: true),
@@ -257,7 +257,7 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 content: TextField(
                   maxLines: null,
                   controller: overviewController,
-                  textInputAction: TextInputAction.next,
+                  textInputAction: TextInputAction.done,
                   decoration: const InputDecoration(
                       hintText: "Description", filled: true),
                 ),

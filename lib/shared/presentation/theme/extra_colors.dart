@@ -23,5 +23,5 @@ class ExtraColors {
   static const Color yellow = Color(0xFFFFC107);
 
   // Others
-  static Color transparent = Colors.transparent;
+  static const Color transparent = Colors.transparent;
 }

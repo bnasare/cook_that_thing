@@ -1,5 +1,8 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/clickable.dart';
 
@@ -14,11 +17,12 @@ class ListIngredients extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _ListIngredientsState createState() => _ListIngredientsState();
 }
 
 class _ListIngredientsState extends State<ListIngredients> {
+  bool showCheckIcon = false;
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -26,14 +30,30 @@ class _ListIngredientsState extends State<ListIngredients> {
         TextField(
           textInputAction: TextInputAction.done,
           controller: widget.ingredientsController,
-          decoration: const InputDecoration(
+          decoration: InputDecoration(
             filled: true,
             hintText: 'Add an ingredient',
+            suffixIcon: Visibility(
+              visible: showCheckIcon,
+              child: IconButton(
+                icon: const Icon(CupertinoIcons.check_mark_circled_solid,
+                    color: ExtraColors.successLight),
+                onPressed: () {
+                  final value = widget.ingredientsController.text.trim();
+                  if (value.isNotEmpty) {
+                    setState(() {
+                      widget.submittedIngredients.add(value);
+                      widget.ingredientsController.clear();
+                      showCheckIcon = false;
+                    });
+                  }
+                },
+              ),
+            ),
           ),
-          onSubmitted: (String value) {
+          onChanged: (value) {
             setState(() {
-              widget.submittedIngredients.add(value);
-              widget.ingredientsController.clear();
+              showCheckIcon = value.isNotEmpty;
             });
           },
         ),

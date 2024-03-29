@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../shared/data/image_assets.dart';
+import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../authentication/presentation/interface/pages/login.dart';
 import '../../bloc/onboarding_mixin.dart';
@@ -28,8 +29,8 @@ class _OnboardingState extends State<Onboarding> {
             decoration: const BoxDecoration(
               gradient: LinearGradient(
                 colors: [
-                  Colors.black,
-                  Colors.transparent,
+                  ExtraColors.black,
+                  ExtraColors.transparent,
                 ],
                 stops: [
                   0.2,
@@ -51,19 +52,19 @@ class _OnboardingState extends State<Onboarding> {
               children: [
                 const Spacer(),
                 Text(
-                  "Cooking &\nDelicious Food Easily",
+                  "Explore &\nCreate Amazing Dishes",
                   style: Theme.of(context)
                       .textTheme
                       .headlineMedium
-                      ?.copyWith(color: Colors.white),
+                      ?.copyWith(color: ExtraColors.white),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "Discover more than 1200 food recipes in your hands and cooking it easily!",
+                  "Unlock over 1200 culinary recipes at your fingertips and bring them to life effortlessly!",
                   style: Theme.of(context)
                       .textTheme
                       .bodyMedium
-                      ?.copyWith(color: Colors.white),
+                      ?.copyWith(color: ExtraColors.white),
                 ),
                 const SizedBox(height: 32),
                 InkWell(
@@ -84,7 +85,7 @@ class _OnboardingState extends State<Onboarding> {
                       style: Theme.of(context)
                           .textTheme
                           .titleLarge
-                          ?.copyWith(color: Colors.white),
+                          ?.copyWith(color: ExtraColors.white),
                     ),
                   ),
                 )

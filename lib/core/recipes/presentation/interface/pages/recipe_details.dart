@@ -8,6 +8,7 @@ import '../../../../../shared/data/svg_assets.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/widgets/error_view.dart';
 import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 import '../../../../review/presentation/interface/pages/view_reviews.dart';
 import '../../../domain/entities/recipe.dart';
@@ -22,9 +23,12 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
 
   @override
   Widget build(BuildContext context) {
+    final getRecipess =
+        useMemoized(() => getRecipes(context: context, documentID: recipeID));
+
     return Scaffold(
       body: StreamBuilder(
-          stream: getRecipes(context: context, documentID: recipeID),
+          stream: getRecipess,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Center(
@@ -48,19 +52,13 @@ class RecipeDetailsPage extends HookWidget with RecipeMixin {
               );
             } else if (snapshot.hasData && snapshot.data!.isEmpty) {
               return const Center(
-                child: Text('No recipes found'),
+                child: ErrorViewWidget(),
               );
             } else {
               List<Recipe> recipes = snapshot.data!;
               Recipe? recipe = recipes.firstWhere(
                   (recipe) => recipe.id == recipeID,
                   orElse: () => Recipe.initial());
-
-              // ignore: unnecessary_null_comparison
-              if (recipe == null) {
-                // Handle the case where the recipe is null
-                return const Center(child: Text('Recipe not found'));
-              }
 
               return CustomScrollView(
                 slivers: <Widget>[

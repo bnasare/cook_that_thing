@@ -305,18 +305,13 @@ mixin RecipeMixin {
   ) async* {
     double sum = 0;
     int count = 0;
-    List<double> ratings = [];
 
     await for (var reviews in fetchReviewsByRecipeID(context, recipeId)) {
       for (var review in reviews) {
         sum += review.rating;
         count++;
-        ratings.add(sum / count);
       }
-    }
-
-    for (double rating in ratings) {
-      yield rating;
+      yield count != 0 ? sum / count : 0;
     }
   }
 
@@ -405,8 +400,8 @@ mixin RecipeMixin {
       for (var review in reviews) {
         sum += review.rating;
         count++;
-        yield count != 0 ? sum / count : 0;
       }
+      yield count != 0 ? sum / count : 0;
     }
   }
 

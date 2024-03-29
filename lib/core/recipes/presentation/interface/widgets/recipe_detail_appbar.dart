@@ -30,7 +30,7 @@ class RecipeDetailAppBar extends StatelessWidget {
         ],
       ),
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(0.0),
+        preferredSize: const Size.fromHeight(10.0),
         child: Container(
           height: 32.0,
           alignment: Alignment.center,
@@ -55,7 +55,7 @@ class RecipeDetailAppBar extends StatelessWidget {
       leading: Clickable(
         onClick: () => NavigationHelper.navigateBack(context),
         child: Container(
-          margin: const EdgeInsets.only(left: 24.0),
+          margin: const EdgeInsets.only(left: 24.0, top: 10),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(56.0),
             child: BackdropFilter(
