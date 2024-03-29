@@ -9,6 +9,8 @@ import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/widgets/loading_manager.dart';
 import '../../../../../shared/widgets/warning_modal.dart';
 import '../../../../authentication/presentation/interface/pages/login.dart';
+import '../widgets/gallery_tab.dart';
+import '../widgets/recipes_tab.dart';
 
 class ProfilePage extends HookWidget with ChefMixin {
   final String chefID;
@@ -26,6 +28,9 @@ class ProfilePage extends HookWidget with ChefMixin {
 
     final recipeLength = useMemoized(() =>
         retrieveRecipeLength(context, isCurrentUser ? currentUserID : chefID));
+
+    final chefRecipes = useMemoized(() => fetchAllRecipesByChefID(
+        context, isCurrentUser ? currentUserID : chefID));
 
     Future<void> signoutUser() async {
       isLoading.value = true;
@@ -189,15 +194,12 @@ class ProfilePage extends HookWidget with ChefMixin {
                             Tab(text: 'Reviews'),
                           ],
                         ),
-                        const Expanded(
+                        Expanded(
                           child: TabBarView(
                             children: [
-                              // RecipesTab(chefID: chefID),
-                              // GalleryTab(chefID: chefID),
-                              // ReviewTab(chefID: chefID),
-                              Center(child: Text('Hello')),
-                              Center(child: Text('data')),
-                              Center(child: Text('data')),
+                              RecipesTab(chefRecipes, chefID: chefID),
+                              GalleryTab(chefRecipes, chefID: chefID),
+                              const Center(child: Text('data')),
                             ],
                           ),
                         )

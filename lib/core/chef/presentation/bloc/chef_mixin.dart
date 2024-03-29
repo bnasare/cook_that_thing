@@ -83,8 +83,8 @@ mixin ChefMixin {
     );
   }
 
-  Stream<List<Recipe>> fetchAllRecipesByChefID(
-      BuildContext context, String chefID) async* {
+  BehaviorSubject<List<Recipe>> fetchAllRecipesByChefID(
+      BuildContext context, String chefID) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     String collectionPath = DatabaseCollections.recipes;
     Stream<QuerySnapshot> querySnapshotStream = firestore
@@ -93,7 +93,9 @@ mixin ChefMixin {
         .orderBy("createdAt", descending: true)
         .snapshots();
 
-    await for (QuerySnapshot querySnapshot in querySnapshotStream) {
+    BehaviorSubject<List<Recipe>> subject = BehaviorSubject<List<Recipe>>();
+
+    querySnapshotStream.listen((QuerySnapshot querySnapshot) async {
       List<Recipe> allRecipes = [];
       for (DocumentSnapshot snapshot in querySnapshot.docs) {
         String documentId = snapshot.id;
@@ -101,8 +103,10 @@ mixin ChefMixin {
             await getRecipes(context: context, documentID: documentId).first;
         allRecipes.addAll(recipesForDocumentId);
       }
-      yield allRecipes;
-    }
+      subject.add(allRecipes);
+    }, onError: subject.addError);
+
+    return subject;
   }
 
   Stream<List<Recipe>> fetchFavorites(BuildContext context) {
