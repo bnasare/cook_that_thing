@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 
+import '../data/endpoints.dart';
+
 abstract class PushNotification {
   Future<void> initializeNotification();
   Future<void> showSimpleNotification({
@@ -119,11 +121,10 @@ class PushNotificationImpl implements PushNotification {
     try {
       log('start');
       await http.post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
+        Uri.parse(EndPoints.firebaseNotifs),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization':
-              'key=AAAAhoL5Hys:APA91bFSBXXo6nKCGXHabIHyCk3aIPXxrCcTHAUKEZlspO4DkF4Tda3Q7Bs9hyQs35FbbbkS1gKa6vPVw-CCSRDLcCCtiv8L353ynoiHD4dsXebus4kus_ttcAdH6wpJKA5j8fGrL-TN'
+          'Authorization': EndPoints.authorizationKey
         },
         body: jsonEncode(
           <String, dynamic>{
