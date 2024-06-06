@@ -48,7 +48,7 @@ void main() async {
 
 //
   // Get any messages which caused the application to open from terminated state
-  final remoteMessage = FirebaseMessaging.instance.getInitialMessage();
+  // final remoteMessage = FirebaseMessaging.instance.getInitialMessage();
 //
   // Get any messages which caused the application to open from background state
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
@@ -70,8 +70,7 @@ class MyApp extends HookConsumerWidget with OnboardingMixin {
     final snapshot = useFuture(onboardingCompleteFuture);
     final connectivityStream = ref.watch(connectivityStreamProvider.stream);
     final modalNotifier = ref.watch(modalVisibleProvider.notifier);
-    final networkInfo =
-        NetworkInfoImpl(); // Create an instance of NetworkInfoImpl
+    final networkInfo = NetworkInfoImpl();
     useEffect(() {
       log('Setting up stream listener');
       final subscription = connectivityStream.listen((result) async {
@@ -80,14 +79,12 @@ class MyApp extends HookConsumerWidget with OnboardingMixin {
           // Perform additional internet check
           try {
             bool hasInternet = await networkInfo.hasInternet();
-            modalNotifier.state =
-                !hasInternet; // Show dialog if there is no internet
+            modalNotifier.state = !hasInternet;
           } catch (e) {
-            modalNotifier.state =
-                true; // Show dialog if an exception occurs (e.g., no internet)
+            modalNotifier.state = true;
           }
         } else {
-          modalNotifier.state = true; // Show dialog if there is no connectivity
+          modalNotifier.state = true;
         }
       });
       return () {
@@ -101,19 +98,15 @@ class MyApp extends HookConsumerWidget with OnboardingMixin {
       var connectivityResult = await Connectivity().checkConnectivity();
       log('Manual connectivity check result: $connectivityResult');
       if (connectivityResult != ConnectivityResult.none) {
-        // Perform additional internet check using NetworkInfoImpl
         try {
-          final networkInfo =
-              NetworkInfoImpl(); // Create an instance of NetworkInfoImpl
+          final networkInfo = NetworkInfoImpl();
           bool hasInternet = await networkInfo.hasInternet();
-          modalNotifier.state =
-              !hasInternet; // Show dialog if there is no internet
+          modalNotifier.state = !hasInternet;
         } catch (e) {
-          modalNotifier.state =
-              true; // Show dialog if an exception occurs (e.g., no internet)
+          modalNotifier.state = true;
         }
       } else {
-        modalNotifier.state = true; // Show dialog if there is no connectivity
+        modalNotifier.state = true;
       }
     }
 
