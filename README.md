@@ -1,4 +1,4 @@
-# Cook That Thing - Visit [This Link](https://drive.google.com/drive/folders/11sJTFwHTTki_BoMdnOgbCuqmDSnV7dv8?usp=sharing) to see how the app run on a device
+# Cook That Thing - Visit [This Link](https://drive.google.com/drive/folders/11sJTFwHTTki_BoMdnOgbCuqmDSnV7dv8?usp=sharing) to see how the app runs on a device
 
 ## Project Overview
 
