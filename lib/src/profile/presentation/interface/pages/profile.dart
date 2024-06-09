@@ -188,7 +188,7 @@ class ProfilePage extends HookWidget with ChefMixin {
                           dividerHeight: 1.5,
                           dividerColor: ExtraColors.lightGrey,
                           overlayColor:
-                              MaterialStateProperty.all(Colors.transparent),
+                              WidgetStateProperty.all(Colors.transparent),
                           labelStyle: const TextStyle(
                               fontSize: 18, fontWeight: FontWeight.w600),
                           unselectedLabelColor: ExtraColors.grey,

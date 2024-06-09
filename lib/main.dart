@@ -1,8 +1,7 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -48,14 +47,17 @@ void main() async {
 
 //
   // Get any messages which caused the application to open from terminated state
-  // final remoteMessage = FirebaseMessaging.instance.getInitialMessage();
+  final remoteMessage = FirebaseMessaging.instance.getInitialMessage();
 //
   // Get any messages which caused the application to open from background state
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {});
 
   runApp(
-    ProviderScope(
-      child: MyApp(),
+    DevicePreview(
+      enabled: true,
+      builder: (context) => ProviderScope(
+        child: MyApp(),
+      ),
     ),
   );
 }
@@ -68,6 +70,7 @@ class MyApp extends HookConsumerWidget with OnboardingMixin {
     final onboardingCompleteFuture =
         useMemoized(() => checkIfOnboardingIsComplete());
     final snapshot = useFuture(onboardingCompleteFuture);
+    // ignore: deprecated_member_use
     final connectivityStream = ref.watch(connectivityStreamProvider.stream);
     final modalNotifier = ref.watch(modalVisibleProvider.notifier);
     final networkInfo = NetworkInfoImpl();
@@ -117,6 +120,7 @@ class MyApp extends HookConsumerWidget with OnboardingMixin {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: const Locale('en'),
+      debugShowCheckedModeBanner: false,
       builder: (context, child) {
         return Stack(
           children: [

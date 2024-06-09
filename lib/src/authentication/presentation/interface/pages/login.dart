@@ -101,12 +101,12 @@ class _LoginPageState extends State<LoginPage> {
                         validator: Validator.email,
                         style: const TextStyle(color: ExtraColors.black),
                         decoration: const InputDecoration(
-                          hintText: 'example@gmail.com',
-                          hintStyle: TextStyle(color: ExtraColors.darkGrey),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 20.0),
-                          filled: true,
-                        ),
+                            hintText: 'example@gmail.com',
+                            hintStyle: TextStyle(color: ExtraColors.darkGrey),
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 20.0),
+                            filled: true,
+                            fillColor: ExtraColors.lightGrey),
                       ),
                       const SizedBox(
                         height: 20,
@@ -128,25 +128,25 @@ class _LoginPageState extends State<LoginPage> {
                         validator: Validator.password,
                         style: const TextStyle(color: ExtraColors.black),
                         decoration: InputDecoration(
-                          suffixIcon: GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  _obscureText = !_obscureText;
-                                });
-                              },
-                              child: Icon(
-                                _obscureText
-                                    ? Icons.visibility_off
-                                    : Icons.visibility,
-                                color: ExtraColors.darkGrey,
-                              )),
-                          hintText: '●●●●●●●',
-                          hintStyle:
-                              const TextStyle(color: ExtraColors.darkGrey),
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 20.0),
-                          filled: true,
-                        ),
+                            suffixIcon: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                                child: Icon(
+                                  _obscureText
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                  color: ExtraColors.darkGrey,
+                                )),
+                            hintText: '●●●●●●●',
+                            hintStyle:
+                                const TextStyle(color: ExtraColors.darkGrey),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 20.0),
+                            filled: true,
+                            fillColor: ExtraColors.lightGrey),
                       ),
                     ],
                   )),

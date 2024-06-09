@@ -107,6 +107,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           contentPadding:
                               EdgeInsets.symmetric(horizontal: 20.0),
                           filled: true,
+                            fillColor: ExtraColors.lightGrey
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -123,12 +124,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         validator: Validator.email,
                         style: const TextStyle(color: ExtraColors.black),
                         decoration: const InputDecoration(
-                          hintText: 'example@gmail.com',
-                          hintStyle: TextStyle(color: ExtraColors.darkGrey),
-                          contentPadding:
-                              EdgeInsets.symmetric(horizontal: 20.0),
-                          filled: true,
-                        ),
+                            hintText: 'example@gmail.com',
+                            hintStyle: TextStyle(color: ExtraColors.darkGrey),
+                            contentPadding:
+                                EdgeInsets.symmetric(horizontal: 20.0),
+                            filled: true,
+                            fillColor: ExtraColors.lightGrey),
                       ),
                       const SizedBox(height: 20),
                       //Password
@@ -167,6 +168,7 @@ class _SignUpPageState extends State<SignUpPage> {
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 20.0),
                           filled: true,
+                            fillColor: ExtraColors.lightGrey
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -211,15 +213,15 @@ class _SignUpPageState extends State<SignUpPage> {
               ElevatedButton(
                 onPressed: _isAgreedToTerms ? _submitFormOnSignUp : null,
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                    (Set<MaterialState> states) {
-                      if (states.contains(MaterialState.disabled)) {
+                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                    (Set<WidgetState> states) {
+                      if (states.contains(WidgetState.disabled)) {
                         return Theme.of(context).colorScheme.primaryContainer;
                       }
                       return Theme.of(context).colorScheme.primary;
                     },
                   ),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  shape: WidgetStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15))),
                 ),

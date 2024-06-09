@@ -120,9 +120,9 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
                   ? null
                   : () => _onNextPressed(context),
               style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                  (Set<MaterialState> states) {
-                    if (states.contains(MaterialState.disabled)) {
+                backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                  (Set<WidgetState> states) {
+                    if (states.contains(WidgetState.disabled)) {
                       return Theme.of(context).colorScheme.primaryContainer;
                     }
                     return Theme.of(context).colorScheme.primary;

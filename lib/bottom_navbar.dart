@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:iconly/iconly.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 import 'core/recipes/presentation/interface/pages/create_recipe_method.dart';
 import 'shared/data/firebase_constants.dart';
@@ -20,52 +19,6 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-  List<Widget> _buildScreens() {
-    return [
-      HomePage(),
-      FavoritesPage(),
-      const CreateRecipeChoicePage(),
-      ProfilePage(
-        chefID: FirebaseConsts.currentUser!.uid,
-      ),
-    ];
-  }
-
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    final localizations = AppLocalizations.of(context)!;
-
-    return [
-      PersistentBottomNavBarItem(
-        textStyle: Theme.of(context).textTheme.labelLarge,
-        icon: const Icon(IconlyLight.home),
-        title: localizations.home,
-        activeColorPrimary: Theme.of(context).colorScheme.primary,
-        inactiveColorPrimary: ExtraColors.darkGrey,
-      ),
-      PersistentBottomNavBarItem(
-        textStyle: Theme.of(context).textTheme.labelLarge,
-        icon: const Icon(IconlyLight.heart),
-        title: 'Favorites',
-        activeColorPrimary: Theme.of(context).colorScheme.primary,
-        inactiveColorPrimary: ExtraColors.darkGrey,
-      ),
-      PersistentBottomNavBarItem(
-        textStyle: Theme.of(context).textTheme.labelLarge,
-        icon: const Icon(IconlyLight.activity),
-        title: localizations.cook,
-        activeColorPrimary: Theme.of(context).colorScheme.primary,
-        inactiveColorPrimary: ExtraColors.darkGrey,
-      ),
-      PersistentBottomNavBarItem(
-        textStyle: Theme.of(context).textTheme.labelLarge,
-        icon: const Icon(IconlyLight.profile),
-        title: localizations.profile,
-        activeColorPrimary: Theme.of(context).colorScheme.primary,
-        inactiveColorPrimary: ExtraColors.darkGrey,
-      ),
-    ];
-  }
-
   late PersistentTabController controller;
 
   @override
@@ -84,31 +37,70 @@ class _NavBarState extends State<NavBar> {
         ),
         Flexible(
           child: PersistentTabView(
+            navBarBuilder: (navBarConfig) => Style2BottomNavBar(
+              navBarDecoration: const NavBarDecoration(
+                border: Border(top: BorderSide(color: ExtraColors.lightGrey)),
+              ),
+              navBarConfig: navBarConfig,
+              itemPadding:
+                  const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 0),
+              itemAnimationProperties: const ItemAnimation(
+                duration: Duration(milliseconds: 700),
+                curve: Curves.ease,
+              ),
+            ),
             navBarHeight: 65,
-            padding:
-                const NavBarPadding.only(left: 0, right: 0, bottom: 0, top: 0),
-            context,
-            screens: _buildScreens(),
-            items: _navBarsItems(),
-            confineInSafeArea: true,
             backgroundColor: ExtraColors.white,
             popAllScreensOnTapOfSelectedTab: true,
             popActionScreens: PopActionScreensType.all,
-            itemAnimationProperties: const ItemAnimationProperties(
-              duration: Duration(milliseconds: 700),
-              curve: Curves.ease,
-            ),
             screenTransitionAnimation: const ScreenTransitionAnimation(
-              animateTabTransition: true,
               curve: Curves.ease,
               duration: Duration(milliseconds: 700),
             ),
-            navBarStyle: NavBarStyle.style9,
             handleAndroidBackButtonPress: true,
             resizeToAvoidBottomInset: false,
-            decoration: const NavBarDecoration(
-              border: Border(top: BorderSide(color: ExtraColors.lightGrey)),
-            ),
+            tabs: [
+              PersistentTabConfig(
+                screen: HomePage(),
+                item: ItemConfig(
+                  title: "Home",
+                  textStyle: Theme.of(context).textTheme.labelLarge!,
+                  icon: const Icon(IconlyLight.home),
+                  activeColorSecondary: Theme.of(context).colorScheme.primary,
+                  inactiveBackgroundColor: ExtraColors.darkGrey,
+                ),
+              ),
+              PersistentTabConfig(
+                screen: FavoritesPage(),
+                item: ItemConfig(
+                  title: "Favorites",
+                  textStyle: Theme.of(context).textTheme.labelLarge!,
+                  icon: const Icon(IconlyLight.heart),
+                  activeForegroundColor: Theme.of(context).colorScheme.primary,
+                  inactiveForegroundColor: ExtraColors.darkGrey,
+                ),
+              ),
+              PersistentTabConfig(
+                screen: const CreateRecipeChoicePage(),
+                item: ItemConfig(
+                  title: "Cook",
+                  textStyle: Theme.of(context).textTheme.labelLarge!,
+                  icon: const Icon(IconlyLight.activity),
+                  activeForegroundColor: Theme.of(context).colorScheme.primary,
+                  inactiveForegroundColor: ExtraColors.darkGrey,
+                ),
+              ),
+              PersistentTabConfig(
+                screen: ProfilePage(chefID: FirebaseConsts.currentUser!.uid),
+                item: ItemConfig(
+                  title: "Profile",
+                  textStyle: Theme.of(context).textTheme.labelLarge!,
+                  icon: const Icon(IconlyLight.profile),
+                  activeForegroundColor: Theme.of(context).colorScheme.primary,
+                  inactiveForegroundColor: ExtraColors.darkGrey,
+                ),
+              ),
+            ],
           ),
         ),
       ],

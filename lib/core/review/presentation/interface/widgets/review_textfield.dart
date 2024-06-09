@@ -36,6 +36,7 @@ class ReviewTextField extends StatelessWidget {
             color: ExtraColors.darkGrey,
             fontWeight: FontWeight.w500),
         filled: true,
+        fillColor: ExtraColors.lightGrey,
       ),
     );
   }

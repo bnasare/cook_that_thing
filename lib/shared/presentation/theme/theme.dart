@@ -23,7 +23,7 @@ ThemeData lightTheme = ThemeData(
   splashColor: const Color(0xFFF5F5F5),
   useMaterial3: true,
   primaryTextTheme: GoogleFonts.rubikTextTheme(),
-  scaffoldBackgroundColor: lightColorScheme.background,
+  scaffoldBackgroundColor: lightColorScheme.surface,
   //
   textTheme: GoogleFonts.rubikTextTheme().copyWith(
     headlineLarge: const TextStyle(
