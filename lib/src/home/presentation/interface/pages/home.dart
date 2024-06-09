@@ -75,7 +75,7 @@ class HomePage extends HookWidget with RecipeMixin {
                   children: [
                     Container(
                       padding: const EdgeInsets.all(20),
-                      height: MediaQuery.of(context).size.height * 0.2,
+                      height: MediaQuery.of(context).size.height * 0.21,
                       width: double.infinity,
                       decoration: BoxDecoration(
                           color: Theme.of(context).primaryColor,

@@ -33,7 +33,7 @@ class _OnboardingState extends State<Onboarding> {
                   ExtraColors.transparent,
                 ],
                 stops: [
-                  0.2,
+                  0.3,
                   1,
                 ],
                 begin: Alignment.bottomCenter,
@@ -74,7 +74,7 @@ class _OnboardingState extends State<Onboarding> {
                         context, LoginPage());
                   },
                   child: Container(
-                    height: 66,
+                    height: 60,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(32),

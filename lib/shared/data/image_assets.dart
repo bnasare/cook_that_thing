@@ -12,5 +12,5 @@ class ImageAssets {
   static const String info = 'assets/static/info.png';
   static const String google = 'assets/static/google.png';
   static const String apple = 'assets/static/apple.png';
-  static const String getStarted = 'assets/static/getstarted.png';
+  static const String getStarted = 'assets/static/getstarted.jpg';
 }

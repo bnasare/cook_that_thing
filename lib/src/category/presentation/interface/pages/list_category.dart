@@ -68,7 +68,7 @@ class CategoryListPage extends StatelessWidget {
                       crossAxisCount: 2,
                       crossAxisSpacing: 20.0,
                       mainAxisSpacing: 20.0,
-                      childAspectRatio: 0.95,
+                      childAspectRatio: 0.85,
                     ),
                     itemCount: assets.length,
                     itemBuilder: (context, index) {
@@ -93,18 +93,16 @@ class CategoryListPage extends StatelessWidget {
                                       .primaryContainer)),
                           child: Column(
                             children: [
-                              SizedBox(
-                                height: 150,
-                                width: 160,
+                              Expanded(
                                 child: Image.asset(
                                   assets[index],
                                   fit: BoxFit.fill,
                                 ),
                               ),
-                              Expanded(
+                              Center(
                                 child: Text(categories[index],
                                     style: const TextStyle(
-                                        fontSize: 18,
+                                        fontSize: 16,
                                         fontWeight: FontWeight.w600)),
                               )
                             ],
