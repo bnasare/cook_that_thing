@@ -13,12 +13,12 @@ import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/data/svg_assets.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
-import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
 import '../../../../../src/home/presentation/interface/widgets/header.dart';
 import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 
-import '../../../../../shared/widgets/error_view.dart';
-import '../../../../../shared/widgets/shimmer.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/shimmer.dart';
 import '../../../../../src/home/presentation/interface/widgets/recipe_banner.dart';
 import '../../../domain/entities/chef.dart';
 

@@ -6,8 +6,8 @@ import '../../../../../core/chef/presentation/bloc/chef_mixin.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
 import '../../../../../core/recipes/presentation/interface/pages/recipe_details.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../shared/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
 
 class RecipesTab extends HookWidget with ChefMixin {
   final String chefID;

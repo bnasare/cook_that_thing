@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
-import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
 
 class RecipeDetailAppBar extends StatelessWidget {
   final String imageUrl;

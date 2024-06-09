@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-import '../presentation/theme/extra_colors.dart';
+import '../theme/extra_colors.dart';
 
 class LoadingTextView extends StatelessWidget {
   final double? width;

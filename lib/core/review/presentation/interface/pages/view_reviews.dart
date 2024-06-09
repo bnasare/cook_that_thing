@@ -3,8 +3,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/empty_state_view.dart';
-import '../../../../../shared/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/empty_state_view.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
 import '../../../domain/entities/review.dart';
 import '../../bloc/review_mixin.dart';
 import '../widgets/rating_widget.dart';

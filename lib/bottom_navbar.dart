@@ -43,7 +43,7 @@ class _NavBarState extends State<NavBar> {
               ),
               navBarConfig: navBarConfig,
               itemPadding:
-                  const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 0),
+                  const EdgeInsets.only(left: 0, right: 0, bottom: 7, top: 7),
               itemAnimationProperties: const ItemAnimation(
                 duration: Duration(milliseconds: 700),
                 curve: Curves.ease,
@@ -66,8 +66,10 @@ class _NavBarState extends State<NavBar> {
                   title: "Home",
                   textStyle: Theme.of(context).textTheme.labelLarge!,
                   icon: const Icon(IconlyLight.home),
-                  activeColorSecondary: Theme.of(context).colorScheme.primary,
-                  inactiveBackgroundColor: ExtraColors.darkGrey,
+                  activeForegroundColor: Theme.of(context).colorScheme.primary,
+                  activeColorSecondary:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                  inactiveBackgroundColor: ExtraColors.white,
                 ),
               ),
               PersistentTabConfig(
@@ -77,7 +79,9 @@ class _NavBarState extends State<NavBar> {
                   textStyle: Theme.of(context).textTheme.labelLarge!,
                   icon: const Icon(IconlyLight.heart),
                   activeForegroundColor: Theme.of(context).colorScheme.primary,
-                  inactiveForegroundColor: ExtraColors.darkGrey,
+                  activeColorSecondary:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                  inactiveBackgroundColor: ExtraColors.white,
                 ),
               ),
               PersistentTabConfig(
@@ -87,7 +91,9 @@ class _NavBarState extends State<NavBar> {
                   textStyle: Theme.of(context).textTheme.labelLarge!,
                   icon: const Icon(IconlyLight.activity),
                   activeForegroundColor: Theme.of(context).colorScheme.primary,
-                  inactiveForegroundColor: ExtraColors.darkGrey,
+                  activeColorSecondary:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                  inactiveBackgroundColor: ExtraColors.white,
                 ),
               ),
               PersistentTabConfig(
@@ -97,7 +103,9 @@ class _NavBarState extends State<NavBar> {
                   textStyle: Theme.of(context).textTheme.labelLarge!,
                   icon: const Icon(IconlyLight.profile),
                   activeForegroundColor: Theme.of(context).colorScheme.primary,
-                  inactiveForegroundColor: ExtraColors.darkGrey,
+                  activeColorSecondary:
+                      Theme.of(context).colorScheme.primary.withOpacity(0.3),
+                  inactiveBackgroundColor: ExtraColors.white,
                 ),
               ),
             ],

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/shimmer.dart';
+import '../../../../../shared/presentation/widgets/shimmer.dart';
 import '../../bloc/recipe_mixin.dart';
 import 'recipe_info_item.dart';
 

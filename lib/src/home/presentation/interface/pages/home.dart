@@ -17,9 +17,9 @@ import '../../../../../core/recipes/presentation/interface/widgets/recipe_info.d
 import '../../../../../core/recipes/presentation/interface/widgets/recipe_widget.dart';
 import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../shared/widgets/error_view.dart';
-import '../../../../../shared/widgets/shimmer.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/shimmer.dart';
 import '../../../../category/presentation/interface/pages/list_category.dart';
 import '../../../../category/presentation/interface/widgets/category_tab.dart';
 import '../widgets/header.dart';

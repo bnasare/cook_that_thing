@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../presentation/theme/extra_colors.dart';
+import '../theme/extra_colors.dart';
 
 class Clickable extends StatelessWidget {
   const Clickable({

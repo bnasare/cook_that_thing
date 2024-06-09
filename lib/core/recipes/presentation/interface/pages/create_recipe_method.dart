@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
-import '../../../../../shared/widgets/snackbar.dart';
+import '../../../../../shared/presentation/widgets/snackbar.dart';
 import 'manual_recipe_creation.dart';
 
 enum AddRecipeOption { importWeb, voiceInput, recipeScanner, manualEntry }

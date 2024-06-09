@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
 
 class ListInstructions extends StatefulWidget {
   final TextEditingController instructionsController;

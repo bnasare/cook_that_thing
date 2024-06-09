@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
 
 class ListIngredients extends StatefulWidget {
   final TextEditingController ingredientsController;

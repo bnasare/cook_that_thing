@@ -9,11 +9,11 @@ import '../../../../../core/recipes/domain/entities/recipe.dart';
 import '../../../../../core/recipes/presentation/interface/pages/recipe_details.dart';
 import '../../../../../core/recipes/presentation/interface/widgets/recipe_info.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../shared/widgets/error_view.dart';
-import '../../../../../shared/widgets/shimmer.dart';
-import '../../../../../shared/widgets/snackbar.dart';
-import '../../../../../shared/widgets/warning_modal.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/shimmer.dart';
+import '../../../../../shared/presentation/widgets/snackbar.dart';
+import '../../../../../shared/presentation/widgets/warning_modal.dart';
 
 class FavoritesPage extends HookWidget with ChefMixin {
   FavoritesPage({super.key});

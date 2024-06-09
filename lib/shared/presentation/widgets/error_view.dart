@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../data/image_assets.dart';
+import '../../data/image_assets.dart';
 
 class ErrorViewWidget extends StatelessWidget {
   const ErrorViewWidget({super.key});

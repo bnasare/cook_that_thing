@@ -10,9 +10,9 @@ import '../../../../../core/recipes/presentation/interface/pages/recipe_details.
 import '../../../../../core/recipes/presentation/interface/widgets/recipe_info.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../shared/widgets/error_view.dart';
-import '../../../../../shared/widgets/shimmer.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/shimmer.dart';
 import '../../../../home/presentation/interface/widgets/recipe_search_box.dart';
 
 class RecipeCategoryPage extends HookWidget with RecipeMixin {

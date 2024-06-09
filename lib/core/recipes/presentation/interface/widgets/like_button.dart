@@ -9,8 +9,8 @@ import 'package:iconly/iconly.dart';
 import '../../../../../shared/data/collection_ids.dart';
 import '../../../../../shared/platform/push_notification.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../shared/widgets/snackbar.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/snackbar.dart';
 import '../../bloc/recipe_mixin.dart';
 
 class LikeButton extends StatefulWidget {

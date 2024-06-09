@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../bottom_navbar.dart';
 import '../../../../injection_container.dart';
 import '../../../../shared/utils/navigation.dart';
-import '../../../../shared/widgets/snackbar.dart';
+import '../../../../shared/presentation/widgets/snackbar.dart';
 import '../interface/pages/login.dart';
 import 'auth_bloc.dart';
 

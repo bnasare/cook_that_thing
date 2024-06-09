@@ -6,7 +6,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
 import '../../../../../src/home/presentation/interface/widgets/recipe_search_box.dart';
 import '../../../../recipes/presentation/bloc/recipe_mixin.dart';
 import '../../../domain/entities/chef.dart';

@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
-import '../data/image_assets.dart';
-import '../presentation/theme/extra_colors.dart';
+import '../../data/image_assets.dart';
+import '../theme/extra_colors.dart';
 
 class FullscreenDialog extends HookWidget {
   const FullscreenDialog({

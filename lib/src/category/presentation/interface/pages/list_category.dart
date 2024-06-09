@@ -3,7 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../../shared/data/image_assets.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
 import 'category_page.dart';
 
 class CategoryListPage extends StatelessWidget {
@@ -101,10 +101,12 @@ class CategoryListPage extends StatelessWidget {
                                   fit: BoxFit.fill,
                                 ),
                               ),
-                              Text(categories[index],
-                                  style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w600))
+                              Expanded(
+                                child: Text(categories[index],
+                                    style: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600)),
+                              )
                             ],
                           ),
                         ),

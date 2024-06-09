@@ -12,7 +12,7 @@ import '../../../../injection_container.dart';
 import '../../../../shared/data/collection_ids.dart';
 import '../../../../shared/data/firebase_constants.dart';
 import '../../../../shared/platform/push_notification.dart';
-import '../../../../shared/widgets/snackbar.dart';
+import '../../../../shared/presentation/widgets/snackbar.dart';
 import '../../../chef/domain/entities/chef.dart';
 import '../../../chef/presentation/bloc/chef_bloc.dart';
 import '../../../review/domain/entities/review.dart';

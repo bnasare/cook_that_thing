@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/utils/validator.dart';
-import '../../../../../shared/widgets/loading_manager.dart';
+import '../../../../../shared/presentation/widgets/loading_manager.dart';
 import '../../bloc/auth_mixin.dart';
 import 'login.dart';
 

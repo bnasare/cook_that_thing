@@ -5,7 +5,7 @@ import '../../../../../core/chef/presentation/bloc/chef_mixin.dart';
 import '../../../../../core/review/domain/entities/review.dart';
 import '../../../../../core/review/presentation/interface/widgets/review_card.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
 
 class ReviewTab extends HookWidget with ChefMixin {
   final String chefID;

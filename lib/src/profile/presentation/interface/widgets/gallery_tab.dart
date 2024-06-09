@@ -8,8 +8,8 @@ import 'package:photo_view/photo_view_gallery.dart';
 import '../../../../../core/chef/presentation/bloc/chef_mixin.dart';
 import '../../../../../core/recipes/domain/entities/recipe.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../shared/widgets/error_view.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/error_view.dart';
 
 class GalleryTab extends HookWidget with ChefMixin {
   final Stream<List<Recipe>>? stream;

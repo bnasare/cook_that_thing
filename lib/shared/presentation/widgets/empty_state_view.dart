@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../src/category/presentation/interface/pages/list_category.dart';
-import '../data/image_assets.dart';
-import '../presentation/theme/extra_colors.dart';
-import '../utils/navigation.dart';
+import '../../../src/category/presentation/interface/pages/list_category.dart';
+import '../../data/image_assets.dart';
+import '../theme/extra_colors.dart';
+import '../../utils/navigation.dart';
 
 class EmptyStateView extends StatelessWidget {
   const EmptyStateView({

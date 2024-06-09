@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-import '../presentation/theme/extra_colors.dart';
+import '../theme/extra_colors.dart';
 
 class LoadingManager extends StatelessWidget {
   const LoadingManager(

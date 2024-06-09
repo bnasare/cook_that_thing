@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
-import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
 import '../pages/category_page.dart';
 
 class CategoryWidget extends StatelessWidget {

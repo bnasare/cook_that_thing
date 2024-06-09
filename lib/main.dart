@@ -16,7 +16,7 @@ import 'shared/platform/network_info.dart';
 import 'shared/platform/push_notification.dart';
 import 'shared/presentation/theme/theme.dart';
 import 'shared/utils/connectivity.dart';
-import 'shared/widgets/fullscreen_dialog.dart';
+import 'shared/presentation/widgets/fullscreen_dialog.dart';
 import 'src/authentication/presentation/interface/pages/wrapper.dart';
 import 'src/onboarding/presentation/bloc/onboarding_mixin.dart';
 import 'src/onboarding/presentation/interface/pages/onboarding.dart';

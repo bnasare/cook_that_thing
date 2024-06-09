@@ -2,7 +2,7 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
 import '../../../../../src/profile/presentation/interface/pages/profile.dart';
 import '../../../domain/entities/recipe.dart';
 import '../pages/recipe_details.dart';

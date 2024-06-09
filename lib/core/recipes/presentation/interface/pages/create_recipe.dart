@@ -16,12 +16,12 @@ import '../widgets/build_dialog_item.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
 import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/utils/validator.dart';
-import '../../../../../shared/widgets/loading_manager.dart';
-import '../../../../../shared/widgets/snackbar.dart';
+import '../../../../../shared/presentation/widgets/loading_manager.dart';
+import '../../../../../shared/presentation/widgets/snackbar.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../../../../shared/widgets/clickable.dart';
-import '../../../../../shared/widgets/fullscreen_dialog.dart';
+import '../../../../../shared/presentation/widgets/clickable.dart';
+import '../../../../../shared/presentation/widgets/fullscreen_dialog.dart';
 import '../widgets/custom_textfeld.dart';
 
 class CreateRecipePage extends HookConsumerWidget with RecipeMixin {

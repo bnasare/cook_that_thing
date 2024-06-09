@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../data/image_assets.dart';
-import '../presentation/theme/extra_colors.dart';
+import '../../data/image_assets.dart';
+import '../theme/extra_colors.dart';
 
 class WarningModal extends StatelessWidget {
   const WarningModal({
