@@ -7,28 +7,28 @@ class ErrorViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const SizedBox(height: 40),
-          Image.asset(
-            ImageAssets.viewed,
-            height: 280,
-            width: 280,
-          ),
-          const SizedBox(height: 30),
-          Center(
-            child: Text(
-              'Nothing to show here...',
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.error,
-              ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const SizedBox(height: 40),
+        Image.asset(
+          ImageAssets.viewed,
+          height: 280,
+          width: 280,
+        ),
+        const SizedBox(height: 30),
+        Center(
+          child: Text(
+            'Nothing to show here...',
+            style: TextStyle(
+              fontSize: 21,
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.error,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

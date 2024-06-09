@@ -92,7 +92,7 @@ class FavoritesPage extends HookWidget with ChefMixin {
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return const Padding(
-                            padding: EdgeInsets.only(top: 120.0),
+                            padding: EdgeInsets.only(top: 100.0),
                             child: ErrorViewWidget(),
                           );
                         } else if (snapshot.connectionState ==
@@ -113,7 +113,7 @@ class FavoritesPage extends HookWidget with ChefMixin {
                             snapshot.data!.isEmpty) {
                           // Add this condition to handle no data or an empty list
                           return const Padding(
-                            padding: EdgeInsets.only(top: 120.0),
+                            padding: EdgeInsets.only(top: 100.0),
                             child: ErrorViewWidget(),
                           );
                         } else if (snapshot.hasData) {
@@ -160,7 +160,7 @@ class FavoritesPage extends HookWidget with ChefMixin {
                           );
                         } else {
                           return const Padding(
-                            padding: EdgeInsets.only(top: 120.0),
+                            padding: EdgeInsets.only(top: 100.0),
                             child: ErrorViewWidget(),
                           );
                         }

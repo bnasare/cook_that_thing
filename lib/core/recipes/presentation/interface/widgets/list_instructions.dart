@@ -33,6 +33,7 @@ class _ListInstructionsState extends State<ListInstructions> {
           decoration: InputDecoration(
             hintText: 'Tap the checkmark to submit each item',
             filled: true,
+            fillColor: ExtraColors.lightGrey,
             suffixIcon: Visibility(
               visible: showCheckIcon,
               child: IconButton(

@@ -9,10 +9,10 @@ import '../../../../../core/recipes/presentation/bloc/recipe_mixin.dart';
 import '../../../../../core/recipes/presentation/interface/pages/recipe_details.dart';
 import '../../../../../core/recipes/presentation/interface/widgets/recipe_info.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/presentation/widgets/clickable.dart';
 import '../../../../../shared/presentation/widgets/error_view.dart';
 import '../../../../../shared/presentation/widgets/shimmer.dart';
+import '../../../../../shared/utils/navigation.dart';
 import '../../../../home/presentation/interface/widgets/recipe_search_box.dart';
 
 class RecipeCategoryPage extends HookWidget with RecipeMixin {
@@ -144,10 +144,7 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                                     context, category),
                                 builder: (context, snapshot) {
                                   if (snapshot.hasError) {
-                                    return const Padding(
-                                      padding: EdgeInsets.only(top: 80.0),
-                                      child: ErrorViewWidget(),
-                                    );
+                                    return const ErrorViewWidget();
                                   } else if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
                                     return ListView.separated(
@@ -168,10 +165,7 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                                     );
                                   } else if (snapshot.hasData &&
                                       snapshot.data!.isEmpty) {
-                                    return const Padding(
-                                      padding: EdgeInsets.only(top: 80.0),
-                                      child: ErrorViewWidget(),
-                                    );
+                                    return const ErrorViewWidget();
                                   } else if (snapshot.hasData) {
                                     // If there's data, build a list of RecipeInfo widgets
                                     return ListView.separated(
@@ -211,10 +205,7 @@ class RecipeCategoryPage extends HookWidget with RecipeMixin {
                                       },
                                     );
                                   } else {
-                                    return const Padding(
-                                      padding: EdgeInsets.only(top: 80.0),
-                                      child: ErrorViewWidget(),
-                                    );
+                                    return const ErrorViewWidget();
                                   }
                                 },
                               )

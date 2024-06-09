@@ -7,10 +7,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../../shared/data/firebase_constants.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/utils/navigation.dart';
-import '../../../../../shared/utils/validator.dart';
 import '../../../../../shared/presentation/widgets/loading_manager.dart';
 import '../../../../../shared/presentation/widgets/shimmer.dart';
+import '../../../../../shared/utils/navigation.dart';
+import '../../../../../shared/utils/validator.dart';
 import '../../../../recipes/domain/entities/recipe.dart';
 import '../../../../recipes/presentation/interface/widgets/recipe_info.dart';
 import '../../bloc/review_mixin.dart';
@@ -161,7 +161,7 @@ class CreateReviewPage extends HookConsumerWidget with ReviewMixin {
               onPressed: () {
                 handleReviewCreation();
               },
-              child: const Text('Submit')),
+              child: const Text('Submit', style: TextStyle(fontSize: 18))),
         ),
       ),
     );

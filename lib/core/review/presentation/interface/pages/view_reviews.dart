@@ -114,7 +114,7 @@ class ViewReviewsPage extends HookWidget with ReviewMixin {
                           Divider(color: ExtraColors.lightGrey, thickness: 2),
                     ),
                     SizedBox(
-                      height: 500,
+                      height: MediaQuery.of(context).size.height * 0.51,
                       child: ListView.separated(
                         physics: const BouncingScrollPhysics(),
                         shrinkWrap: true,

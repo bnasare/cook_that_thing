@@ -38,29 +38,28 @@ class ReviewCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 5),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    name,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      letterSpacing: -0.5,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: ExtraColors.black,
-                    ),
-                  ),
-                ],
-              ),
-              const Spacer(),
               Text(
-                formattedDate,
+                name,
+                overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
                   letterSpacing: -0.5,
-                  color: ExtraColors.darkGrey,
+                  fontSize: 17,
                   fontWeight: FontWeight.w500,
-                  fontSize: 16,
+                  color: ExtraColors.black,
+                ),
+              ),
+              const Spacer(),
+              Expanded(
+                child: Text(
+                  formattedDate,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    letterSpacing: -0.5,
+                    color: ExtraColors.darkGrey,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 14,
+                  ),
                 ),
               ),
             ],
@@ -71,7 +70,7 @@ class ReviewCard extends StatelessWidget {
               review,
               style: const TextStyle(
                 height: 1.4,
-                fontSize: 16.5,
+                fontSize: 15,
                 fontWeight: FontWeight.w400,
                 color: ExtraColors.darkGrey,
               ),
@@ -83,11 +82,11 @@ class ReviewCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              RatingDisplay(rating: rating, itemSize: 25),
+              RatingDisplay(rating: rating, itemSize: 20),
               const SizedBox(width: 5),
               Text('$rating',
                   style: const TextStyle(
-                      color: ExtraColors.darkGrey, fontSize: 18)),
+                      color: ExtraColors.darkGrey, fontSize: 16)),
             ],
           ),
         ],

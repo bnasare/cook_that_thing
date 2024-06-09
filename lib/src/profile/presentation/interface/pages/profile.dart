@@ -49,14 +49,13 @@ class ProfilePage extends HookWidget with ChefMixin {
     }
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       body: LoadingManager(
           isLoading: isLoading.value,
           child: Padding(
             padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 0.0),
             child: Column(
               children: [
-                const SizedBox(height: 50.0),
+                const SizedBox(height: 30.0),
                 const Center(
                     child: Icon(CupertinoIcons.person_alt_circle,
                         size: 130, color: ExtraColors.darkGrey)),

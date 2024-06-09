@@ -37,7 +37,7 @@ class GalleryTab extends HookWidget with ChefMixin {
           return const ErrorViewWidget();
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Padding(
-            padding: EdgeInsets.only(top: 100.0),
+            padding: EdgeInsets.only(top: 20.0),
             child: Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasData && snapshot.data!.isEmpty) {

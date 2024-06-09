@@ -11,11 +11,11 @@ import 'package:uuid/uuid.dart';
 
 import '../../../../../bottom_navbar.dart';
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/presentation/widgets/clickable.dart';
 import '../../../../../shared/presentation/widgets/fullscreen_dialog.dart';
 import '../../../../../shared/presentation/widgets/loading_manager.dart';
 import '../../../../../shared/presentation/widgets/warning_modal.dart';
+import '../../../../../shared/utils/navigation.dart';
 import '../../bloc/recipe_mixin.dart';
 import '../widgets/build_dialog_item.dart';
 import '../widgets/list_ingredients.dart';
@@ -190,8 +190,10 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                 content: TextField(
                   textInputAction: TextInputAction.done,
                   controller: titleController,
-                  decoration:
-                      const InputDecoration(hintText: "Title", filled: true),
+                  decoration: const InputDecoration(
+                      hintText: "Title",
+                      filled: true,
+                      fillColor: ExtraColors.lightGrey),
                 ),
               ),
               Step(
@@ -259,7 +261,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                   controller: overviewController,
                   textInputAction: TextInputAction.done,
                   decoration: const InputDecoration(
-                      hintText: "Description", filled: true),
+                      hintText: "Description",
+                      filled: true,
+                      fillColor: ExtraColors.lightGrey),
                 ),
               ),
               Step(
@@ -308,7 +312,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     );
                   },
                   decoration: const InputDecoration(
-                      hintText: "Meal type", filled: true),
+                      hintText: "Meal type",
+                      filled: true,
+                      fillColor: ExtraColors.lightGrey),
                 ),
               ),
               Step(
@@ -352,7 +358,9 @@ class _AddRecipeScreenState extends State<AddRecipeScreen> {
                     );
                   },
                   decoration: const InputDecoration(
-                      hintText: "Difficulty", filled: true),
+                      hintText: "Difficulty",
+                      filled: true,
+                      fillColor: ExtraColors.lightGrey),
                 ),
               ),
               Step(

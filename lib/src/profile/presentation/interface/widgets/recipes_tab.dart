@@ -21,14 +21,14 @@ class RecipesTab extends HookWidget with ChefMixin {
       stream: stream,
       builder: (BuildContext context, AsyncSnapshot<List<Recipe>> snapshot) {
         if (snapshot.hasError) {
-          return const ErrorViewWidget();
+          return const SingleChildScrollView(child: ErrorViewWidget());
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Padding(
-            padding: EdgeInsets.only(top: 100.0),
+            padding: EdgeInsets.only(top: 20.0),
             child: Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasData && snapshot.data!.isEmpty) {
-          return const ErrorViewWidget();
+          return const SingleChildScrollView(child: ErrorViewWidget());
         } else if (snapshot.hasData) {
           return Clickable(
             onClick: () => Navigator.of(context, rootNavigator: true).push(
@@ -68,12 +68,13 @@ class RecipesTab extends HookWidget with ChefMixin {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: FancyShimmerImage(
-                            width: double.infinity,
-                            height: 150,
-                            imageUrl: recipe.image,
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: FancyShimmerImage(
+                              width: double.infinity,
+                              imageUrl: recipe.image,
+                            ),
                           ),
                         ),
                         Padding(
@@ -118,7 +119,7 @@ class RecipesTab extends HookWidget with ChefMixin {
                 }),
           );
         } else {
-          return const ErrorViewWidget();
+          return const SingleChildScrollView(child: ErrorViewWidget());
         }
       },
     );

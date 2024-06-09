@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../../../../shared/presentation/theme/extra_colors.dart';
-import '../../../../../shared/utils/navigation.dart';
 import '../../../../../shared/presentation/widgets/snackbar.dart';
+import '../../../../../shared/utils/navigation.dart';
 import 'manual_recipe_creation.dart';
 
 enum AddRecipeOption { importWeb, voiceInput, recipeScanner, manualEntry }
@@ -48,7 +48,7 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Choose Recipe Creation Method'),
+        title: const Text('Choose Method'),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(20, 10, 20, 20),
@@ -114,7 +114,7 @@ class _CreateRecipeChoicePageState extends State<CreateRecipeChoicePage> {
                 },
               ),
             ),
-            const Spacer(),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.1),
             ElevatedButton(
               onPressed: _selectedOption == null
                   ? null
