@@ -1,84 +1,92 @@
-# Cook That Thing - Visit [This Link](https://drive.google.com/drive/folders/11sJTFwHTTki_BoMdnOgbCuqmDSnV7dv8?usp=sharing) to see how the app runs on a device
+# Cook That Thing 🍳
 
-## Project Overview
+A modern Flutter recipe sharing and social cooking platform that connects food enthusiasts and chefs.
 
-This Flutter and Firebase application is designed to create a vibrant social platform for sharing and discovering recipes. Built with Clean Architecture principles, it ensures a scalable and maintainable codebase, focusing on user engagement through various interactive features.
+## Features
 
-## Key Features
+### For Users
+- Browse and search recipes
+- Follow favorite chefs
+- Create and share your own recipes
+- Save favorites for quick access
+- Review and rate recipes 
+- View detailed instructions and ingredients
+- Browse recipes by categories
+- Profile management with recipe gallery
+- Social authentication (Google Sign-in)
 
-### User Authentication
+### For Chefs
+- Dedicated chef profiles
+- Recipe management
+- Follower tracking
+- Recipe analytics
 
-- Secure login and registration process.
-- Password recovery and email verification functionalities.
+## Technical Architecture
 
-### Recipe Management
+The app follows Clean Architecture principles with three main layers:
 
-- Users can add, edit, and delete their own recipes.
-- Recipes can be tagged with ingredients, cuisine type, and difficulty level for better discoverability.
+### Domain Layer
+- Core business logic and entities
+- Use cases defining app behavior
+- Repository interfaces
 
-### Interaction Features
+### Data Layer
+- Repository implementations
+- Remote database interactions (Firebase)
+- Local data persistence
 
-- Follow other users to stay updated with their latest recipes.
-- Like and comment on recipes to engage with the community.
-- Favorite recipes for quick access later.
-- Rate recipes to contribute to the overall rating system.
+### Presentation Layer
+- BLoC pattern for state management
+- Responsive UI components
+- Clean separation of widgets and pages
 
-### Notifications
+## Core Modules
 
-- Receive notifications for likes, comments, follows, and direct messages to stay engaged with the community.
-
-### Search and Discovery
-
-- Advanced search capabilities to find recipes based on tags, ingredients, and dietary restrictions.
-- Explore popular recipes and chefs to discover new favorites.
-
-### User Grading System
-
-- Based on the ratings received from other users, users can grade others, fostering a competitive yet supportive environment.
+- **Authentication**: User management and social auth
+- **Recipes**: Creation, viewing, and management
+- **Chef**: Profile and following system
+- **Reviews**: Rating and feedback system
+- **Categories**: Recipe organization
+- **Profile**: User profiles and galleries
 
 ## Getting Started
 
 ### Prerequisites
+- Flutter SDK
+- Firebase account
+- iOS/Android development setup
 
-- Ensure you have Flutter and Dart development tools installed on your system. Refer to the official Flutter documentation for detailed setup instructions: [Flutter Setup Guide](https://docs.flutter.dev/get-started/install)
-- Create a Firebase project and configure it within your Flutter app following Firebase's guidance: [Firebase Console](https://console.firebase.google.com/)
+### Installation
+1. Clone the repository
+2. Run `flutter pub get`
+3. Configure Firebase:
+   - Add `google-services.json` for Android
+   - Add `GoogleService-Info.plist` for iOS
+4. Run `flutter run`
 
-### Clone the Repository
+## Project Structure
+```
+lib/
+├── core/          # Core features (recipes, chefs, reviews)
+├── shared/        # Shared utilities and widgets
+└── src/           # Feature modules
+    ├── authentication/
+    ├── category/
+    ├── favorite/
+    ├── home/
+    ├── onboarding/
+    └── profile/
+```
 
-Use Git to clone the Social Recipe App repository to your local machine.
+## Dependencies
+- Firebase (Authentication, Firestore)
+- Flutter BLoC
+- Freezed for code generation
+- Network connectivity handling
+- Image handling and caching
 
-### Set up Firebase (if applicable)
+## Contributing
+[Add contribution guidelines]
 
-Replace placeholder values in the project's code with your Firebase project credentials (API key, project ID, etc.). Adhere to Firebase security best practices to protect sensitive data.
-
-### Run the App
-
-Navigate to the project directory in your terminal and execute `flutter run` to launch the app on a connected device or emulator.
-
-## Project Structure (Clean Architecture)
-
-The project structure is organized according to Clean Architecture principles, ensuring a clear separation of concerns and enhanced maintainability. The architecture is divided into three main layers:
-
-### Data Layer
-
-Manages data access logic, interfacing with Firebase for data persistence and retrieval.
-
-### Domain Layer
-
-Contains the core business logic of the application, abstracting away UI and data storage concerns. Defines models and operations for managing recipes and user interactions.
-
-### Presentation Layer
-
-Responsible for UI components and user interactions. Communicates with the domain layer to display data and handle user inputs.
-
-### Additional Considerations
-
-- **Error Handling:** Implement comprehensive error handling to deal with potential issues gracefully.
-- **Documentation:** Keep the codebase well-documented with clear comments to aid understanding and facilitate future modifications.
-
-Contributions are welcome To contribute:
-
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes, ensuring adherence to coding conventions and quality standards.
-4. Submit a pull request for review and potential inclusion in the project.
+## License
+[Add license information]
