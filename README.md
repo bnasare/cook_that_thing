@@ -1,5 +1,7 @@
 # Cook That Thing 🍳
 
+### Visit [This Link](https://drive.google.com/drive/folders/11sJTFwHTTki_BoMdnOgbCuqmDSnV7dv8?usp=sharing) to see how the app runs on a device
+
 A modern Flutter recipe sharing and social cooking platform that connects food enthusiasts and chefs.
 
 ## Features
